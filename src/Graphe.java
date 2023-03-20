@@ -24,7 +24,7 @@ public class Graphe {
         B.affiche_voisins();
         C.affiche_voisins();
 
-    // Affichage du sommet le plus proche
+    // Affichage du sommet le plus prochee
 
     System.out.println(A.sommet_plus_proche());
     System.out.println(B.sommet_plus_proche());
@@ -34,5 +34,5 @@ public class Graphe {
 
     System.out.println(A.recherche_type("O"));
 
-}
+    }
 }
