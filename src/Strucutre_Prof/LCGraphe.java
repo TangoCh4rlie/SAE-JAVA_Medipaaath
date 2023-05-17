@@ -178,7 +178,7 @@ class LCGraphe {
     }
 
     public LCGraphe charg() throws IOException{
-        File fr = new File("C:/Users/Haithem/Desktop/liste-successeurs.csv");
+        File fr = new File("/mnt/DA8682C68682A31D/Documents/IUT ECOLE SUP/TAFFFFFFFF/JAVA/SAE/liste-successeurs.csv");
         Scanner sc = new Scanner(fr);
         int line = 0;
         while (sc.hasNext())
@@ -197,7 +197,7 @@ class LCGraphe {
                 
         }
         sc.close();    
-        File fr2 = new File("C:/Users/Haithem/Desktop/liste-adjacence-jeuEssai.csv");
+        File fr2 = new File("/mnt/DA8682C68682A31D/Documents/IUT ECOLE SUP/TAFFFFFFFF/JAVA/SAE/liste-adjacence-jeuEssai.csv");
         Scanner sc2 = new Scanner(fr2);
         while (sc2.hasNext())
             {
