@@ -248,6 +248,7 @@ class LCGraphe {
         }
     }
 
+//    Voici l'algo de dijkstra
     public void dijkstra(String start, String end) {
         Map<String, Double> distances = new HashMap<>();
         MaillonGraphe current = premier;
