@@ -327,5 +327,21 @@ class LCGraphe {
         System.out.println(g.printMaternite());
         System.out.println("////");
         g.dijkstra("S1", "S5");
+        System.out.println("////");
+        g.countEdges();
+    }
+
+    public void countEdges(){
+        MaillonGraphe tmp = this.premier;
+        int count = 0;
+        while (tmp != null) {
+            MaillonGrapheSec tmp2 = tmp.lVois;
+            while (tmp2 != null) {
+                count++;
+                tmp2 = tmp2.suiv;
+            }
+            tmp = tmp.suiv;
+        }
+        System.out.println("Nb arretes = "+count);
     }
 }
