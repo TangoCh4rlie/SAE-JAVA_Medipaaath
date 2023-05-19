@@ -1,5 +1,6 @@
+package Strucutre_Prof;
+
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 class LCGraphe {
@@ -178,6 +179,7 @@ class LCGraphe {
     }
 
     public LCGraphe charg() throws IOException{
+        //Création sommets
         File fr = new File("C:/Users/Haithem/Desktop/liste-successeurs.csv");
         Scanner sc = new Scanner(fr);
         int line = 0;
@@ -197,6 +199,7 @@ class LCGraphe {
                 
         }
         sc.close();    
+        //Création arretes
         File fr2 = new File("C:/Users/Haithem/Desktop/liste-adjacence-jeuEssai.csv");
         Scanner sc2 = new Scanner(fr2);
         while (sc2.hasNext())
@@ -266,6 +269,7 @@ class LCGraphe {
         }
 
         while (!queue.isEmpty()) {
+            //Relachement des arretes
             current = queue.poll();
             current.listed = true;
             MaillonGrapheSec edge = current.lVois;
@@ -319,17 +323,6 @@ class LCGraphe {
         System.out.println("Distance total : " + distances.get(end));
     }
     
-    public static void main(String[] args) throws IOException{
-        LCGraphe g = new LCGraphe();
-        g.charg();
-        System.out.println(g.toString());
-        System.out.println("////");
-        System.out.println(g.printMaternite());
-        System.out.println("////");
-        g.dijkstra("S1", "S5");
-        System.out.println("////");
-        g.countEdges();
-    }
 
     public void countEdges(){
         MaillonGraphe tmp = this.premier;
@@ -344,4 +337,17 @@ class LCGraphe {
         }
         System.out.println("Nb arretes = "+count);
     }
+   
+    public static void main(String[] args) throws IOException{
+        LCGraphe g = new LCGraphe();
+        g.charg();
+        System.out.println(g.toString());
+        System.out.println("////");
+        System.out.println(g.printMaternite());
+        System.out.println("////");
+        g.dijkstra("S1", "S5");
+        System.out.println("////");
+        g.countEdges();
+    }
+
 }
