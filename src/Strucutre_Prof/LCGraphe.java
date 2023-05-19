@@ -1,4 +1,4 @@
-package Strucutre_Prof;
+
 
 import java.io.*;
 import java.util.*;
@@ -150,7 +150,7 @@ class LCGraphe {
 
     public MaillonGraphe recherchenom(String nom){
         MaillonGraphe tmp = this.premier;
-        while (tmp != null && !tmp.nom.equals(nom)) {
+        while (tmp != null && tmp.nom.equals(nom)) {
             tmp = tmp.suiv;
         }
         return tmp;
@@ -179,27 +179,6 @@ class LCGraphe {
     }
 
     public LCGraphe charg() throws IOException{
-        //Création sommets
-        File fr = new File("C:/Users/Haithem/Desktop/liste-successeurs.csv");
-        Scanner sc = new Scanner(fr);
-        int line = 0;
-        while (sc.hasNext())
-            {   
-                String s = sc.nextLine();
-                if (line == 0) {
-                    s = s.substring(3);
-                    line++;
-                }
-                String[] parts = s.split(";");
-                String nom = parts[0];
-                String type = null;
-
-                this.addMain(nom,type);
-                
-                
-        }
-        sc.close();    
-        //Création arretes
         File fr2 = new File("C:/Users/Haithem/Desktop/liste-adjacence-jeuEssai.csv");
         Scanner sc2 = new Scanner(fr2);
         while (sc2.hasNext())
@@ -207,8 +186,7 @@ class LCGraphe {
                 String s = sc2.nextLine();
                 String[] parts = s.split(";");
                 String ori = parts[0];
-                MaillonGraphe cible = recherchenom(ori);
-                cible.type = parts[1];
+                this.addMain(ori,parts[1]);
                 int i = 2;
                 while (i < (parts.length)-2) {
                     if (parts[i].equals("0")){
@@ -241,8 +219,6 @@ class LCGraphe {
         return this;
     }
 
-
-    
     public void resetListed(){
         MaillonGraphe tmp = this.premier;
         while (tmp != null) {
@@ -343,9 +319,7 @@ class LCGraphe {
         g.charg();
         System.out.println(g.toString());
         System.out.println("////");
-        System.out.println(g.printMaternite());
         System.out.println("////");
-        g.dijkstra("S1", "S5");
         System.out.println("////");
         g.countEdges();
     }
