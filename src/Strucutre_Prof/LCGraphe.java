@@ -1,7 +1,10 @@
+package Strucutre_Prof;
+
 import java.io.*;
 import java.util.*;
 
 class LCGraphe {
+
     public class MaillonGrapheSec {
         private double fiab;
         private double dist;
@@ -16,8 +19,22 @@ class LCGraphe {
             dest = d;
             suiv = null;
         }
+        public double getFiab(){
+            return this.fiab;
+        }
+        public double getDist(){
+            return this.dist;
+        }
+        public double getDur(){
+            return this.dur;
+        }
+        public String getDest(){
+            return this.dest;
+        }
+        public MaillonGrapheSec getSuiv(){
+            return this.suiv;
+        }
     }
-
     class MaillonGraphe {
         private String nom;
         private String type;
@@ -31,6 +48,21 @@ class LCGraphe {
             lVois = null;
             suiv = null;
             listed = false;
+        }
+        public String getNom(){
+            return this.nom;
+        }
+        public String getType(){
+            return this.type;
+        }
+        public MaillonGrapheSec getLVois(){
+            return this.lVois;
+        }
+        public MaillonGraphe getSuiv(){
+            return this.suiv;
+        }
+        public boolean getListed(){
+            return this.listed;
         }
     }
     
@@ -230,7 +262,7 @@ class LCGraphe {
          * @param : void
          * @return : LCGraphe
          */
-        File fr2 = new File("C:/Users/Haithem/Desktop/liste-adjacence-jeuEssai.csv");
+        File fr2 = new File("/mnt/DA8682C68682A31D/Documents/IUT ECOLE SUP/TAFFFFFFFF/JAVA/SAE/liste-adjacence-jeuEssai.csv");
         Scanner sc2 = new Scanner(fr2);
         while (sc2.hasNext())
             {
@@ -398,6 +430,44 @@ class LCGraphe {
         }
         System.out.println("Nb arretes = "+count);
     }
+
+    public List<MaillonGraphe> getListSommet() {
+        /*
+         * @autor : Elouan
+         * @description : retourne la liste chainee de sommets
+         * @param : void
+         * @return : List<MaillonGraphe>
+         */
+        List<MaillonGraphe> list = new ArrayList<>();
+        MaillonGraphe tmp = this.premier;
+        while (tmp != null) {
+            list.add(tmp);
+            tmp = tmp.suiv;
+        }
+        return list;
+    }
+
+    public List<MaillonGraphe> getListSommetAdj(MaillonGraphe sommet) {
+        /*
+         * @autor : Elouan
+         * @description : retourne la liste chainee de sommets adjacents a un sommet
+         * @param : MaillonGraphe sommet
+         * @return : List<MaillonGraphe>
+         */
+        List<MaillonGraphe> list = new ArrayList<>();
+        MaillonGrapheSec tmp = sommet.lVois;
+        while (tmp != null) {
+            MaillonGraphe tmp2 = this.premier;
+            while (tmp2 != null && !tmp2.nom.equals(tmp.dest)) {
+                tmp2 = tmp2.suiv;
+            }
+            if (tmp2 != null) {
+                list.add(tmp2);
+            }
+            tmp = tmp.suiv;
+        }
+        return list;
+    }
    
     public static void main(String[] args) throws IOException{
         LCGraphe g = new LCGraphe();
@@ -407,6 +477,6 @@ class LCGraphe {
         System.out.println("////");
         System.out.println("////");
         g.countEdges();
+        IHM_graphe imh = new IHM_graphe(g, 500, 500);
     }
-
 }
