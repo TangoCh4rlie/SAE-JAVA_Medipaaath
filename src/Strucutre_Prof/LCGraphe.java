@@ -1,3 +1,5 @@
+package Strucutre_Prof;
+
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -442,7 +444,45 @@ class LCGraphe {
         }
         System.out.println("Nb arretes = "+count);
     }
-   
+
+    public List<MaillonGraphe> getListSommet() {
+/*
+         * @autor : Elouan
+         * @description : retourne la liste chainee de sommets
+         * @param : void
+         * @return : List<MaillonGraphe>
+         */
+        List<MaillonGraphe> listSommet = new ArrayList<>();
+        MaillonGraphe tmp = this.premier;
+        while (tmp != null) {
+            listSommet.add(tmp);
+            tmp = tmp.suiv;
+        }
+        return listSommet;
+    }
+    public List<MaillonGraphe> getListSommetAdj(MaillonGraphe m) {
+        /*
+         * @autor : Elouan
+         * @description : retourne la liste chainee de sommets adjacents a un sommet
+         * @param : MaillonGraphe m
+         * @return : List<MaillonGraphe>
+         */
+        List<MaillonGraphe> listSommet = new ArrayList<>();
+        MaillonGrapheSec tmp = m.lVois;
+        while (tmp != null) {
+            MaillonGraphe tmp2 = this.premier;
+            while (tmp2 != null && !tmp2.nom.equals(tmp.dest)) {
+                tmp2 = tmp2.suiv;
+            }
+            if (tmp2 != null) {
+                listSommet.add(tmp2);
+            }
+            tmp = tmp.suiv;
+        }
+        return listSommet;
+    }
+
+
     public static void main(String[] args) throws IOException{
         LCGraphe g = new LCGraphe();
         g.charg();
@@ -450,6 +490,8 @@ class LCGraphe {
         System.out.println("////");
         System.out.println("////");
         System.out.println("////");
+        System.out.println(g.getListSommetAdj(g.premier.suiv));
         g.countEdges();
+        IHM_graphe ihm = new IHM_graphe(g, 700, 700);
     }
 }

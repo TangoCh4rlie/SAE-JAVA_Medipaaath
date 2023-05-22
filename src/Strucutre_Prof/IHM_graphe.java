@@ -5,7 +5,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IHM_graphe extends javax.swing.JFrame{
+public class IHM_graphe extends JFrame{
     private LCGraphe graphe;
     private List<LCGraphe.MaillonGraphe> listSommet;
 
@@ -30,23 +30,21 @@ public class IHM_graphe extends javax.swing.JFrame{
         this.setContentPane(content);
         content.setLayout(new BorderLayout());
         JPanel graphe = new JPanel();
-        content.add(graphe, BorderLayout.CENTER);
-        graphe.setLayout(null);
+//        content.add(graphe, BorderLayout.CENTER);
+//        graphe.setLayout(null);
         for (LCGraphe.MaillonGraphe m : listSommet){
-            int xA = (int) (Math.random() * this.sizeX);
-            int yA = (int) (Math.random() * this.sizeY);
             List<LCGraphe.MaillonGraphe> listSuccesseur = new ArrayList<>();
             listSuccesseur.addAll(this.graphe.getListSommetAdj(m));
             JLabel sommet = new JLabel(m.getNom());
-            sommet.setBounds(xA, yA, 50, 50);
+            sommet.setBounds(m.getX(), m.getY(), 50, 50);
             graphe.add(sommet);
-//          TODO Attribuer des coordonnés a chaque sommet dans la déclaration des sommet
             for (LCGraphe.MaillonGraphe m2 : listSuccesseur){
-                JLabel sommet2 = new JLabel(m2.getSommet().getNom());
-                sommet2.setBounds(m2.getSommet().getPosition().getX(), m2.getSommet().getPosition().getY(), 50, 50);
+                JLabel sommet2 = new JLabel(m2.getNom());
+                sommet2.setBounds(m2.getX(), m2.getY(), 50, 50);
                 graphe.add(sommet2);
-                Graphics g = graphe.getGraphics();
-                g.drawLine(m.getSommet().getPosition().getX()+25, m.getSommet().getPosition().getY()+25, m2.getSommet().getPosition().getX()+25, m2.getSommet().getPosition().getY()+25);
+                Graphics2D g = (Graphics2D) graphe.getGraphics();
+                g.drawLine(m.getX()+25, m.getY()+25, m2.getX()+25, m2.getY()+25);
+                graphe.paintComponents(g);
             }
         }
     }
