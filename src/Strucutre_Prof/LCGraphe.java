@@ -1,5 +1,3 @@
-package Strucutre_Prof;
-
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
