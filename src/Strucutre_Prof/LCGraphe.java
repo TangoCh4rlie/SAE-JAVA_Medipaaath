@@ -42,6 +42,7 @@ class LCGraphe {
         private MaillonGrapheSec lVois;
         private MaillonGraphe suiv;
         private boolean listed;
+        private boolean printed;
         private int x;
         private int y;
 
@@ -51,6 +52,7 @@ class LCGraphe {
             lVois = null;
             suiv = null;
             listed = false;
+            printed = false;
             x = ThreadLocalRandom.current().nextInt(0, 500);
             y = ThreadLocalRandom.current().nextInt(0,500);
         }
@@ -75,8 +77,11 @@ class LCGraphe {
         public MaillonGraphe getSuiv(){
             return this.suiv;
         }
-        public boolean getListed(){
-            return this.listed;
+        public boolean getPrinted(){
+            return this.printed;
+        }
+        public void setPrinted(boolean b){
+            this.printed = b;
         }
     }
     
@@ -490,7 +495,6 @@ class LCGraphe {
         System.out.println("////");
         System.out.println("////");
         System.out.println("////");
-        System.out.println(g.getListSommetAdj(g.premier.suiv));
         g.countEdges();
         IHM_graphe ihm = new IHM_graphe(g, 700, 700);
     }
