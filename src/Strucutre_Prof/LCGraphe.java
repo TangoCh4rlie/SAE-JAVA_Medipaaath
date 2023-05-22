@@ -1,8 +1,11 @@
+package Strucutre_Prof;
+
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 class LCGraphe {
+
     public class MaillonGrapheSec {
         private double fiab;
         private double dist;
@@ -17,8 +20,22 @@ class LCGraphe {
             dest = d;
             suiv = null;
         }
+        public double getFiab(){
+            return this.fiab;
+        }
+        public double getDist(){
+            return this.dist;
+        }
+        public double getDur(){
+            return this.dur;
+        }
+        public String getDest(){
+            return this.dest;
+        }
+        public MaillonGrapheSec getSuiv(){
+            return this.suiv;
+        }
     }
-
     class MaillonGraphe {
         private String nom;
         private String type;
@@ -46,6 +63,21 @@ class LCGraphe {
             return y;
         }
 
+        public String getNom(){
+            return this.nom;
+        }
+        public String getType(){
+            return this.type;
+        }
+        public MaillonGrapheSec getLVois(){
+            return this.lVois;
+        }
+        public MaillonGraphe getSuiv(){
+            return this.suiv;
+        }
+        public boolean getListed(){
+            return this.listed;
+        }
     }
     
     private MaillonGraphe premier;
@@ -244,7 +276,7 @@ class LCGraphe {
          * @param : void
          * @return : LCGraphe
          */
-        File fr2 = new File("C:/Users/Haithem/Desktop/liste-adjacence-jeuEssai.csv");
+        File fr2 = new File("/mnt/DA8682C68682A31D/Documents/IUT ECOLE SUP/TAFFFFFFFF/JAVA/SAE/liste-adjacence-jeuEssai.csv");
         Scanner sc2 = new Scanner(fr2);
         while (sc2.hasNext())
             {
@@ -412,43 +444,14 @@ class LCGraphe {
         }
         System.out.println("Nb arretes = "+count);
     }
-
-    public void modifier(int key){
-        switch (key) {
-            case 1:
-                //Ajout d'un sommet
-                System.out.println("Veuillez saisir le nom du sommet a ajouter :");
-                Scanner sc = new Scanner(System.in);
-                String nom = sc.nextLine();
-                System.out.println("Veuillez saisir le type du sommet a ajouter :");
-                String type = sc.nextLine();
-                this.addMain(nom, type);
-                break;
-            case 2:
-                //Suppression d'un sommet
-                System.out.println("Veuillez saisir le nom du sommet a supprimer :");
-                Scanner sc2 = new Scanner(System.in);
-                String nom2 = sc2.nextLine();
-                MaillonGraphe tmp = this.premier;
-                while (tmp != null) {
-                    MaillonGrapheSec tmp2 = tmp.lVois;
-                    while (tmp2 != null) {
-                        if (tmp2.dest.equals(nom2)) {
-                            //Suppression des arretes liees au sommet
-                            tmp2.dest = null;
-                        }
-                        tmp2 = tmp2.suiv;
-                    }
-                    tmp = tmp.suiv;
-                }
-                break;
-        }
-    }
    
     public static void main(String[] args) throws IOException{
         LCGraphe g = new LCGraphe();
         g.charg();
         System.out.println(g.toString());
+        System.out.println("////");
+        System.out.println("////");
+        System.out.println("////");
+        g.countEdges();
     }
-
 }
