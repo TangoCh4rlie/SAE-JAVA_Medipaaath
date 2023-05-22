@@ -2,3 +2,9 @@
 /Structure_Prof/LCGraphe.class
 /Structure_Prof/LCGraphe$MaillonGraphe.class
 /Structure_Prof/LCGraphe$MaillonGrapheSec.class
+./.idea
+./bin
+./out
+java-sae.iml
+.classpath
+.project

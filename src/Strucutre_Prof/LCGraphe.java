@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 class LCGraphe {
     public class MaillonGrapheSec {
@@ -24,6 +25,8 @@ class LCGraphe {
         private MaillonGrapheSec lVois;
         private MaillonGraphe suiv;
         private boolean listed;
+        private int x;
+        private int y;
 
         MaillonGraphe(String n, String t) {
             nom = n;
@@ -31,7 +34,18 @@ class LCGraphe {
             lVois = null;
             suiv = null;
             listed = false;
+            x = ThreadLocalRandom.current().nextInt(0, 500);
+            y = ThreadLocalRandom.current().nextInt(0,500);
         }
+
+        public int getX() {
+            return x;
+        }
+
+        public int getY() {
+            return y;
+        }
+
     }
     
     private MaillonGraphe premier;
@@ -398,15 +412,43 @@ class LCGraphe {
         }
         System.out.println("Nb arretes = "+count);
     }
+
+    public void modifier(int key){
+        switch (key) {
+            case 1:
+                //Ajout d'un sommet
+                System.out.println("Veuillez saisir le nom du sommet a ajouter :");
+                Scanner sc = new Scanner(System.in);
+                String nom = sc.nextLine();
+                System.out.println("Veuillez saisir le type du sommet a ajouter :");
+                String type = sc.nextLine();
+                this.addMain(nom, type);
+                break;
+            case 2:
+                //Suppression d'un sommet
+                System.out.println("Veuillez saisir le nom du sommet a supprimer :");
+                Scanner sc2 = new Scanner(System.in);
+                String nom2 = sc2.nextLine();
+                MaillonGraphe tmp = this.premier;
+                while (tmp != null) {
+                    MaillonGrapheSec tmp2 = tmp.lVois;
+                    while (tmp2 != null) {
+                        if (tmp2.dest.equals(nom2)) {
+                            //Suppression des arretes liees au sommet
+                            tmp2.dest = null;
+                        }
+                        tmp2 = tmp2.suiv;
+                    }
+                    tmp = tmp.suiv;
+                }
+                break;
+        }
+    }
    
     public static void main(String[] args) throws IOException{
         LCGraphe g = new LCGraphe();
         g.charg();
         System.out.println(g.toString());
-        System.out.println("////");
-        System.out.println("////");
-        System.out.println("////");
-        g.countEdges();
     }
 
 }
