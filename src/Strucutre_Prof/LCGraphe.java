@@ -51,8 +51,8 @@ class LCGraphe {
             lVois = null;
             suiv = null;
             listed = false;
-            x = ThreadLocalRandom.current().nextInt(0, 900);
-            y = ThreadLocalRandom.current().nextInt(0,700);
+            x = (int) (Math.random() * 600);
+            y = (int) (Math.random() * 600);
         }
 
         public int getX() {
@@ -492,6 +492,6 @@ class LCGraphe {
         System.out.println("////");
         System.out.println(g.getListSommetAdj(g.premier.suiv));
         g.countEdges();
-        IHM_graphe ihm = new IHM_graphe(g, 1024, 900);
+        IhmMenu ihm = new IhmMenu(g);
     }
 }
