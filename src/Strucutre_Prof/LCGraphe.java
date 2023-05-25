@@ -1,10 +1,11 @@
 package Strucutre_Prof;
 
+import Strucutre_Prof.IHM.IhmMenu;
+
 import java.io.*;
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 
-class LCGraphe {
+public class LCGraphe {
 
     public class MaillonGrapheSec {
         private double fiab;
@@ -36,7 +37,7 @@ class LCGraphe {
             return this.suiv;
         }
     }
-    class MaillonGraphe {
+    public class MaillonGraphe {
         private String nom;
         private String type;
         private MaillonGrapheSec lVois;
@@ -51,18 +52,22 @@ class LCGraphe {
             lVois = null;
             suiv = null;
             listed = false;
-            x = (int) (Math.random() * 600);
-            y = (int) (Math.random() * 600);
+            x = (int) (Math.random() * 400);
+            y = (int) (Math.random() * 400);
         }
 
         public int getX() {
             return x;
         }
-
+        public void setX(int x) {
+            this.x = x;
+        }
         public int getY() {
             return y;
         }
-
+        public void setY(int y) {
+            this.y = y;
+        }
         public String getNom(){
             return this.nom;
         }
@@ -276,7 +281,7 @@ class LCGraphe {
          * @param : void
          * @return : LCGraphe
          */
-        File fr2 = new File("/mnt/DA8682C68682A31D/Documents/IUT ECOLE SUP/TAFFFFFFFF/JAVA/SAE/liste-adjacence-jeuEssai.csv");
+        File fr2 = new File("/mnt/DA8682C68682A31D/Documents/IUT ECOLE SUP/TAFFFFFFFF/JAVA/SAE/liste-test.csv");
         Scanner sc2 = new Scanner(fr2);
         while (sc2.hasNext())
             {

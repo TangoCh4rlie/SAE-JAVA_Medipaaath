@@ -1,8 +1,9 @@
-package Strucutre_Prof;
+package Strucutre_Prof.IHM;
+
+import Strucutre_Prof.LCGraphe;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class IhmMenu extends JFrame{
@@ -34,7 +35,6 @@ public class IhmMenu extends JFrame{
     private void initEventListener() {
         this.boutonAfficherGraphe.addActionListener(e -> {
             IhmGraphe ihmGraphe = new IhmGraphe(this.graphe);
-            ihmGraphe.afficherGraphe();
         });
     }
 }
