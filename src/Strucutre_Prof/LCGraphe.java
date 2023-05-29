@@ -1,5 +1,3 @@
-package Strucutre_Prof;
-
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -276,45 +274,45 @@ class LCGraphe {
          * @param : void
          * @return : LCGraphe
          */
-        File fr2 = new File("/mnt/DA8682C68682A31D/Documents/IUT ECOLE SUP/TAFFFFFFFF/JAVA/SAE/liste-adjacence-jeuEssai.csv");
-        Scanner sc2 = new Scanner(fr2);
-        while (sc2.hasNext())
+        File Fichier = new File("C:\\Users\\Haithem\\Desktop\\java-sae\\src\\liste-adjacence-jeuEssai.csv");
+        Scanner Lecteur = new Scanner(Fichier);
+        while (Lecteur.hasNext())
             {
                 //Chargement des sommets
-                String s = sc2.nextLine();
-                String[] parts = s.split(";");
-                String ori = parts[0];
-                this.addMain(ori,parts[1]);
+                String Ligne = Lecteur.nextLine();
+                String[] decoupage = Ligne.split(";");
+                String origine = decoupage[0];
+                this.addMain(origine,decoupage[1]);
                 int i = 2;
-                while (i < (parts.length)-2) {
-                    if (parts[i].equals("0")){
+                while (i < (decoupage.length)-2) {
+                    if (decoupage[i].equals("0")){
                         i++;
                     }
                     else{
-                        String[] parts2 = parts[i].split(",");
+                        String[] parts2 = decoupage[i].split(",");
                         //Chargement des arretes
-                        double fiab = Double.parseDouble(parts2[0]);
-                        double dist = Double.parseDouble(parts2[1]);
-                        double dur = Double.parseDouble(parts2[2]);
-                        Scanner sc3 = new Scanner(fr2);
-                        while(sc3.hasNext() ){
+                        double fiabilite = Double.parseDouble(parts2[0]);
+                        double distance = Double.parseDouble(parts2[1]);
+                        double duree = Double.parseDouble(parts2[2]);
+                        Scanner Lecteur2 = new Scanner(Fichier);
+                        while(Lecteur2.hasNext() ){
                             //Parcours du fichier pour trouver les sommets de destination
-                            String s2 = sc3.nextLine();
-                            String[] parts3 =  s2.split(";");
-                            if(!parts3[0].equals(ori)){
-                                if(parts3[i].equals(parts[i])){
-                                    String dest = parts3[0];
+                            String Ligne2 = Lecteur2.nextLine();
+                            String[] decoupage2 =  Ligne2.split(";");
+                            if(!decoupage2[0].equals(origine)){
+                                if(decoupage2[i].equals(decoupage[i])){
+                                    String dest = decoupage2[0];
                                     //Ajout de l'arrete
-                                    this.addEdge(ori,dest,fiab,dist,dur);
+                                    this.addEdge(origine,dest,fiabilite,distance,duree);
                                 }
                             }
                         }
-                        sc3.close();
+                        Lecteur2.close();
                         i++;
                     }
                 }
         }
-        sc2.close();
+        Lecteur.close();
         //Suppression des arretes dupliquées
         this.removeDuplicateEdges();
         return this;
@@ -343,71 +341,71 @@ class LCGraphe {
          * @return : void
          */
         Map<String, Double> distances = new HashMap<>();
-        MaillonGraphe current = premier;
-        while (current != null) {
+        MaillonGraphe Courant = premier;
+        while (Courant != null) {
             //Initialisation des distances a l'infini
-            distances.put(current.nom, Double.POSITIVE_INFINITY);
-            current = current.suiv;
+            distances.put(Courant.nom, Double.POSITIVE_INFINITY);
+            Courant = Courant.suiv;
         }
         distances.put(start, 0.0);
         PriorityQueue<MaillonGraphe> queue = new PriorityQueue<>(Comparator.comparingDouble(o -> distances.get(o.nom)));
-        current = premier;
-        while (current != null) {
+        Courant = premier;
+        while (Courant != null) {
             //Ajout des sommets a la file de priorite
-            if (current.nom.equals(start)) {
-                queue.add(current);
+            if (Courant.nom.equals(start)) {
+                queue.add(Courant);
             }
-            current = current.suiv;
+            Courant = Courant.suiv;
         }
 
         while (!queue.isEmpty()) {
             //Relachement des arretes
-            current = queue.poll();
-            current.listed = true;
-            MaillonGrapheSec edge = current.lVois;
+            Courant = queue.poll();
+            Courant.listed = true;
+            MaillonGrapheSec edge = Courant.lVois;
             while (edge != null) {
-                MaillonGraphe next = premier;
-                while (next != null && !next.nom.equals(edge.dest)) {
+                MaillonGraphe suiv = premier;
+                while (suiv != null && !suiv.nom.equals(edge.dest)) {
                     //Parcours de la liste chainee de sommets
-                    next = next.suiv;
+                    suiv = suiv.suiv;
                 }
-                if (next != null && !next.listed) {
+                if (suiv != null && !suiv.listed) {
                     //Si le sommet n'est pas encore visité
-                    double newDist = distances.get(current.nom) + edge.dur;
-                    if (newDist < distances.get(next.nom)) {
+                    double newDist = distances.get(Courant.nom) + edge.dur;
+                    if (newDist < distances.get(suiv.nom)) {
                         //Mise a jour de la distance
-                        distances.put(next.nom, newDist);
-                        queue.remove(next);
-                        queue.add(next);
+                        distances.put(suiv.nom, newDist);
+                        queue.remove(suiv);
+                        queue.add(suiv);
                     }
                 }
                 edge = edge.suiv;
             }
         }
         List<String> path = new ArrayList<>();
-        current = premier;
-        while (current != null && !current.nom.equals(end)) {
+        Courant = premier;
+        while (Courant != null && !Courant.nom.equals(end)) {
             //Parcours de la liste chainee de sommets
-            current = current.suiv;
+            Courant = Courant.suiv;
         }
-        if (current == null || distances.get(current.nom) == Double.POSITIVE_INFINITY) {
+        if (Courant == null || distances.get(Courant.nom) == Double.POSITIVE_INFINITY) {
             //Si le sommet n'est pas atteignable (graphe non connexe)
             System.out.println("No path found.");
             return;
         }
-        path.add(current.nom);
-        while (!current.nom.equals(start)) {
+        path.add(Courant.nom);
+        while (!Courant.nom.equals(start)) {
             //Parcours du chemin
-            MaillonGrapheSec edge = current.lVois;
+            MaillonGrapheSec edge = Courant.lVois;
             while (edge != null) {
                 MaillonGraphe next = premier;
                 while (next != null && !next.nom.equals(edge.dest)) {
                     next = next.suiv;
                 }
-                if (next != null && distances.get(next.nom) + edge.dur == distances.get(current.nom)) {
+                if (next != null && distances.get(next.nom) + edge.dur == distances.get(Courant.nom)) {
                     //Si la distance est la bonne
                     path.add(next.nom);
-                    current = next;
+                    Courant = next;
                     break;
                 }
                 edge = edge.suiv;
@@ -436,7 +434,6 @@ class LCGraphe {
         while (tmp != null) {
             MaillonGrapheSec tmp2 = tmp.lVois;
             while (tmp2 != null) {
-                // ajout de 1 a chaque arrete
                 count++;
                 tmp2 = tmp2.suiv;
             }
@@ -483,6 +480,40 @@ class LCGraphe {
     }
 
 
+    public MaillonGraphe recherche_MaillonGraphe(String nom){
+        MaillonGraphe tmp = this.premier;
+        while (tmp != null && !tmp.nom.equals(nom)) {
+            //Parcours de la liste chainee de sommets
+            tmp = tmp.suiv;
+        }
+        if(tmp.nom.equals(nom)){
+            return tmp;
+        }
+        else{
+            return null;
+        }
+    }
+
+    public void ajout_arrete(){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Veuillez saisir le nom du sommet d'origine : ");
+        String origine = sc.nextLine();
+        System.out.println("Veuillez saisir le nom du sommet de destination : ");
+        String dest = sc.nextLine();
+        System.out.println("Veuillez saisir la fiabilite de l'arrete : ");
+        double fiab = sc.nextDouble();
+        sc.nextLine();
+        System.out.println("Veuillez saisir la distance de l'arrete : ");
+        double dist = sc.nextDouble();
+        sc.nextLine();
+        System.out.println("Veuillez saisir la duree de l'arrete : ");
+        double dur = sc.nextDouble();
+        sc.nextLine();
+        sc.close();
+        this.addEdge(origine, dest, fiab, dist, dur);
+        System.out.println("Arrete ajoutee avec succes");
+    }
+
     public static void main(String[] args) throws IOException{
         LCGraphe g = new LCGraphe();
         g.charg();
@@ -490,8 +521,10 @@ class LCGraphe {
         System.out.println("////");
         System.out.println("////");
         System.out.println("////");
-        System.out.println(g.getListSommetAdj(g.premier.suiv));
         g.countEdges();
-        IHM_graphe ihm = new IHM_graphe(g, 700, 700);
+        g.addMain("S60","M");
+        g.addMain("S61", "M");
+        g.ajout_arrete();
+        System.out.println(g.toString());
     }
 }
