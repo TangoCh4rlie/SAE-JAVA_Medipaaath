@@ -60,6 +60,7 @@ public class CirclePaintTest implements Runnable {
         SwingUtilities.invokeLater(new CirclePaintTest());
     }
 
+
     public class PaintPanel extends JPanel {
         private final Color[] colors = { Color.RED, Color.GREEN, Color.BLUE,
                 Color.ORANGE, Color.CYAN, Color.YELLOW };

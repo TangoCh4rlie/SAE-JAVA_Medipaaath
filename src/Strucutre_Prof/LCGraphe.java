@@ -1,9 +1,10 @@
 package Strucutre_Prof;
 
-import Strucutre_Prof.IHM.IhmMenu;
-
+import java.awt.*;
 import java.io.*;
 import java.util.*;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class LCGraphe {
 
@@ -43,8 +44,7 @@ public class LCGraphe {
         private MaillonGrapheSec lVois;
         private MaillonGraphe suiv;
         private boolean listed;
-        private int x;
-        private int y;
+        private Point coordonnees;
 
         MaillonGraphe(String n, String t) {
             nom = n;
@@ -52,21 +52,11 @@ public class LCGraphe {
             lVois = null;
             suiv = null;
             listed = false;
-            x = (int) (Math.random() * 400);
-            y = (int) (Math.random() * 400);
+            coordonnees = new Point ((int) (Math.random() * 600), (int) (Math.random() * 600));
         }
 
-        public int getX() {
-            return x;
-        }
-        public void setX(int x) {
-            this.x = x;
-        }
-        public int getY() {
-            return y;
-        }
-        public void setY(int y) {
-            this.y = y;
+        public Point getCoordonnees() {
+            return coordonnees;
         }
         public String getNom(){
             return this.nom;
@@ -82,6 +72,9 @@ public class LCGraphe {
         }
         public boolean getListed(){
             return this.listed;
+        }
+        public void setCoordonnees(Point p) {
+            this.coordonnees = p;
         }
     }
     

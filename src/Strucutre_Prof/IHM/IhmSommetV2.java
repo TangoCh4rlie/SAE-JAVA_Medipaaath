@@ -11,12 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class IhmSommetV2 extends JLabel implements MouseListener, MouseMotionListener {
-    private ArrayList<Point> points;
+    private List<Point> points;
     private List<LCGraphe.MaillonGraphe> listeSommet;
 
     public IhmSommetV2(List<Point> points, List<LCGraphe.MaillonGraphe> listeSommet) {
         this.points = new ArrayList<Point>(points);
         this.listeSommet = listeSommet;
+        addMouseListener(this);
+        addMouseMotionListener(this);
     }
 
     @Override
@@ -32,6 +34,7 @@ public class IhmSommetV2 extends JLabel implements MouseListener, MouseMotionLis
             g2d.setColor(Color.BLACK);
             g2d.setStroke(new BasicStroke(2));
             g2d.drawOval(x, y,30,30);
+//            TODO faire un label pour le nom au lieux de faire un drawString
             g2d.drawString(this.listeSommet.get(i++).getNom(), x+10, y+20);
         }
     }
@@ -63,30 +66,14 @@ public class IhmSommetV2 extends JLabel implements MouseListener, MouseMotionLis
 
     @Override
     public void mouseDragged(MouseEvent e) {
-
+        int deltaX = e.getX();
+        int deltaY = e.getY();
+        this.points.get(2).setLocation(deltaX, deltaY);
+        getParent().repaint();
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
 
     }
-//    public static void main(String[] args) {
-//        // Créer quelques points de test
-//        ArrayList<Point> points = new ArrayList<>();
-//        points.add(new Point(50, 50));
-//        points.add(new Point(100, 100));
-//        points.add(new Point(150, 200));
-//
-//        // Créer une fenêtre JFrame pour afficher le graphe
-//        JFrame frame = new JFrame("Graph Drawing");
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.setSize(300, 300);
-//
-//        // Ajouter le composant GraphDrawing à la fenêtre
-//        IhmSommetV2 graphDrawing = new IhmSommetV2(points);
-//        frame.add(graphDrawing);
-//
-//        // Rendre la fenêtre visible
-//        frame.setVisible(true);
-//    }
 }

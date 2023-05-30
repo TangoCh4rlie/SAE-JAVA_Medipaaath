@@ -11,27 +11,24 @@ import java.util.List;
 
 public class IhmSommet extends JLabel implements MouseListener, MouseMotionListener {
     private LCGraphe.MaillonGraphe sommet;
-    private List<IhmSommet> listeSommetADessiner;
-    public IhmSommet(LCGraphe.MaillonGraphe sommet, List<IhmSommet> listeSommetADessiner, String nom) {
-        super(nom);
+    public IhmSommet(LCGraphe.MaillonGraphe sommet){
         this.sommet = sommet;
-        this.listeSommetADessiner = listeSommetADessiner;
         addMouseListener(this);
         addMouseMotionListener(this);
-
     }
-//    TODO faire une liste er repaint a chaque fois
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
+        int x = (int) this.sommet.getCoordonnees().getX();
+        int y = (int) this.sommet.getCoordonnees().getY();
         g2d.setColor(Color.CYAN);
-        g2d.fillOval(sommet.getX(), sommet.getY(),30,30);
+        g2d.fillOval(x, y, 30, 30);
         g2d.setColor(Color.BLACK);
         g2d.setStroke(new BasicStroke(2));
-        g2d.drawOval(sommet.getX(), sommet.getY(),30,30);
-        g2d.drawString(sommet.getNom(), sommet.getX()+10, sommet.getY()+20);
-        this.setVisible(true);
+        g2d.drawOval(x, y,30,30);
+//            TODO faire un label pour le nom au lieux de faire un drawString
+//        g2d.drawString(this.listeSommet.get(i++).getNom(), x+10, y+20);
     }
 
 
@@ -62,15 +59,15 @@ public class IhmSommet extends JLabel implements MouseListener, MouseMotionListe
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        int deltaX = e.getX();
-        int deltaY = e.getY();
-
-        // mise à jour de la position
-        //setXAndY(x + deltaX - taille / 2, y + deltaY - taille / 2);
-        this.sommet.setX(this.sommet.getX() + deltaX);
-        this.sommet.setY(this.sommet.getY() + deltaY);
-        this.setBounds(this.sommet.getX(), this.sommet.getY(), 30, 30);
-        this.getParent().repaint();
+//        int deltaX = e.getX();
+//        int deltaY = e.getY();
+//
+//        // mise à jour de la position
+//        //setXAndY(x + deltaX - taille / 2, y + deltaY - taille / 2);
+//        this.sommet.setX(this.sommet.getX() + deltaX);
+//        this.sommet.setY(this.sommet.getY() + deltaY);
+//        this.setBounds(this.sommet.getX(), this.sommet.getY(), 30, 30);
+//        this.getParent().repaint();
     }
 
     @Override
