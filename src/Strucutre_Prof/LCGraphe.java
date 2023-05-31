@@ -9,18 +9,25 @@ import java.util.concurrent.ThreadLocalRandom;
 public class LCGraphe {
 
     public class MaillonGrapheSec {
+        private String nomArete;
         private double fiab;
         private double dist;
         private double dur;
+        private String orig;
         private String dest;
         private MaillonGrapheSec suiv;
 
-        private MaillonGrapheSec(double f, double dt , double dr, String d) {
+        private MaillonGrapheSec(String nom, double f, double dt , double dr,String o, String d) {
+            nomArete = nom;
             fiab = f;
             dist = dt;
             dur = dr;
+            orig = o;
             dest = d;
             suiv = null;
+        }
+        public String getNomArete(){
+            return this.nomArete;
         }
         public double getFiab(){
             return this.fiab;
@@ -30,6 +37,9 @@ public class LCGraphe {
         }
         public double getDur(){
             return this.dur;
+        }
+        public String getOrig(){
+            return this.orig;
         }
         public String getDest(){
             return this.dest;
@@ -52,7 +62,7 @@ public class LCGraphe {
             lVois = null;
             suiv = null;
             listed = false;
-            coordonnees = new Point ((int) (Math.random() * 600), (int) (Math.random() * 600));
+            coordonnees = new Point ((int) (Math.random() * 500), (int) (Math.random() * 500));
         }
 
         public Point getCoordonnees() {
@@ -100,7 +110,7 @@ public class LCGraphe {
         this.premier = nouv;
     }
     
-    public void addEdge(String o, String d, double fiab, double dist, double dur){
+    public void addEdge(String nom, String o, String d, double fiab, double dist, double dur){
 
         /*
          * @autor : Haithem
@@ -109,7 +119,7 @@ public class LCGraphe {
          * @param : String o, String d, double fiab, double dist, double dur
          * @return : void
          */
-        MaillonGrapheSec nouv = new MaillonGrapheSec(fiab, dist, dur, d);
+        MaillonGrapheSec nouv = new MaillonGrapheSec(nom, fiab, dist, dur, o, d);
         MaillonGraphe tmp = this.premier;
         while (tmp != null && !tmp.nom.equals(o)){
             tmp = tmp.suiv;
@@ -119,7 +129,7 @@ public class LCGraphe {
             tmp.lVois = nouv;
         }
         
-        MaillonGrapheSec nouv2 = new MaillonGrapheSec(fiab, dist, dur, o);
+        MaillonGrapheSec nouv2 = new MaillonGrapheSec(nom, fiab, dist, dur, o, d);
         tmp = this.premier;
         while (tmp != null && !tmp.nom.equals(d)){
             tmp = tmp.suiv;
@@ -232,7 +242,7 @@ public class LCGraphe {
          * @return : MaillonGraphe
          */
         MaillonGraphe tmp = this.premier;
-        while (tmp != null && tmp.nom.equals(nom)) {
+        while (tmp != null && !tmp.nom.equals(nom)) {
             //Parcours de la liste chainee de sommets
             tmp = tmp.suiv;
         }
@@ -305,7 +315,8 @@ public class LCGraphe {
                                 if(parts3[i].equals(parts[i])){
                                     String dest = parts3[0];
                                     //Ajout de l'arrete
-                                    this.addEdge(ori,dest,fiab,dist,dur);
+                                    int j = i-1;
+                                    this.addEdge("A"+j,ori,dest,fiab,dist,dur);
                                 }
                             }
                         }
@@ -460,6 +471,29 @@ public class LCGraphe {
         }
         return listSommet;
     }
+
+    public HashMap<String, MaillonGrapheSec> getListAretes() {
+        /*
+         * @autor : Elouan
+         * @description : retourne la liste chainee d'arretes
+         * @param : void
+         * @return : List<MaillonGrapheSec>
+         */
+        HashMap<String, MaillonGrapheSec> listAretes = new HashMap<>();
+        MaillonGraphe sommet1 = this.premier;
+        while (sommet1 != null) {
+            MaillonGrapheSec sommet2 = sommet1.lVois;
+            while (sommet2 != null) {
+                if (!listAretes.containsKey(sommet2.nomArete)) {
+                    listAretes.put(sommet2.nomArete, sommet2);
+                }
+                sommet2 = sommet2.suiv;
+            }
+            sommet1 = sommet1.suiv;
+        }
+        return listAretes;
+    }
+
     public List<MaillonGraphe> getListSommetAdj(MaillonGraphe m) {
         /*
          * @autor : Elouan
@@ -492,6 +526,7 @@ public class LCGraphe {
         System.out.println("////");
         System.out.println(g.getListSommetAdj(g.premier.suiv));
         g.countEdges();
+        g.getListAretes();
         IhmMenu ihm = new IhmMenu(g);
     }
 }
