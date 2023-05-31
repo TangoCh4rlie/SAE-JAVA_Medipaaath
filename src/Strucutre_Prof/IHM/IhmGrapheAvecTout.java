@@ -11,45 +11,36 @@ import java.util.List;
 public class IhmGrapheAvecTout extends JFrame{
     private LCGraphe graphe;
     private List<LCGraphe.MaillonGraphe> listeSommet;
-    private List<Point> listeSommetADessiner;
+    private List<AreteADessiner> listeAreteADessiner;
     private JButton boutonQuitter;
     private JButton boutonRegenerer;
-    private List<AreteADessiner> listeAreteADessiner;
-    //private hashmap with the name of each peak name
-    private HashMap<String, Point> peakName;
     public IhmGrapheAvecTout(LCGraphe graphe) {
         this.graphe = graphe;
         this.listeSommet = graphe.getListSommet();
         initComponents();
-        dessineSommets();
-        dessineAretes();
-        this.repaint();
         initEventListener();
         this.setTitle("Graphe");
-        this.setSize(800, 800);
+        this.setPreferredSize(new Dimension(800, 800));
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.pack();
         this.setVisible(true);
     }
 
     private void initComponents() {
-        this.listeSommetADessiner = new ArrayList<>();
-        this.peakName = new HashMap<>();
+        this.setLayout(null);
         this.listeAreteADessiner = new ArrayList<>();
-        for (LCGraphe.MaillonGraphe maillonGraphe : listeSommet) {
-            listeSommetADessiner.add(new Point((int) maillonGraphe.getCoordonnees().getX(), (int) maillonGraphe.getCoordonnees().getY()));
-        }
-        this.boutonQuitter = new JButton("Quitter");
-        this.boutonRegenerer = new JButton("Regenerer");
-        this.add(boutonRegenerer, BorderLayout.NORTH);
-        this.add(boutonQuitter, BorderLayout.SOUTH);
+//        this.boutonQuitter = new JButton("Quitter");
+//        this.boutonRegenerer = new JButton("Regenerer");
+        dessinGraphe();
     }
 
-    public void dessineSommets() {
-        IhmSommetV2 dessinSommet = new IhmSommetV2(listeSommetADessiner, listeSommet);
-        this.add(dessinSommet);
-    }
-    private void dessineAretes() {
+    public void dessinGraphe() {
+        for (LCGraphe.MaillonGraphe m : this.listeSommet) {
+            IhmSommetV2 dessinSommet = new IhmSommetV2(m);
+            dessinSommet.setLocation(m.getCoordonnees());
+            this.add(dessinSommet);
+        }
         for (LCGraphe.MaillonGraphe m : this.listeSommet) {
             List<LCGraphe.MaillonGraphe> listSuccesseur = new ArrayList<>();
             listSuccesseur.addAll(this.graphe.getListSommetAdj(m));
@@ -66,15 +57,15 @@ public class IhmGrapheAvecTout extends JFrame{
         }
     }
     private void initEventListener() {
-        this.boutonQuitter.addActionListener(e -> {
-            this.dispose();
-        });
-        this.boutonRegenerer.addActionListener(e -> {
-            this.dispose();
-            changeCoordonnees();
-            IhmGrapheAvecTout ihmGraphe = new IhmGrapheAvecTout(this.graphe);
-            ihmGraphe.dessineSommets();
-        });
+//        this.boutonQuitter.addActionListener(e -> {
+//            this.dispose();
+//        });
+//        this.boutonRegenerer.addActionListener(e -> {
+//            this.dispose();
+//            changeCoordonnees();
+//            IhmGrapheAvecTout ihmGraphe = new IhmGrapheAvecTout(this.graphe);
+//            ihmGraphe.dessinGraphe();
+//        });
 //        Point p = new Point();
 //        this.listSommet.addMouseListener(new MouseAdapter() {
 //            public void mousePressed(MouseEvent e) {
