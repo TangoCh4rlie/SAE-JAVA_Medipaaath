@@ -1,9 +1,12 @@
 package Strucutre_Prof.PacementDesPoints;
 
+import Strucutre_Prof.LCGraphe;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class Window extends JFrame {
+    private LCGraphe graphe = null;
     private JMenuBar menuBar = new JMenuBar();
     private JMenu menu = new JMenu("Menu");
     private JMenuItem menuOuvrir = new JMenuItem("Ouvrir");
@@ -21,6 +24,7 @@ public class Window extends JFrame {
         this.setLocationRelativeTo(null);
         this.setVisible(true);
 
+        this.menu.add(menuOuvrir);
         this.menu.add(menuQuitter);
         this.menuBar.add(menu);
         this.setJMenuBar(this.menuBar);
@@ -33,6 +37,9 @@ public class Window extends JFrame {
         this.menuOuvrir.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.showOpenDialog(this);
+            String path = fileChooser.getSelectedFile().getAbsolutePath();
+//            TODO verifier que c'est bien un fichier .csv
+            this.graphe = new LCGraphe(path);
         });
     }
 }

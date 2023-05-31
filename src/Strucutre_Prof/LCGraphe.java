@@ -79,9 +79,11 @@ public class LCGraphe {
     }
     
     private MaillonGraphe premier;
+    private String pathFile;
     
-    public LCGraphe(){
+    public LCGraphe(String pathFile){
         premier = null;
+        this.pathFile = pathFile;
     }
     
     public void addMain(String ori, String t){
@@ -274,7 +276,7 @@ public class LCGraphe {
          * @param : void
          * @return : LCGraphe
          */
-        File fr2 = new File("/mnt/DA8682C68682A31D/Documents/IUT ECOLE SUP/TAFFFFFFFF/JAVA/SAE/liste-test.csv");
+        File fr2 = new File(this.pathFile);
         Scanner sc2 = new Scanner(fr2);
         while (sc2.hasNext())
             {
@@ -482,7 +484,7 @@ public class LCGraphe {
 
 
     public static void main(String[] args) throws IOException{
-        LCGraphe g = new LCGraphe();
+        LCGraphe g = new LCGraphe("/mnt/DA8682C68682A31D/Documents/IUT ECOLE SUP/TAFFFFFFFF/JAVA/SAE/liste-test.csv");
         g.charg();
         System.out.println(g.toString());
         System.out.println("////");
