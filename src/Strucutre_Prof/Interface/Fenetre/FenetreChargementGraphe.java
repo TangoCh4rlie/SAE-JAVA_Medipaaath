@@ -1,5 +1,7 @@
-package Strucutre_Prof.PacementDesPoints;
+package Strucutre_Prof.Interface.Fenetre;
 
+import Strucutre_Prof.Interface.ElementDeStructure.AreteGraphe;
+import Strucutre_Prof.Interface.ElementDeStructure.SommetGraphe;
 import Strucutre_Prof.LCGraphe;
 
 import javax.swing.*;
@@ -8,12 +10,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class WindowChargementGraphe extends Window{
+public class FenetreChargementGraphe extends Fenetre {
     private LCGraphe graphe;
     private List<LCGraphe.MaillonGraphe> listeSommets;
     private HashMap<String, LCGraphe.MaillonGrapheSec> listeArete;
 
-    public WindowChargementGraphe(String filePath) throws IOException {
+    public FenetreChargementGraphe(String filePath) throws IOException {
         super();
         this.graphe = new LCGraphe(filePath);
         this.graphe.charg();
@@ -39,7 +41,6 @@ public class WindowChargementGraphe extends Window{
             a.setBounds(0, 0, getWidth(), getHeight());
             super.addJPanelToContent(a);
         }
-        repaint();
     }
 //        IhmArete dessinArete = new IhmArete(this.listeAreteADessiner);
 //        this.add(dessinArete);

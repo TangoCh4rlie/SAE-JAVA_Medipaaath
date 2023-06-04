@@ -1,4 +1,4 @@
-package Strucutre_Prof.PacementDesPoints;
+package Strucutre_Prof.Interface.ElementDeStructure;
 
 import Strucutre_Prof.LCGraphe;
 

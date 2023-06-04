@@ -1,21 +1,22 @@
-package Strucutre_Prof.PacementDesPoints;
+package Strucutre_Prof.Interface.Fenetre;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
-public class Window extends JFrame {
+public class Fenetre extends JFrame {
 
 //    Tout ce qui est relatif au menu
     private JMenuBar menuBar = new JMenuBar();
     private JMenu menu = new JMenu("Menu");
     private JMenuItem menuOuvrir = new JMenuItem("Ouvrir");
+    private JMenuItem menuAide = new JMenuItem("Aide");
     private JMenuItem menuQuitter = new JMenuItem("Quitter");
 
 //     Tout ce qui est relatif au contenu de la fenetre
     public JPanel content;
 
-    public Window() {
+    public Fenetre() {
         initComponents();
         initActionListener();
         this.pack();
@@ -29,6 +30,7 @@ public class Window extends JFrame {
         this.setVisible(true);
 
         this.menu.add(menuOuvrir);
+        this.menu.add(menuAide);
         this.menu.add(menuQuitter);
         this.menuBar.add(menu);
         this.setJMenuBar(this.menuBar);
@@ -52,10 +54,13 @@ public class Window extends JFrame {
 //            /mnt/DA8682C68682A31D/Documents/IUT ECOLE SUP/TAFFFFFFFF/JAVA/SAE/liste-test.csv
             this.dispose();
             try {
-                new WindowChargementGraphe("/mnt/DA8682C68682A31D/Documents/IUT ECOLE SUP/TAFFFFFFFF/JAVA/SAE/liste-test.csv");
+                new FenetreChargementGraphe("/mnt/DA8682C68682A31D/Documents/IUT ECOLE SUP/TAFFFFFFFF/JAVA/SAE/liste-test.csv");
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
+        });
+        this.menuAide.addActionListener(e -> {
+            new FenetreAide();
         });
     }
 
