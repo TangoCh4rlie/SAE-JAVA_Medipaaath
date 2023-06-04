@@ -17,6 +17,9 @@ public class LCGraphe {
         private String dest;
         private MaillonGrapheSec suiv;
 
+//        relatif a l'ihm
+        private Color couleur;
+
         private MaillonGrapheSec(String nom, double f, double dt , double dr,String o, String d) {
             nomArete = nom;
             fiab = f;
@@ -25,6 +28,7 @@ public class LCGraphe {
             orig = o;
             dest = d;
             suiv = null;
+            couleur = Color.BLACK;
         }
         public String getNomArete(){
             return this.nomArete;
@@ -46,6 +50,12 @@ public class LCGraphe {
         }
         public MaillonGrapheSec getSuiv(){
             return this.suiv;
+        }
+        public Color getCouleur() {
+            return couleur;
+        }
+        public void setCouleur(Color couleur) {
+            this.couleur = couleur;
         }
     }
     public class MaillonGraphe {
@@ -514,6 +524,22 @@ public class LCGraphe {
             tmp = tmp.suiv;
         }
         return listSommet;
+    }
+
+    public List<MaillonGrapheSec> getAretesAdj(MaillonGraphe m) {
+        /*
+         * @autor : Elouan
+         * @description : retourne la liste d'aretes adjacentes a un sommet
+         * @param : MaillonGraphe m
+         * @return : List<MaillonGrapheSec>
+         */
+        List<MaillonGrapheSec> listAretes = new ArrayList<>();
+        MaillonGrapheSec tmp = m.lVois;
+        while (tmp != null) {
+            listAretes.add(tmp);
+            tmp = tmp.suiv;
+        }
+        return listAretes;
     }
 
 

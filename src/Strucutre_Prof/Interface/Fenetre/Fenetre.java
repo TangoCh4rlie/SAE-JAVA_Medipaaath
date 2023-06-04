@@ -73,4 +73,9 @@ public class Fenetre extends JFrame {
         this.content.add(panel);
         this.setContentPane(this.content);
     }
+
+    protected void addJMenuToMenuBar(JMenu traitement) {
+        this.menuBar.add(traitement);
+        this.setJMenuBar(this.menuBar);
+    }
 }
