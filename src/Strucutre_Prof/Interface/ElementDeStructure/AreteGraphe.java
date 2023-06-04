@@ -4,7 +4,7 @@ import Strucutre_Prof.LCGraphe;
 
 import javax.swing.*;
 import java.awt.Graphics2D;
-public class AreteGraphe extends JPanel {
+public class AreteGraphe extends JLabel {
     private LCGraphe.MaillonGraphe origine;
     private LCGraphe.MaillonGraphe destination;
     private String areteNom;
