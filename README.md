@@ -4,3 +4,5 @@
     - Haithem
 ### Implémentation de l'Ihm
     - Elouan
+## Execution du programme
+    > Dans le ./src/main 
