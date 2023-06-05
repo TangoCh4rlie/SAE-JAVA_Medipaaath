@@ -17,6 +17,10 @@ public class SommetGraphe extends JLabel implements MouseListener, MouseMotionLi
         this.sommet = sommet;
         addMouseListener(this);
         addMouseMotionListener(this);
+        initActionListener();
+    }
+
+    private void initActionListener() {
     }
 
 //    @Override
@@ -36,6 +40,17 @@ public class SommetGraphe extends JLabel implements MouseListener, MouseMotionLi
 
     @Override
     public void mouseClicked(MouseEvent e) {
+//        check if it's a right click
+        if (SwingUtilities.isRightMouseButton(e)) {
+            JPopupMenu popupMenu = new JPopupMenu();
+            JMenuItem supprimer = new JMenuItem("Supprimer");
+            popupMenu.add(supprimer);
+            popupMenu.show(this, e.getX(), e.getY());
+            supprimer.addActionListener(e1 -> {
+                this.sommet.supprimer();
+                getParent().repaint();
+            });
+        }
 
     }
 

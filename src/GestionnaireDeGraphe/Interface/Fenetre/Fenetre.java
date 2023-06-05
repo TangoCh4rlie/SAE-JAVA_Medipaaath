@@ -65,7 +65,7 @@ public class Fenetre extends JFrame {
 //            /mnt/DA8682C68682A31D/Documents/IUT ECOLE SUP/TAFFFFFFFF/JAVA/SAE/liste-adjacence-jeuEssai.csv
             this.dispose();
             try {
-                new FenetreChargementGraphe("/mnt/DA8682C68682A31D/Documents/IUT ECOLE SUP/TAFFFFFFFF/JAVA/SAE/liste-test.csv");
+                new FenetreChargementGraphe("./common/liste-test.csv");
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
