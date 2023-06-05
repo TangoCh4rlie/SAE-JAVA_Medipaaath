@@ -1,6 +1,12 @@
 package Strucutre_Prof.Interface.Fenetre;
 
+import com.formdev.flatlaf.FlatIntelliJLaf;
+import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
+
 import javax.swing.*;
+import javax.swing.plaf.metal.MetalLookAndFeel;
+import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import java.awt.*;
 import java.io.IOException;
 
@@ -29,6 +35,13 @@ public class Fenetre extends JFrame {
         this.setLocationRelativeTo(null);
         this.setVisible(true);
 
+        try {
+            UIManager.setLookAndFeel(new FlatIntelliJLaf());
+            SwingUtilities.updateComponentTreeUI(this);
+        } catch (UnsupportedLookAndFeelException ex) {
+            System.out.println("Erreur lors du chargement la librairie graphique");
+        }
+
         this.menu.add(menuOuvrir);
         this.menu.add(menuAide);
         this.menu.add(menuQuitter);
@@ -48,6 +61,7 @@ public class Fenetre extends JFrame {
         });
         this.menuOuvrir.addActionListener(e -> {
 //            JFileChooser fileChooser = new JFileChooser();
+//            fileChooser.setCurrentDirectory(new java.io.File("/mnt/DA8682C68682A31D/Documents/IUT ECOLE SUP/TAFFFFFFFF/JAVA/SAE/"));
 //            fileChooser.showOpenDialog(this);
 //            String path = fileChooser.getSelectedFile().getAbsolutePath();
 //            TODO verifier que c'est bien un fichier .csv
