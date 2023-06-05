@@ -1,5 +1,3 @@
-package Strucutre_Prof;
-
 public class TestLCGraphe {
 
     public static void main(String[] args) {

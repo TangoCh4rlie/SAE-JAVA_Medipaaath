@@ -1,4 +1,3 @@
-package Strucutre_Prof;
 
 import javax.swing.*;
 import java.awt.*;
