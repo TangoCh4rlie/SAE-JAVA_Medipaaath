@@ -1,22 +1,37 @@
+package Strucutre_Prof;
+
+import java.awt.*;
 import java.io.*;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-class LCGraphe {
+public class LCGraphe {
 
     public class MaillonGrapheSec {
+        private String nomArete;
         private double fiab;
         private double dist;
         private double dur;
+        private String orig;
         private String dest;
         private MaillonGrapheSec suiv;
 
-        private MaillonGrapheSec(double f, double dt , double dr, String d) {
+//        relatif a l'ihm
+        private Color couleur;
+
+        private MaillonGrapheSec(String nom, double f, double dt , double dr,String o, String d) {
+            nomArete = nom;
             fiab = f;
             dist = dt;
             dur = dr;
+            orig = o;
             dest = d;
             suiv = null;
+            couleur = Color.BLACK;
+        }
+        public String getNomArete(){
+            return this.nomArete;
         }
         public double getFiab(){
             return this.fiab;
@@ -27,22 +42,29 @@ class LCGraphe {
         public double getDur(){
             return this.dur;
         }
+        public String getOrig(){
+            return this.orig;
+        }
         public String getDest(){
             return this.dest;
         }
         public MaillonGrapheSec getSuiv(){
             return this.suiv;
         }
+        public Color getCouleur() {
+            return couleur;
+        }
+        public void setCouleur(Color couleur) {
+            this.couleur = couleur;
+        }
     }
-    class MaillonGraphe {
+    public class MaillonGraphe {
         private String nom;
         private String type;
         private MaillonGrapheSec lVois;
         private MaillonGraphe suiv;
         private boolean listed;
-        private boolean printed;
-        private int x;
-        private int y;
+        private Point coordonnees;
 
         MaillonGraphe(String n, String t) {
             nom = n;
@@ -50,19 +72,12 @@ class LCGraphe {
             lVois = null;
             suiv = null;
             listed = false;
-            printed = false;
-            x = ThreadLocalRandom.current().nextInt(0, 500);
-            y = ThreadLocalRandom.current().nextInt(0,500);
+            coordonnees = new Point ((int) (Math.random() * 500), (int) (Math.random() * 500));
         }
 
-        public int getX() {
-            return x;
+        public Point getCoordonnees() {
+            return coordonnees;
         }
-
-        public int getY() {
-            return y;
-        }
-
         public String getNom(){
             return this.nom;
         }
@@ -75,18 +90,20 @@ class LCGraphe {
         public MaillonGraphe getSuiv(){
             return this.suiv;
         }
-        public boolean getPrinted(){
-            return this.printed;
+        public boolean getListed(){
+            return this.listed;
         }
-        public void setPrinted(boolean b){
-            this.printed = b;
+        public void setCoordonnees(Point p) {
+            this.coordonnees = p;
         }
     }
     
     private MaillonGraphe premier;
+    private String pathFile;
     
-    public LCGraphe(){
+    public LCGraphe(String pathFile){
         premier = null;
+        this.pathFile = pathFile;
     }
     
     public void addMain(String ori, String t){
@@ -103,7 +120,7 @@ class LCGraphe {
         this.premier = nouv;
     }
     
-    public void addEdge(String o, String d, double fiab, double dist, double dur){
+    public void addEdge(String nom, String o, String d, double fiab, double dist, double dur){
 
         /*
          * @autor : Haithem
@@ -112,7 +129,7 @@ class LCGraphe {
          * @param : String o, String d, double fiab, double dist, double dur
          * @return : void
          */
-        MaillonGrapheSec nouv = new MaillonGrapheSec(fiab, dist, dur, d);
+        MaillonGrapheSec nouv = new MaillonGrapheSec(nom, fiab, dist, dur, o, d);
         MaillonGraphe tmp = this.premier;
         while (tmp != null && !tmp.nom.equals(o)){
             tmp = tmp.suiv;
@@ -122,7 +139,7 @@ class LCGraphe {
             tmp.lVois = nouv;
         }
         
-        MaillonGrapheSec nouv2 = new MaillonGrapheSec(fiab, dist, dur, o);
+        MaillonGrapheSec nouv2 = new MaillonGrapheSec(nom, fiab, dist, dur, o, d);
         tmp = this.premier;
         while (tmp != null && !tmp.nom.equals(d)){
             tmp = tmp.suiv;
@@ -235,7 +252,7 @@ class LCGraphe {
          * @return : MaillonGraphe
          */
         MaillonGraphe tmp = this.premier;
-        while (tmp != null && tmp.nom.equals(nom)) {
+        while (tmp != null && !tmp.nom.equals(nom)) {
             //Parcours de la liste chainee de sommets
             tmp = tmp.suiv;
         }
@@ -279,45 +296,46 @@ class LCGraphe {
          * @param : void
          * @return : LCGraphe
          */
-        File Fichier = new File("C:\\Users\\Haithem\\Desktop\\java-sae\\src\\liste-adjacence-jeuEssai.csv");
-        Scanner Lecteur = new Scanner(Fichier);
-        while (Lecteur.hasNext())
+        File fr2 = new File(this.pathFile);
+        Scanner sc2 = new Scanner(fr2);
+        while (sc2.hasNext())
             {
                 //Chargement des sommets
-                String Ligne = Lecteur.nextLine();
-                String[] decoupage = Ligne.split(";");
-                String origine = decoupage[0];
-                this.addMain(origine,decoupage[1]);
+                String s = sc2.nextLine();
+                String[] parts = s.split(";");
+                String ori = parts[0];
+                this.addMain(ori,parts[1]);
                 int i = 2;
-                while (i < (decoupage.length)-2) {
-                    if (decoupage[i].equals("0")){
+                while (i < (parts.length)-2) {
+                    if (parts[i].equals("0")){
                         i++;
                     }
                     else{
-                        String[] parts2 = decoupage[i].split(",");
+                        String[] parts2 = parts[i].split(",");
                         //Chargement des arretes
-                        double fiabilite = Double.parseDouble(parts2[0]);
-                        double distance = Double.parseDouble(parts2[1]);
-                        double duree = Double.parseDouble(parts2[2]);
-                        Scanner Lecteur2 = new Scanner(Fichier);
-                        while(Lecteur2.hasNext() ){
+                        double fiab = Double.parseDouble(parts2[0]);
+                        double dist = Double.parseDouble(parts2[1]);
+                        double dur = Double.parseDouble(parts2[2]);
+                        Scanner sc3 = new Scanner(fr2);
+                        while(sc3.hasNext() ){
                             //Parcours du fichier pour trouver les sommets de destination
-                            String Ligne2 = Lecteur2.nextLine();
-                            String[] decoupage2 =  Ligne2.split(";");
-                            if(!decoupage2[0].equals(origine)){
-                                if(decoupage2[i].equals(decoupage[i])){
-                                    String dest = decoupage2[0];
+                            String s2 = sc3.nextLine();
+                            String[] parts3 =  s2.split(";");
+                            if(!parts3[0].equals(ori)){
+                                if(parts3[i].equals(parts[i])){
+                                    String dest = parts3[0];
                                     //Ajout de l'arrete
-                                    this.addEdge(origine,dest,fiabilite,distance,duree);
+                                    int j = i-1;
+                                    this.addEdge("A"+j,ori,dest,fiab,dist,dur);
                                 }
                             }
                         }
-                        Lecteur2.close();
+                        sc3.close();
                         i++;
                     }
                 }
         }
-        Lecteur.close();
+        sc2.close();
         //Suppression des arretes dupliquées
         this.removeDuplicateEdges();
         return this;
@@ -346,71 +364,71 @@ class LCGraphe {
          * @return : void
          */
         Map<String, Double> distances = new HashMap<>();
-        MaillonGraphe Courant = premier;
-        while (Courant != null) {
+        MaillonGraphe current = premier;
+        while (current != null) {
             //Initialisation des distances a l'infini
-            distances.put(Courant.nom, Double.POSITIVE_INFINITY);
-            Courant = Courant.suiv;
+            distances.put(current.nom, Double.POSITIVE_INFINITY);
+            current = current.suiv;
         }
         distances.put(start, 0.0);
         PriorityQueue<MaillonGraphe> queue = new PriorityQueue<>(Comparator.comparingDouble(o -> distances.get(o.nom)));
-        Courant = premier;
-        while (Courant != null) {
+        current = premier;
+        while (current != null) {
             //Ajout des sommets a la file de priorite
-            if (Courant.nom.equals(start)) {
-                queue.add(Courant);
+            if (current.nom.equals(start)) {
+                queue.add(current);
             }
-            Courant = Courant.suiv;
+            current = current.suiv;
         }
 
         while (!queue.isEmpty()) {
             //Relachement des arretes
-            Courant = queue.poll();
-            Courant.listed = true;
-            MaillonGrapheSec edge = Courant.lVois;
+            current = queue.poll();
+            current.listed = true;
+            MaillonGrapheSec edge = current.lVois;
             while (edge != null) {
-                MaillonGraphe suiv = premier;
-                while (suiv != null && !suiv.nom.equals(edge.dest)) {
+                MaillonGraphe next = premier;
+                while (next != null && !next.nom.equals(edge.dest)) {
                     //Parcours de la liste chainee de sommets
-                    suiv = suiv.suiv;
+                    next = next.suiv;
                 }
-                if (suiv != null && !suiv.listed) {
+                if (next != null && !next.listed) {
                     //Si le sommet n'est pas encore visité
-                    double newDist = distances.get(Courant.nom) + edge.dur;
-                    if (newDist < distances.get(suiv.nom)) {
+                    double newDist = distances.get(current.nom) + edge.dur;
+                    if (newDist < distances.get(next.nom)) {
                         //Mise a jour de la distance
-                        distances.put(suiv.nom, newDist);
-                        queue.remove(suiv);
-                        queue.add(suiv);
+                        distances.put(next.nom, newDist);
+                        queue.remove(next);
+                        queue.add(next);
                     }
                 }
                 edge = edge.suiv;
             }
         }
         List<String> path = new ArrayList<>();
-        Courant = premier;
-        while (Courant != null && !Courant.nom.equals(end)) {
+        current = premier;
+        while (current != null && !current.nom.equals(end)) {
             //Parcours de la liste chainee de sommets
-            Courant = Courant.suiv;
+            current = current.suiv;
         }
-        if (Courant == null || distances.get(Courant.nom) == Double.POSITIVE_INFINITY) {
+        if (current == null || distances.get(current.nom) == Double.POSITIVE_INFINITY) {
             //Si le sommet n'est pas atteignable (graphe non connexe)
             System.out.println("No path found.");
             return;
         }
-        path.add(Courant.nom);
-        while (!Courant.nom.equals(start)) {
+        path.add(current.nom);
+        while (!current.nom.equals(start)) {
             //Parcours du chemin
-            MaillonGrapheSec edge = Courant.lVois;
+            MaillonGrapheSec edge = current.lVois;
             while (edge != null) {
                 MaillonGraphe next = premier;
                 while (next != null && !next.nom.equals(edge.dest)) {
                     next = next.suiv;
                 }
-                if (next != null && distances.get(next.nom) + edge.dur == distances.get(Courant.nom)) {
+                if (next != null && distances.get(next.nom) + edge.dur == distances.get(current.nom)) {
                     //Si la distance est la bonne
                     path.add(next.nom);
-                    Courant = next;
+                    current = next;
                     break;
                 }
                 edge = edge.suiv;
@@ -439,6 +457,7 @@ class LCGraphe {
         while (tmp != null) {
             MaillonGrapheSec tmp2 = tmp.lVois;
             while (tmp2 != null) {
+                // ajout de 1 a chaque arrete
                 count++;
                 tmp2 = tmp2.suiv;
             }
@@ -462,6 +481,29 @@ class LCGraphe {
         }
         return listSommet;
     }
+
+    public HashMap<String, MaillonGrapheSec> getListAretes() {
+        /*
+         * @autor : Elouan
+         * @description : retourne la liste chainee d'arretes
+         * @param : void
+         * @return : List<MaillonGrapheSec>
+         */
+        HashMap<String, MaillonGrapheSec> listAretes = new HashMap<>();
+        MaillonGraphe sommet1 = this.premier;
+        while (sommet1 != null) {
+            MaillonGrapheSec sommet2 = sommet1.lVois;
+            while (sommet2 != null) {
+                if (!listAretes.containsKey(sommet2.nomArete)) {
+                    listAretes.put(sommet2.nomArete, sommet2);
+                }
+                sommet2 = sommet2.suiv;
+            }
+            sommet1 = sommet1.suiv;
+        }
+        return listAretes;
+    }
+
     public List<MaillonGraphe> getListSommetAdj(MaillonGraphe m) {
         /*
          * @autor : Elouan
@@ -484,52 +526,33 @@ class LCGraphe {
         return listSommet;
     }
 
-
-    public MaillonGraphe recherche_MaillonGraphe(String nom){
-        MaillonGraphe tmp = this.premier;
-        while (tmp != null && !tmp.nom.equals(nom)) {
-            //Parcours de la liste chainee de sommets
+    public List<MaillonGrapheSec> getAretesAdj(MaillonGraphe m) {
+        /*
+         * @autor : Elouan
+         * @description : retourne la liste d'aretes adjacentes a un sommet
+         * @param : MaillonGraphe m
+         * @return : List<MaillonGrapheSec>
+         */
+        List<MaillonGrapheSec> listAretes = new ArrayList<>();
+        MaillonGrapheSec tmp = m.lVois;
+        while (tmp != null) {
+            listAretes.add(tmp);
             tmp = tmp.suiv;
         }
-        if(tmp.nom.equals(nom)){
-            return tmp;
-        }
-        else{
-            return null;
-        }
+        return listAretes;
     }
 
-    public void ajout_arrete(){
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Veuillez saisir le nom du sommet d'origine : ");
-        String origine = sc.nextLine();
-        System.out.println("Veuillez saisir le nom du sommet de destination : ");
-        String dest = sc.nextLine();
-        System.out.println("Veuillez saisir la fiabilite de l'arrete : ");
-        double fiab = sc.nextDouble();
-        sc.nextLine();
-        System.out.println("Veuillez saisir la distance de l'arrete : ");
-        double dist = sc.nextDouble();
-        sc.nextLine();
-        System.out.println("Veuillez saisir la duree de l'arrete : ");
-        double dur = sc.nextDouble();
-        sc.nextLine();
-        sc.close();
-        this.addEdge(origine, dest, fiab, dist, dur);
-        System.out.println("Arrete ajoutee avec succes");
-    }
 
     public static void main(String[] args) throws IOException{
-        LCGraphe g = new LCGraphe();
+        LCGraphe g = new LCGraphe("/mnt/DA8682C68682A31D/Documents/IUT ECOLE SUP/TAFFFFFFFF/JAVA/SAE/liste-test.csv");
         g.charg();
         System.out.println(g.toString());
         System.out.println("////");
         System.out.println("////");
         System.out.println("////");
+        System.out.println(g.getListSommetAdj(g.premier.suiv));
         g.countEdges();
-        g.addMain("S60","M");
-        g.addMain("S61", "M");
-        g.ajout_arrete();
-        System.out.println(g.toString());
+        g.getListAretes();
+        IhmMenu ihm = new IhmMenu(g);
     }
 }
