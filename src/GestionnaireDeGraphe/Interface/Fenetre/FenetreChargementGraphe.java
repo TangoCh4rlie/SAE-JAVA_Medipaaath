@@ -43,9 +43,9 @@ public class FenetreChargementGraphe extends Fenetre {
         for (LCGraphe.MaillonGraphe sommet : this.listeSommets) {
             SommetGraphe s = new SommetGraphe(sommet);
 //            TODO générer des vrai points
-//            s.setBounds(0,0,getWidth(),getHeight());
-            s.setBorder(BorderFactory.createLineBorder(java.awt.Color.green));
-            s.setBounds(sommet.getCoordonnees().x, sommet.getCoordonnees().y, 30, 30);
+            s.setBounds(0,0,getWidth(),getHeight());
+//            s.setBorder(BorderFactory.createLineBorder(java.awt.Color.green));
+//            s.setBounds(sommet.getCoordonnees().x, sommet.getCoordonnees().y, 30, 30);
             super.addJLabelToContent(s);
         }
     }
@@ -67,7 +67,7 @@ public class FenetreChargementGraphe extends Fenetre {
             for (LCGraphe.MaillonGrapheSec aretes : aretesATraiter) {
                 aretes.setCouleur(Color.red);
             }
-//            TODO cafait des trucs louche la couleur est pas prise en compte
+//            TODO ca fait des trucs louche la couleur est pas prise en compte
             this.listeArete = new HashMap<>(this.graphe.getListAretes());
             dessinerArc();
             this.repaint();

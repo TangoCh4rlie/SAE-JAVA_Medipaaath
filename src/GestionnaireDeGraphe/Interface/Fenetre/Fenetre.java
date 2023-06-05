@@ -56,16 +56,16 @@ public class Fenetre extends JFrame {
             this.dispose();
         });
         this.menuOuvrir.addActionListener(e -> {
-//            JFileChooser fileChooser = new JFileChooser();
-//            fileChooser.setCurrentDirectory(new java.io.File("/mnt/DA8682C68682A31D/Documents/IUT ECOLE SUP/TAFFFFFFFF/JAVA/SAE/"));
-//            fileChooser.showOpenDialog(this);
-//            String path = fileChooser.getSelectedFile().getAbsolutePath();
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setCurrentDirectory(new java.io.File("./common"));
+            fileChooser.showOpenDialog(this);
+            String path = fileChooser.getSelectedFile().getAbsolutePath();
 //            TODO verifier que c'est bien un fichier .csv
 //            /mnt/DA8682C68682A31D/Documents/IUT ECOLE SUP/TAFFFFFFFF/JAVA/SAE/liste-test.csv
 //            /mnt/DA8682C68682A31D/Documents/IUT ECOLE SUP/TAFFFFFFFF/JAVA/SAE/liste-adjacence-jeuEssai.csv
             this.dispose();
             try {
-                new FenetreChargementGraphe("./common/liste-test.csv");
+                new FenetreChargementGraphe(path);
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
