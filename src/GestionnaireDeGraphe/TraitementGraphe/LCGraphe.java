@@ -1,10 +1,9 @@
-package Strucutre_Prof;
+package GestionnaireDeGraphe.TraitementGraphe;
 
 import java.awt.*;
 import java.io.*;
 import java.util.*;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class LCGraphe {
 
@@ -553,6 +552,5 @@ public class LCGraphe {
         System.out.println(g.getListSommetAdj(g.premier.suiv));
         g.countEdges();
         g.getListAretes();
-        IhmMenu ihm = new IhmMenu(g);
     }
 }

@@ -1,4 +1,4 @@
-package Strucutre_Prof.Interface.Fenetre;
+package GestionnaireDeGraphe.Interface.Fenetre;
 
 import javax.swing.*;
 import java.awt.*;

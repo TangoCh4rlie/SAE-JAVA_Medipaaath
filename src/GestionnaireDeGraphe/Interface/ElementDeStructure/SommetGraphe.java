@@ -1,6 +1,6 @@
-package Strucutre_Prof.Interface.ElementDeStructure;
+package GestionnaireDeGraphe.Interface.ElementDeStructure;
 
-import Strucutre_Prof.LCGraphe;
+import GestionnaireDeGraphe.TraitementGraphe.LCGraphe;
 
 import javax.swing.*;
 import java.awt.*;

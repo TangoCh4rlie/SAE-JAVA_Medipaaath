@@ -1,8 +1,8 @@
-package Strucutre_Prof.Interface.Fenetre;
+package GestionnaireDeGraphe.Interface.Fenetre;
 
-import Strucutre_Prof.Interface.ElementDeStructure.AreteGraphe;
-import Strucutre_Prof.Interface.ElementDeStructure.SommetGraphe;
-import Strucutre_Prof.LCGraphe;
+import GestionnaireDeGraphe.Interface.ElementDeStructure.AreteGraphe;
+import GestionnaireDeGraphe.Interface.ElementDeStructure.SommetGraphe;
+import GestionnaireDeGraphe.TraitementGraphe.LCGraphe;
 
 import javax.swing.*;
 import java.awt.*;

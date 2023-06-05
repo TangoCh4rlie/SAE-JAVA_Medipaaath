@@ -1,5 +1,7 @@
+import GestionnaireDeGraphe.Interface.Fenetre.Fenetre;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        Fenetre w = new Fenetre();
     }
 }
