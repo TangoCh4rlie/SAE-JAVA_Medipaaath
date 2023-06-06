@@ -29,11 +29,7 @@ public class SommetGraphe extends JLabel implements MouseListener, MouseMotionLi
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-//        int x = sommet.getCoordonnees().x;
-//        int y = sommet.getCoordonnees().y;
-        g2d.setRenderingHint(
-                RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setColor(this.couleurDuPoint);
         g2d.fillOval(2, 2, 30, 30);
         g2d.setColor(Color.BLACK);
@@ -63,20 +59,26 @@ public class SommetGraphe extends JLabel implements MouseListener, MouseMotionLi
     public void mousePressed(MouseEvent e) {
         mouseX = e.getX();
         mouseY = e.getY();
+        this.couleurDuPoint = sommet.getType().getColor().darker();
+        getParent().repaint();
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        this.couleurDuPoint = sommet.getType().getColor();
+        getParent().repaint();
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-
+        this.couleurDuPoint = sommet.getType().getCouleurHover();
+        getParent().repaint();
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-
+        this.couleurDuPoint = sommet.getType().getColor();
+        getParent().repaint();
     }
 
     @Override

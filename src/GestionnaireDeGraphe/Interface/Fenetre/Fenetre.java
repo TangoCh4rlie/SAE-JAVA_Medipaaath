@@ -27,7 +27,7 @@ public class Fenetre extends JFrame {
     private void initComponents() {
         this.setTitle("Placement des points");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setPreferredSize(new Dimension(600,600));
+        this.setPreferredSize(new Dimension(800,800));
         this.setLocationRelativeTo(null);
         this.setVisible(true);
 

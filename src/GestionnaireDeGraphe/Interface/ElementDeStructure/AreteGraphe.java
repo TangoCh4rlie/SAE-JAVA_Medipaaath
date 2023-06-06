@@ -13,6 +13,7 @@ public class AreteGraphe extends JLabel implements MouseListener {
     private LCGraphe.MaillonGraphe destination;
     private String areteNom;
     private Color couleurArete;
+    private Color couleurAreteHover;
     public AreteGraphe(String areteNom, LCGraphe.MaillonGraphe origine, LCGraphe.MaillonGraphe destination, LCGraphe.MaillonGrapheSec arete) {
         super();
         this.areteNom = areteNom;
@@ -20,6 +21,7 @@ public class AreteGraphe extends JLabel implements MouseListener {
         this.origine = origine;
         this.destination = destination;
         this.couleurArete = Color.BLACK;
+        this.couleurAreteHover = Color.RED;
         addMouseListener(this);
     }
     @Override
@@ -58,13 +60,7 @@ public class AreteGraphe extends JLabel implements MouseListener {
 
     @Override
     public void mouseEntered(MouseEvent e) {
-//        when the mouse enter the label, the color of the edge change
-//        Open a little pop-up with the caracteristics of the edge
-//        todo faire un mini timer
-        JToolTip toolTip = new JToolTip();
-        toolTip.setTipText("Durée : " + this.arete.getDur());
-        toolTip.setVisible(true);
-        this.add(toolTip);
+
     }
 
     @Override
