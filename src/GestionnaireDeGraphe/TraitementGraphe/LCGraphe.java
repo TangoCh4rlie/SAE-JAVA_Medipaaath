@@ -95,6 +95,27 @@ public class LCGraphe {
         public void setCoordonnees(Point p) {
             this.coordonnees = p;
         }
+
+        public void supprimer() {
+            /*
+             * @autor : Elouan
+             * @description : supprime le sommet du graphe
+             * @param : void
+             * @return : void
+             */
+            MaillonGraphe tmp = premier;
+            while (tmp != null) {
+                MaillonGrapheSec tmp2 = tmp.lVois;
+                while (tmp2 != null) {
+                    if (tmp2.dest.equals(this.nom)) {
+                        tmp2 = tmp2.suiv;
+                    } else {
+                        tmp2 = tmp2.suiv;
+                    }
+                }
+                tmp = tmp.suiv;
+            }
+        }
     }
     
     private MaillonGraphe premier;

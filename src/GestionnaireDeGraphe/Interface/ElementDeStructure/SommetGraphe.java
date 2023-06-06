@@ -13,29 +13,47 @@ public class SommetGraphe extends JLabel implements MouseListener, MouseMotionLi
     private int mouseX;
     private int mouseY;
     public SommetGraphe(LCGraphe.MaillonGraphe sommet) {
-        super(sommet.getNom());
+        super();
         this.sommet = sommet;
         addMouseListener(this);
         addMouseMotionListener(this);
+        initActionListener();
     }
 
-//    @Override
-//    public void paintComponent(Graphics g) {
-//        super.paintComponent(g);
-//        Graphics2D g2d = (Graphics2D) g;
+    private void initActionListener() {
+
+    }
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
 //        int x = sommet.getCoordonnees().x;
 //        int y = sommet.getCoordonnees().y;
-//        g2d.setColor(Color.CYAN);
-//        g2d.fillOval(x, y, 30, 30);
-////        g2d.setColor(Color.BLACK);
-////        g2d.setStroke(new BasicStroke(2));
-//        g2d.drawOval(x, y,30,30);
-////            TODO faire un label pour le nom au lieux de faire un drawString
-////        g2d.drawString(sommet.getNom(), x+10, y+20);
-//    }
+        g2d.setRenderingHint(
+                RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setColor(Color.CYAN);
+        g2d.fillOval(2, 2, 30, 30);
+        g2d.setColor(Color.BLACK);
+        g2d.setStroke(new BasicStroke(2));
+        g2d.drawOval(2,2,30,30);
+//            TODO faire un label pour le nom au lieux de faire un drawString
+        g2d.drawString(sommet.getNom(), 0, 0);
+    }
 
     @Override
     public void mouseClicked(MouseEvent e) {
+//        check if it's a right click
+        if (SwingUtilities.isRightMouseButton(e)) {
+            JPopupMenu popupMenu = new JPopupMenu();
+            JMenuItem supprimer = new JMenuItem("Supprimer");
+            popupMenu.add(supprimer);
+            popupMenu.show(this, e.getX(), e.getY());
+            supprimer.addActionListener(e1 -> {
+                this.sommet.supprimer();
+                getParent().repaint();
+            });
+        }
 
     }
 
@@ -47,7 +65,6 @@ public class SommetGraphe extends JLabel implements MouseListener, MouseMotionLi
 
     @Override
     public void mouseReleased(MouseEvent e) {
-
     }
 
     @Override
