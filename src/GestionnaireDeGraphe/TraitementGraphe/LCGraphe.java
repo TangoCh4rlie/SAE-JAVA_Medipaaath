@@ -59,13 +59,13 @@ public class LCGraphe {
     }
     public class MaillonGraphe {
         private String nom;
-        private String type;
+        private TypeDispensaire type;
         private MaillonGrapheSec lVois;
         private MaillonGraphe suiv;
         private boolean listed;
         private Point coordonnees;
 
-        MaillonGraphe(String n, String t) {
+        MaillonGraphe(String n, TypeDispensaire t) {
             nom = n;
             type = t;
             lVois = null;
@@ -80,7 +80,7 @@ public class LCGraphe {
         public String getNom(){
             return this.nom;
         }
-        public String getType(){
+        public TypeDispensaire getType(){
             return this.type;
         }
         public MaillonGrapheSec getLVois(){
@@ -126,7 +126,7 @@ public class LCGraphe {
         this.pathFile = pathFile;
     }
     
-    public void addMain(String ori, String t){
+    public void addMain(String ori, TypeDispensaire t){
         /*
          * @autor : Haithem
          * @description : ajoute un sommet au graphe a partir de son nom et son type
@@ -325,7 +325,7 @@ public class LCGraphe {
                 String s = sc2.nextLine();
                 String[] parts = s.split(";");
                 String ori = parts[0];
-                this.addMain(ori,parts[1]);
+                this.addMain(ori,attribueTypeDispensaire(parts[1]));
                 int i = 2;
                 while (i < (parts.length)) {
                     if (parts[i].equals("0")){
@@ -374,6 +374,22 @@ public class LCGraphe {
             tmp.listed = false;
             tmp = tmp.suiv;
         }
+    }
+
+    public TypeDispensaire attribueTypeDispensaire(String type){
+        TypeDispensaire typeDispensaire = null;
+        switch (type) {
+            case "N":
+                typeDispensaire = TypeDispensaire.NUTRITION;
+                break;
+            case "M":
+                typeDispensaire = TypeDispensaire.MATERNITE;
+                break;
+            case "O":
+                typeDispensaire = TypeDispensaire.OPERATOIRE;
+                break;
+        }
+        return typeDispensaire;
     }
 
     public void dijkstra(String start, String end) {

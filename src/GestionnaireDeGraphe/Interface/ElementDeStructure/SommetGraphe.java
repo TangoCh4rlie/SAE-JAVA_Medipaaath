@@ -12,9 +12,11 @@ public class SommetGraphe extends JLabel implements MouseListener, MouseMotionLi
     private LCGraphe.MaillonGraphe sommet;
     private int mouseX;
     private int mouseY;
+    private Color couleurDuPoint;
     public SommetGraphe(LCGraphe.MaillonGraphe sommet) {
         super();
         this.sommet = sommet;
+        this.couleurDuPoint = sommet.getType().getColor();
         addMouseListener(this);
         addMouseMotionListener(this);
         initActionListener();
@@ -32,7 +34,7 @@ public class SommetGraphe extends JLabel implements MouseListener, MouseMotionLi
         g2d.setRenderingHint(
                 RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setColor(Color.CYAN);
+        g2d.setColor(this.couleurDuPoint);
         g2d.fillOval(2, 2, 30, 30);
         g2d.setColor(Color.BLACK);
         g2d.setStroke(new BasicStroke(2));
