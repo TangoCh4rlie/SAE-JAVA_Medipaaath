@@ -19,6 +19,7 @@ public class FenetreChargementGraphe extends Fenetre {
 //    Tout ce qui est relatif au menu
     private JMenu Traitement;
     private JMenuItem Distance1;
+    private JMenuItem CheminCourt;
 
     public FenetreChargementGraphe(String filePath) throws IOException {
         super();
@@ -35,7 +36,9 @@ public class FenetreChargementGraphe extends Fenetre {
     private void initComponents() {
         Traitement = new JMenu("Traitement");
         Distance1 = new JMenuItem("Distance 1");
+        CheminCourt = new JMenuItem("Chemin le plus court");
         Traitement.add(Distance1);
+        Traitement.add(CheminCourt);
         super.addJMenuToMenuBar(Traitement);
     }
 
@@ -71,6 +74,9 @@ public class FenetreChargementGraphe extends Fenetre {
             this.listeArete = new HashMap<>(this.graphe.getListAretes());
             dessinerArc();
             this.repaint();
+        });
+        this.CheminCourt.addActionListener(e -> {
+
         });
     }
 }

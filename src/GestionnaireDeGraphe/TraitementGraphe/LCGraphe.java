@@ -267,12 +267,13 @@ public class LCGraphe {
          */
         MaillonGraphe current = premier;
         while (current != null) {
+            String test = current.getNom();
             MaillonGrapheSec currentEdge = current.lVois;
             while (currentEdge != null) {
                 MaillonGrapheSec previous = currentEdge;
                 MaillonGrapheSec next = currentEdge.suiv;
                 while (next != null) {
-                    if (next.dest.equals(currentEdge.dest)) {
+                    if (next.dest.equals(currentEdge.dest) || next.dest.equals(test)) {
                         // Suppression de l'arrete
                         previous.suiv = next.suiv;
                         next = previous.suiv;
@@ -305,7 +306,7 @@ public class LCGraphe {
                 String ori = parts[0];
                 this.addMain(ori,parts[1]);
                 int i = 2;
-                while (i < (parts.length)-2) {
+                while (i < (parts.length)) {
                     if (parts[i].equals("0")){
                         i++;
                     }
@@ -335,7 +336,7 @@ public class LCGraphe {
                 }
         }
         sc2.close();
-        //Suppression des arretes dupliquées
+        //Suppression des arretes dupliquée
         this.removeDuplicateEdges();
         return this;
     }
@@ -543,7 +544,7 @@ public class LCGraphe {
 
 
     public static void main(String[] args) throws IOException{
-        LCGraphe g = new LCGraphe("/mnt/DA8682C68682A31D/Documents/IUT ECOLE SUP/TAFFFFFFFF/JAVA/SAE/liste-test.csv");
+        LCGraphe g = new LCGraphe("./common/liste-test.csv");
         g.charg();
         System.out.println(g.toString());
         System.out.println("////");
