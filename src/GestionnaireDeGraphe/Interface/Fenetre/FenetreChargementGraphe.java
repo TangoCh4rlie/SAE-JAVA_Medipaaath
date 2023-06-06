@@ -76,6 +76,20 @@ public class FenetreChargementGraphe extends Fenetre {
             this.repaint();
         });
         this.CheminCourt.addActionListener(e -> {
+            JTextField ori = new JTextField(5);
+            JTextField dest = new JTextField(5);
+
+            JPanel myPanel = new JPanel();
+            myPanel.add(new JLabel("Origine:"));
+            myPanel.add(ori);
+            myPanel.add(Box.createHorizontalStrut(15)); // a spacer
+            myPanel.add(new JLabel("Arrive:"));
+            myPanel.add(dest);
+            int result = JOptionPane.showConfirmDialog(null, myPanel,
+                    "Entrer vos sommet de départ et d'arrivé", JOptionPane.OK_CANCEL_OPTION);
+            if (result == JOptionPane.OK_OPTION) {
+                this.graphe.dijkstra(ori.getText(),dest.getText());
+            }
 
         });
     }
