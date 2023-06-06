@@ -12,16 +12,15 @@ public class AreteGraphe extends JLabel implements MouseListener {
     private LCGraphe.MaillonGraphe origine;
     private LCGraphe.MaillonGraphe destination;
     private String areteNom;
-    private Color couleurArete;
-    private Color couleurAreteHover;
+    private Color couleurActuelle;
+    private Color couleurAreteNormal = Color.BLACK;
     public AreteGraphe(String areteNom, LCGraphe.MaillonGraphe origine, LCGraphe.MaillonGraphe destination, LCGraphe.MaillonGrapheSec arete) {
         super();
         this.areteNom = areteNom;
         this.arete = arete;
         this.origine = origine;
         this.destination = destination;
-        this.couleurArete = Color.BLACK;
-        this.couleurAreteHover = Color.RED;
+        this.couleurActuelle = couleurAreteNormal;
         addMouseListener(this);
     }
     @Override
@@ -31,7 +30,7 @@ public class AreteGraphe extends JLabel implements MouseListener {
         g2d.setRenderingHint(
                 RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setColor(this.couleurArete);
+        g2d.setColor(this.couleurActuelle);
         g2d.drawLine(this.origine.getCoordonnees().x + 15, this.origine.getCoordonnees().y + 15, this.destination.getCoordonnees().x + 15, this.destination.getCoordonnees().y + 15);
         g2d.drawString(this.areteNom, (this.origine.getCoordonnees().x + this.destination.getCoordonnees().x) / 2, (this.origine.getCoordonnees().y + this.destination.getCoordonnees().y) / 2);
     }
@@ -41,6 +40,12 @@ public class AreteGraphe extends JLabel implements MouseListener {
     }
     public LCGraphe.MaillonGraphe getDestination() {
         return destination;
+    }
+    public Color getCouleurActuelle() {
+        return couleurActuelle;
+    }
+    public void setCouleurActuelle(Color couleurActuelle) {
+        this.couleurActuelle = couleurActuelle;
     }
 
     @Override
@@ -65,6 +70,5 @@ public class AreteGraphe extends JLabel implements MouseListener {
 
     @Override
     public void mouseExited(MouseEvent e) {
-
     }
 }

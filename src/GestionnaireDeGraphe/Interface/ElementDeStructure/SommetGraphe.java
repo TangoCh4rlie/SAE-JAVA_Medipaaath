@@ -36,7 +36,7 @@ public class SommetGraphe extends JLabel implements MouseListener, MouseMotionLi
         g2d.setStroke(new BasicStroke(2));
         g2d.drawOval(2,2,30,30);
 //            TODO faire un label pour le nom au lieux de faire un drawString
-        g2d.drawString(sommet.getNom(), 0, 0);
+        g2d.drawString(sommet.getNom(), 10, 23);
     }
 
     @Override

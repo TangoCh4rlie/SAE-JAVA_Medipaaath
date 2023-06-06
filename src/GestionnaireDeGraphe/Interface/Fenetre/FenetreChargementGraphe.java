@@ -57,6 +57,11 @@ public class FenetreChargementGraphe extends Fenetre {
             LCGraphe.MaillonGraphe origine = this.graphe.recherchenom(arete.getOrig());
             LCGraphe.MaillonGraphe destination = this.graphe.recherchenom(arete.getDest());
             AreteGraphe a = new AreteGraphe(arete.getNomArete(), origine, destination, arete);
+            a.setBorder(BorderFactory.createLineBorder(java.awt.Color.green));
+//            int x = (origine.getCoordonnees().x + destination.getCoordonnees().x) / 2;
+//            int y = (origine.getCoordonnees().y + destination.getCoordonnees().y) / 2;
+////            a.setBounds(x, y, 30, 30);
+//            a.setBounds(x, y, getWidth(), getHeight());
             a.setBounds(0, 0, getWidth(), getHeight());
             super.addJLabelToContent(a);
         }
