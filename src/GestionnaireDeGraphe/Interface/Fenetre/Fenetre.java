@@ -46,7 +46,7 @@ public class Fenetre extends JFrame {
 
         this.content = new JPanel();
         this.content.setLayout(null);
-        this.content.setBorder(BorderFactory.createLineBorder(Color.red));
+//        this.content.setBorder(BorderFactory.createLineBorder(Color.red));
 
         this.setContentPane(this.content);
     }

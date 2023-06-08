@@ -13,6 +13,7 @@ public class SommetGraphe extends JLabel implements MouseListener, MouseMotionLi
     private int mouseX;
     private int mouseY;
     private Color couleurDuPoint;
+    private JToolTip toolTip;
     public SommetGraphe(LCGraphe.MaillonGraphe sommet) {
         super();
         this.sommet = sommet;
@@ -36,7 +37,7 @@ public class SommetGraphe extends JLabel implements MouseListener, MouseMotionLi
         g2d.setStroke(new BasicStroke(2));
         g2d.drawOval(2,2,30,30);
 //            TODO faire un label pour le nom au lieux de faire un drawString
-        g2d.drawString(sommet.getNom(), 10, 23);
+        g2d.drawString(sommet.getNom(), 5, 23);
     }
 
     @Override
@@ -60,7 +61,6 @@ public class SommetGraphe extends JLabel implements MouseListener, MouseMotionLi
         mouseX = e.getX();
         mouseY = e.getY();
         this.couleurDuPoint = sommet.getType().getColor().darker();
-        getParent().repaint();
     }
 
     @Override
@@ -71,14 +71,12 @@ public class SommetGraphe extends JLabel implements MouseListener, MouseMotionLi
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        this.couleurDuPoint = sommet.getType().getCouleurHover();
-        getParent().repaint();
+
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        this.couleurDuPoint = sommet.getType().getColor();
-        getParent().repaint();
+
     }
 
     @Override
