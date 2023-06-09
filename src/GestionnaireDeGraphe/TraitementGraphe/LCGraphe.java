@@ -19,6 +19,8 @@ public class LCGraphe {
 //        relatif a l'ihm
         private Color couleur;
 
+        private boolean listed;
+
         private MaillonGrapheSec(String nom, double f, double dt , double dr,String o, String d) {
             nomArete = nom;
             fiab = f;
@@ -28,6 +30,7 @@ public class LCGraphe {
             dest = d;
             suiv = null;
             couleur = Color.BLACK;
+            listed = false;
         }
         public String getNomArete(){
             return this.nomArete;
@@ -591,6 +594,45 @@ public class LCGraphe {
             tmp = tmp.suiv;
         }
         return listAretes;
+    }
+
+    public void listedarretes(){
+        MaillonGraphe tmp = this.premier;
+        while (tmp != null) {
+            MaillonGrapheSec tmp2 = tmp.lVois;
+            while (tmp2 != null) {
+                tmp2.listed = true;
+                MaillonGraphe tmp3 = this.premier;
+                while (tmp3 != null && !tmp3.nom.equals(tmp2.dest)) {
+                    tmp3 = tmp3.suiv;
+                }
+                if (tmp3 != null) {
+                    MaillonGrapheSec tmp4 = tmp3.lVois;
+                    while (tmp4 != null && !tmp4.dest.equals(tmp.nom)) {
+                        tmp4 = tmp4.suiv;
+                    }
+                    if (tmp4 != null) {
+                        tmp4.listed = true;
+                    }
+                }
+                tmp2 = tmp2.suiv;
+            }
+            tmp = tmp.suiv;
+        }
+    }
+
+    public void listedarrete(MaillonGrapheSec a){
+        MaillonGraphe tmp = this.premier;
+        while (tmp != null) {
+            MaillonGrapheSec tmp2 = tmp.lVois;
+            while (tmp2 != null) {
+                if (tmp2.dest.equals(a.dest)) {
+                    tmp2.listed = true;
+                }
+                tmp2 = tmp2.suiv;
+            }
+            tmp = tmp.suiv;
+        }
     }
 
 
