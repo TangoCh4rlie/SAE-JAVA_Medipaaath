@@ -279,6 +279,15 @@ public class LCGraphe {
         return tmp;
     }
 
+    public void removeFirstEdges(){
+        MaillonGraphe current = premier;
+        while(current!= null){
+            MaillonGrapheSec as = current.lVois;
+            MaillonGrapheSec np = as.suiv;
+            current.lVois = np;
+            current = current.suiv;
+        }
+    }
     public void removeDuplicateEdges() {
         /*
          * @autor : Haithem
@@ -308,6 +317,7 @@ public class LCGraphe {
             }
             current = current.suiv;
         }
+
     }
 
     public LCGraphe charg() throws IOException{
@@ -342,7 +352,10 @@ public class LCGraphe {
                             //Parcours du fichier pour trouver les sommets de destination
                             String s2 = sc3.nextLine();
                             String[] parts3 =  s2.split(";");
-                            if(!parts3[0].equals(ori)){
+                            if(parts3[0].equals(ori)) {
+                                ;
+                            }
+                                else{
                                 if(parts3[i].equals(parts[i])){
                                     String dest = parts3[0];
                                     //Ajout de l'arrete
@@ -359,6 +372,7 @@ public class LCGraphe {
         sc2.close();
         //Suppression des arretes dupliquée
         this.removeDuplicateEdges();
+        this.removeFirstEdges();
         return this;
     }
 
