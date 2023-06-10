@@ -15,6 +15,7 @@ public class FenetreChargementGraphe extends Fenetre {
     private LCGraphe graphe;
     private List<LCGraphe.MaillonGraphe> listeSommets;
     private HashMap<String, LCGraphe.MaillonGrapheSec> listeArete;
+    private List<AreteGraphe> listearretegraphique;
 
 //    Tout ce qui est relatif au menu
     private JMenu Traitement;
@@ -27,6 +28,7 @@ public class FenetreChargementGraphe extends Fenetre {
         this.graphe.charg();
         this.listeSommets = new ArrayList<>(this.graphe.getListSommet());
         this.listeArete = new HashMap<>(this.graphe.getListAretes());
+        this.listearretegraphique = new ArrayList<>();
         initComponents();
         this.dessinerSommet();
         this.dessinerArc();
@@ -54,12 +56,25 @@ public class FenetreChargementGraphe extends Fenetre {
     }
     private void dessinerArc() {
         for (LCGraphe.MaillonGrapheSec arete : this.listeArete.values()) {
-            LCGraphe.MaillonGraphe origine = this.graphe.recherchenom(arete.getOrig());
-            LCGraphe.MaillonGraphe destination = this.graphe.recherchenom(arete.getDest());
-            AreteGraphe a = new AreteGraphe(arete.getNomArete(), origine, destination, arete);
-            a.setBounds(0, 0, getWidth(), getHeight());
-            super.addJLabelToContent(a);
+            if(arete.getListed() == false){
+                LCGraphe.MaillonGraphe origine = this.graphe.recherchenom(arete.getOrig());
+                LCGraphe.MaillonGraphe destination = this.graphe.recherchenom(arete.getDest());
+                AreteGraphe a = new AreteGraphe(arete.getNomArete(), origine, destination, arete);
+                this.listearretegraphique.add(a);
+                a.setBounds(0, 0, getWidth(), getHeight());
+                super.addJLabelToContent(a);
+                this.graphe.listedarrete(arete);
+            }
         }
+    }
+
+    public Component getComponentnamed(String name) {
+        for (Component c : this.getContentPane().getComponents()) {
+            if (c.getName().equals(name)) {
+                return c;
+            }
+        }
+        return null;
     }
 
     private void initActionListener() {
@@ -76,6 +91,9 @@ public class FenetreChargementGraphe extends Fenetre {
             this.repaint();
         });
         this.CheminCourt.addActionListener(e -> {
+            for (AreteGraphe arete : this.listearretegraphique) {
+                arete.setCouleurActuelle(Color.black);
+            }
             JTextField ori = new JTextField(2);
             JTextField dest = new JTextField(2);
 
@@ -87,9 +105,18 @@ public class FenetreChargementGraphe extends Fenetre {
             myPanel.add(dest);
             int result = JOptionPane.showConfirmDialog(null, myPanel,"Entrer vos sommet de départ et d'arrivé", JOptionPane.OK_CANCEL_OPTION);
             if (result == JOptionPane.OK_OPTION) {
-                this.graphe.dijkstra(ori.getText(),dest.getText());
+                List a = this.graphe.dijkstra(ori.getText(),dest.getText());
+                List arc = (List) a.get(1);
+                for (Object obj : arc) {
+                    //recuperer l'arc listearretegraphique
+                    for (AreteGraphe arete : this.listearretegraphique) {
+                        if (arete.getAreteNom().equals(obj)) {
+                            arete.setCouleurActuelle(Color.red);
+                        }
+                    }
+                }
+                this.repaint();
             }
-
         });
     }
 }

@@ -23,6 +23,7 @@ public class AreteGraphe extends JLabel implements MouseListener {
         this.couleurActuelle = couleurAreteNormal;
         addMouseListener(this);
     }
+
     @Override
     public void paintComponent(java.awt.Graphics g) {
         super.paintComponent(g);
@@ -43,6 +44,10 @@ public class AreteGraphe extends JLabel implements MouseListener {
     }
     public Color getCouleurActuelle() {
         return couleurActuelle;
+    }
+
+    public String getAreteNom() {
+        return areteNom;
     }
     public void setCouleurActuelle(Color couleurActuelle) {
         this.couleurActuelle = couleurActuelle;

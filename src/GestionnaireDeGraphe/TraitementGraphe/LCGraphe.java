@@ -6,7 +6,6 @@ import java.util.*;
 import java.util.List;
 
 public class LCGraphe {
-
     public class MaillonGrapheSec {
         private String nomArete;
         private double fiab;
@@ -31,6 +30,12 @@ public class LCGraphe {
             suiv = null;
             couleur = Color.BLACK;
             listed = false;
+        }
+        public boolean getListed(){
+            return this.listed;
+        }
+        public void setListed(boolean b){
+            this.listed = b;
         }
         public String getNomArete(){
             return this.nomArete;
@@ -341,7 +346,7 @@ public class LCGraphe {
                 this.addMain(ori,attribueTypeDispensaire(parts[1]));
                 int i = 2;
                 while (i < (parts.length)) {
-                    if (parts[i].equals("0")){
+                    if(parts[i].equals("0")){
                         i++;
                     }
                     else{
@@ -380,8 +385,7 @@ public class LCGraphe {
     }
 
     public void resetListed(){
-        /*
-         * @autor : Haithem
+         /* @autor : Haithem
          * @description : remet a false la valeur listed de tous les sommets
          * @param : void
          * @return : void
@@ -409,7 +413,7 @@ public class LCGraphe {
         return typeDispensaire;
     }
 
-    public void dijkstra(String start, String end) {
+    public List dijkstra(String start, String end) {
         /*
          * @autor : Haithem
          * @description : applique l'algorithme de dijkstra pour trouver le plus court chemin
@@ -460,6 +464,7 @@ public class LCGraphe {
             }
         }
         List<String> path = new ArrayList<>();
+        List<String> arc = new ArrayList<>();
         current = premier;
         while (current != null && !current.nom.equals(end)) {
             //Parcours de la liste chainee de sommets
@@ -468,7 +473,7 @@ public class LCGraphe {
         if (current == null || distances.get(current.nom) == Double.POSITIVE_INFINITY) {
             //Si le sommet n'est pas atteignable (graphe non connexe)
             System.out.println("No path found.");
-            return;
+            return null;
         }
         path.add(current.nom);
         while (!current.nom.equals(start)) {
@@ -482,6 +487,7 @@ public class LCGraphe {
                 if (next != null && distances.get(next.nom) + edge.dur == distances.get(current.nom)) {
                     //Si la distance est la bonne
                     path.add(next.nom);
+                    arc.add(edge.nomArete);
                     current = next;
                     break;
                 }
@@ -496,6 +502,19 @@ public class LCGraphe {
         }
         System.out.println();
         System.out.println("Distance total : " + distances.get(end));
+        //Affichage des arretes
+        Collections.reverse(arc);
+        System.out.print("Arcs : " + arc.get(0));
+        for (int i = 1; i < arc.size(); i++) {
+            System.out.print(" -> " + arc.get(i));
+        }
+        List result = new ArrayList();
+        this.resetListed();
+        result.add(path);
+        result.add(arc);
+        result.add(distances.get(end));
+        return result;
+
     }
     
 
@@ -626,13 +645,41 @@ public class LCGraphe {
         while (tmp != null) {
             MaillonGrapheSec tmp2 = tmp.lVois;
             while (tmp2 != null) {
-                if (tmp2.dest.equals(a.dest)) {
+                if (tmp2.nomArete.equals(a.nomArete)) {
                     tmp2.listed = true;
+                    MaillonGraphe tmp3 = this.premier;
+                    while (tmp3 != null && !tmp3.nom.equals(tmp2.dest)) {
+                        tmp3 = tmp3.suiv;
+                    }
+                    if (tmp3 != null) {
+                        MaillonGrapheSec tmp4 = tmp3.lVois;
+                        while (tmp4 != null && !tmp4.dest.equals(tmp.nom)) {
+                            tmp4 = tmp4.suiv;
+                        }
+                        if (tmp4 != null) {
+                            tmp4.listed = true;
+                        }
+                    }
                 }
                 tmp2 = tmp2.suiv;
             }
             tmp = tmp.suiv;
         }
+    }
+
+    public MaillonGrapheSec recherchearrete(String nom){
+        MaillonGraphe tmp = this.premier;
+        while (tmp != null) {
+            MaillonGrapheSec tmp2 = tmp.lVois;
+            while (tmp2 != null) {
+                if (tmp2.nomArete.equals(nom)) {
+                    return tmp2;
+                }
+                tmp2 = tmp2.suiv;
+            }
+            tmp = tmp.suiv;
+        }
+        return null;
     }
 
 
@@ -643,8 +690,7 @@ public class LCGraphe {
         System.out.println("////");
         System.out.println("////");
         System.out.println("////");
-        System.out.println(g.getListSommetAdj(g.premier.suiv));
-        g.countEdges();
-        g.getListAretes();
+        g.dijkstra("S1","S5");
+        g.dijkstra("S2","S3");
     }
 }
