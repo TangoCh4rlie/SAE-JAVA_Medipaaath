@@ -105,7 +105,7 @@ public class FenetreChargementGraphe extends Fenetre {
             myPanel.add(dest);
             int result = JOptionPane.showConfirmDialog(null, myPanel,"Entrer vos sommet de départ et d'arrivé", JOptionPane.OK_CANCEL_OPTION);
             if (result == JOptionPane.OK_OPTION) {
-                List a = this.graphe.dijkstra(ori.getText(),dest.getText());
+                List a = this.graphe.dijkstracourt(ori.getText(),dest.getText());
                 List arc = (List) a.get(1);
                 for (Object obj : arc) {
                     //recuperer l'arc listearretegraphique

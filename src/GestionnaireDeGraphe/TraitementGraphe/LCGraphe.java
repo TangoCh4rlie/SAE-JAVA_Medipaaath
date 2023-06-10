@@ -178,6 +178,7 @@ public class LCGraphe {
         }
     }
 
+    @Override
     public String toString() {
         /*
          * @autor : Haithem
@@ -271,6 +272,108 @@ public class LCGraphe {
         return res;
     }
 
+    public boolean VerifyTwoDistNeighborsVerify(String dep,String arv){
+        /*
+         * @autor : Haithem
+         * @description : verifie si deux sommets sont voisins a 2 distance
+         * @param : String dep, String arv
+         * @return : boolean
+         */
+        MaillonGraphe tmp = this.premier;
+        while (!tmp.nom.equals(dep)) {
+            tmp = tmp.suiv;
+        }
+        MaillonGrapheSec tmp2 = tmp.lVois;
+        while (tmp2 != null) {
+            if (tmp2.dist == 1){
+                MaillonGraphe tmp3 = this.premier;
+                while (!tmp3.nom.equals(tmp2.dest)) {
+                    tmp3 = tmp3.suiv;
+                }
+                MaillonGrapheSec tmp4 = tmp3.lVois;
+                while (tmp4 != null) {
+                    if (tmp4.dist == 1){
+                        if (tmp4.dest.equals(arv)) return true;
+                    }
+                    tmp4 = tmp4.suiv;
+                }
+            }
+            tmp2 = tmp2.suiv;
+        }
+        return false;
+    }
+    public List ListingTwoDistNeighbors(String dep){
+        /*
+         * @autor : Haithem
+         * @description : liste les voisins a 2 distance d'un sommet
+         * @param : String dep
+         * @return : List
+         */
+        List res = new ArrayList();
+        MaillonGraphe tmp = this.premier;
+        while (!tmp.nom.equals(dep)) {
+            tmp = tmp.suiv;
+        }
+        MaillonGrapheSec tmp2 = tmp.lVois;
+        while (tmp2 != null) {
+            if (tmp2.dist == 1){
+                MaillonGraphe tmp3 = this.premier;
+                while (!tmp3.nom.equals(tmp2.dest)) {
+                    tmp3 = tmp3.suiv;
+                }
+                MaillonGrapheSec tmp4 = tmp3.lVois;
+                while (tmp4 != null) {
+                    if (tmp4.dist == 1){
+                        res.add(tmp4.dest);
+                    }
+                    tmp4 = tmp4.suiv;
+                }
+            }
+            tmp2 = tmp2.suiv;
+        }
+        return res;
+    }
+
+    public int TypeTwoDistNeighbors(String dep,String type){
+        /*
+         * @autor : Haithem
+         * @description : compte le nombre de voisins de type "type" a 2 distance d'un sommet
+         * @param : String dep, String type
+         * @return : int
+         */
+        int res = 0;
+        List listing = ListingTwoDistNeighbors(dep);
+        for (int i = 0; i < listing.size(); i++) {
+            MaillonGraphe tmp = this.premier;
+            while (!tmp.nom.equals(listing.get(i))) {
+                tmp = tmp.suiv;
+            }
+            if (tmp.type.equals(type)){
+                res++;
+                }
+        }
+        return res;
+    }
+
+    public void CompareTwoDistNeighbors(String sommet1,String sommet2,String type){
+        /*
+         * @autor : Haithem
+         * @description : compare le nombre de voisins de type "type" a 2 distance de deux sommets
+         * @param : String sommet1, String sommet2, String type
+         * @return : void
+         */
+        int res1 = TypeTwoDistNeighbors(sommet1,type);
+        int res2 = TypeTwoDistNeighbors(sommet2,type);
+        if (res1 > res2){
+            System.out.println("Le sommet " + sommet1 + " a plus de voisins de type " + type + " que le sommet " + sommet2);
+        }
+        else if (res1 < res2){
+            System.out.println("Le sommet " + sommet2 + " a plus de voisins de type " + type + " que le sommet " + sommet1);
+        }
+        else{
+            System.out.println("Les deux sommets ont le meme nombre de voisins de type " + type);
+        }
+    }
 
     public MaillonGraphe recherchenom(String nom){
         /*
@@ -413,13 +516,14 @@ public class LCGraphe {
         return typeDispensaire;
     }
 
-    public List dijkstra(String start, String end) {
+    public List dijkstracourt(String start, String end) {
         /*
          * @autor : Haithem
          * @description : applique l'algorithme de dijkstra pour trouver le plus court chemin
          * entre deux sommets
          * @param : String start, String end
-         * @return : void
+         * @return : List<String,String,Double>
+         * @complexite : O(n^2)
          */
         Map<String, Double> distances = new HashMap<>();
         MaillonGraphe current = premier;
@@ -516,7 +620,203 @@ public class LCGraphe {
         return result;
 
     }
-    
+
+    public List dijkstrarapide(String start, String end) {
+        /*
+         * @autor : Haithem
+         * @description : applique l'algorithme de Dijkstra pour trouver le chemin le plus rapide entre deux sommets
+         * @param : String start, String end
+         * @return : List<String,String,Double>
+         *
+         * @complexite : O(n^2)
+         */
+        Map<String, Double> durations = new HashMap<>(); // Remplace "distances"
+        Map<String, List<String>> paths = new HashMap<>(); // Nouvelle variable pour stocker les chemins
+        MaillonGraphe current = premier;
+
+        while (current != null) {
+            // Initialisation des durées à l'infini
+            durations.put(current.nom, Double.POSITIVE_INFINITY);
+            current = current.suiv;
+        }
+
+        durations.put(start, 0.0);
+        PriorityQueue<MaillonGraphe> queue = new PriorityQueue<>(Comparator.comparingDouble(o -> durations.get(o.nom)));
+        current = premier;
+
+        while (current != null) {
+            // Ajout des sommets à la file de priorité
+            if (current.nom.equals(start)) {
+                queue.add(current);
+                paths.put(current.nom, new ArrayList<>()); // Nouveau chemin vide pour le sommet de départ
+            }
+            current = current.suiv;
+        }
+
+        while (!queue.isEmpty()) {
+            // Relâchement des arêtes
+            current = queue.poll();
+            current.listed = true;
+            MaillonGrapheSec edge = current.lVois;
+
+            while (edge != null) {
+                MaillonGraphe next = premier;
+
+                while (next != null && !next.nom.equals(edge.dest)) {
+                    // Parcours de la liste chaînée de sommets
+                    next = next.suiv;
+                }
+
+                if (next != null && !next.listed) {
+                    // Si le sommet n'a pas encore été visité
+                    double newDur = durations.get(current.nom) + edge.dur;
+
+                    if (newDur < durations.get(next.nom)) {
+                        // Mise à jour de la durée
+                        durations.put(next.nom, newDur);
+                        queue.remove(next);
+                        queue.add(next);
+
+                        // Mise à jour du chemin vers le sommet suivant
+                        List<String> newPath = new ArrayList<>(paths.get(current.nom)); // Copie du chemin actuel
+                        newPath.add(edge.nomArete); // Ajout de l'arête au chemin
+                        paths.put(next.nom, newPath);
+                    }
+                }
+
+                edge = edge.suiv;
+            }
+        }
+
+        List<String> path = paths.get(end);
+        List<String> arc = new ArrayList<>(path); // Arcs = Chemin pour le chemin le plus rapide
+        Collections.reverse(arc);
+
+        if (path == null || durations.get(end) == Double.POSITIVE_INFINITY) {
+            // Si le sommet n'est pas atteignable (graphe non connexe)
+            System.out.println("No path found.");
+            return null;
+        }
+
+        // Affichage du chemin
+        System.out.print("Chemin le plus rapide: " + path.get(0));
+        for (int i = 1; i < path.size(); i++) {
+            System.out.print(" -> " + path.get(i));
+        }
+        System.out.println();
+        System.out.println("Durée totale : " + durations.get(end));
+
+        // Affichage des arêtes
+        System.out.print("Arcs : " + arc.get(0));
+        for (int i = 1; i < arc.size(); i++) {
+            System.out.print(" -> " + arc.get(i));
+        }
+
+        List result = new ArrayList();
+        this.resetListed();
+        result.add(path);
+        result.add(arc);
+        result.add(durations.get(end));
+        return result;
+    }
+
+    public List dijkstrafiable(String start, String end) {
+        /*
+         * @autor : Haithem
+         * @description : applique l'algorithme de Dijkstra pour trouver le chemin le plus fiable entre deux sommets
+         * @param : String start, String end
+         * @return : List<String,String,Double>
+         * @complexite : O(n^2)
+         */
+        Map<String, Double> reliabilities = new HashMap<>(); // Remplace "distances"
+        Map<String, List<String>> paths = new HashMap<>(); // Nouvelle variable pour stocker les chemins
+        MaillonGraphe current = premier;
+
+        while (current != null) {
+            // Initialisation des fiabilités à 0.0 (représentant l'infini)
+            reliabilities.put(current.nom, 0.0);
+            current = current.suiv;
+        }
+
+        reliabilities.put(start, 1.0);
+        PriorityQueue<MaillonGraphe> queue = new PriorityQueue<>(Comparator.comparingDouble(o -> reliabilities.get(o.nom)));
+        current = premier;
+
+        while (current != null) {
+            // Ajout des sommets à la file de priorité
+            if (current.nom.equals(start)) {
+                queue.add(current);
+                paths.put(current.nom, new ArrayList<>()); // Nouveau chemin vide pour le sommet de départ
+            }
+            current = current.suiv;
+        }
+
+        while (!queue.isEmpty()) {
+            // Relâchement des arêtes
+            current = queue.poll();
+            current.listed = true;
+            MaillonGrapheSec edge = current.lVois;
+
+            while (edge != null) {
+                MaillonGraphe next = premier;
+
+                while (next != null && !next.nom.equals(edge.dest)) {
+                    // Parcours de la liste chaînée de sommets
+                    next = next.suiv;
+                }
+
+                if (next != null && !next.listed) {
+                    // Si le sommet n'a pas encore été visité
+                    double newRel = reliabilities.get(current.nom) * edge.fiab;
+
+                    if (newRel > reliabilities.get(next.nom)) {
+                        // Mise à jour de la fiabilité
+                        reliabilities.put(next.nom, newRel);
+                        queue.remove(next);
+                        queue.add(next);
+
+                        // Mise à jour du chemin vers le sommet suivant
+                        List<String> newPath = new ArrayList<>(paths.get(current.nom)); // Copie du chemin actuel
+                        newPath.add(edge.nomArete); // Ajout de l'arête au chemin
+                        paths.put(next.nom, newPath);
+                    }
+                }
+
+                edge = edge.suiv;
+            }
+        }
+
+        List<String> path = paths.get(end);
+        List<String> arc = new ArrayList<>(path); // Arcs = Chemin pour le chemin le plus fiable
+        Collections.reverse(arc);
+
+        if (path == null || reliabilities.get(end) == 0.0) {
+            // Si le sommet n'est pas atteignable (graphe non connexe)
+            System.out.println("No path found.");
+            return null;
+        }
+
+        // Affichage du chemin
+        System.out.print("Chemin le plus fiable: " + path.get(0));
+        for (int i = 1; i < path.size(); i++) {
+            System.out.print(" -> " + path.get(i));
+        }
+        System.out.println();
+        System.out.println("Fiabilité totale : " + reliabilities.get(end));
+
+        // Affichage des arêtes
+        System.out.print("Arcs : " + arc.get(0));
+        for (int i = 1; i < arc.size(); i++) {
+            System.out.print(" -> " + arc.get(i));
+        }
+
+        List result = new ArrayList();
+        this.resetListed();
+        result.add(path);
+        result.add(arc);
+        result.add(reliabilities.get(end));
+        return result;
+    }
 
     public void countEdges(){
         /*
@@ -524,6 +824,7 @@ public class LCGraphe {
          * @description : compte le nombre d'arretes dans le graphe
          * @param : void
          * @return : void
+         * @complexite : O(n^2)
          */
         MaillonGraphe tmp = this.premier;
         int count = 0;
@@ -616,6 +917,13 @@ public class LCGraphe {
     }
 
     public void listedarretes(){
+        /*
+         * @autor : Haithem
+         * @description : liste tout les arretes du graphe
+         * @param : void
+         * @return : void
+         * @complexite : O(n^2)
+         */
         MaillonGraphe tmp = this.premier;
         while (tmp != null) {
             MaillonGrapheSec tmp2 = tmp.lVois;
@@ -641,6 +949,13 @@ public class LCGraphe {
     }
 
     public void listedarrete(MaillonGrapheSec a){
+        /*
+         * @autor : Haithem
+         * @description : liste une arrete du graphe
+         * @param : MaillonGrapheSec a
+         * @return : void
+         * @complexite : O(n^2)
+         */
         MaillonGraphe tmp = this.premier;
         while (tmp != null) {
             MaillonGrapheSec tmp2 = tmp.lVois;
@@ -689,8 +1004,8 @@ public class LCGraphe {
         System.out.println(g.toString());
         System.out.println("////");
         System.out.println("////");
-        System.out.println("////");
-        g.dijkstra("S1","S5");
-        g.dijkstra("S2","S3");
+        System.out.println();
+        g.dijkstrarapide("S2","S5");
+        g.dijkstracourt("S2","S5");
     }
 }
