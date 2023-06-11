@@ -5,7 +5,18 @@ import java.io.*;
 import java.util.*;
 import java.util.List;
 
+import java.util.logging.*;
+
 public class LCGraphe {
+    private static final Logger LOGGER = Logger.getLogger( "logs" );
+    static {
+        try {
+            FileHandler fileHandler = new FileHandler( "logs.txt" );
+            LOGGER.addHandler( fileHandler );
+        } catch( Exception exception ) {
+            LOGGER.log( Level.SEVERE, "Cannot read configuration file", exception );
+        }
+    }
     public class MaillonGrapheSec {
         private String nomArete;
         private double fiab;
@@ -373,6 +384,7 @@ public class LCGraphe {
         else{
             System.out.println("Les deux sommets ont le meme nombre de voisins de type " + type);
         }
+        LOGGER.log( Level.INFO, "Deux sommets on était comparé" );
     }
 
     public MaillonGraphe recherchenom(String nom){
@@ -484,6 +496,7 @@ public class LCGraphe {
         //Suppression des arretes dupliquée
         this.removeDuplicateEdges();
         this.removeFirstEdges();
+        LOGGER.log( Level.INFO, "Le graphe a était chargé" );
         return this;
     }
 
@@ -617,6 +630,7 @@ public class LCGraphe {
         result.add(path);
         result.add(arc);
         result.add(distances.get(end));
+        LOGGER.log( Level.INFO, "Le graphe a était parcouru - plus court" );
         return result;
 
     }
@@ -717,6 +731,7 @@ public class LCGraphe {
         result.add(path);
         result.add(arc);
         result.add(durations.get(end));
+        LOGGER.log( Level.INFO, "Le graphe a était parcouru - plus rapide" );
         return result;
     }
 
@@ -815,6 +830,7 @@ public class LCGraphe {
         result.add(path);
         result.add(arc);
         result.add(reliabilities.get(end));
+        LOGGER.log( Level.INFO, "Le graphe a était parcouru - plus fiable" );
         return result;
     }
 
