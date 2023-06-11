@@ -20,7 +20,8 @@ public class FenetreChargementGraphe extends Fenetre {
 //    Tout ce qui est relatif au menu
     private JMenu Traitement;
     private JMenuItem Distance1;
-    private JMenuItem CheminCourt;
+    private JMenuItem Parcours;
+    private  JMenuItem Distance2;
 
     public FenetreChargementGraphe(String filePath) throws IOException {
         super();
@@ -38,9 +39,12 @@ public class FenetreChargementGraphe extends Fenetre {
     private void initComponents() {
         Traitement = new JMenu("Traitement");
         Distance1 = new JMenuItem("Distance 1");
-        CheminCourt = new JMenuItem("Chemin le plus court");
+        Distance2 = new JMenuItem("Distance 2");
+        Parcours = new JMenuItem("Parcours");
+
         Traitement.add(Distance1);
-        Traitement.add(CheminCourt);
+        Traitement.add(Distance2);
+        Traitement.add(Parcours);
         super.addJMenuToMenuBar(Traitement);
     }
 
@@ -90,12 +94,26 @@ public class FenetreChargementGraphe extends Fenetre {
             dessinerArc();
             this.repaint();
         });
-        this.CheminCourt.addActionListener(e -> {
+        this.Distance2.addActionListener(e -> {
+            String nomSommet = JOptionPane.showInputDialog(this, "Entrez le nom du sommet", "Distance 2", JOptionPane.QUESTION_MESSAGE);
+            ArrayList<String> a = this.graphe.ListingTwoDistNeighbors(nomSommet);
+            for(String s : a){
+                System.out.println(s);
+            }
+        });
+        this.Parcours.addActionListener(e -> {
             for (AreteGraphe arete : this.listearretegraphique) {
                 arete.setCouleurActuelle(Color.black);
             }
             JTextField ori = new JTextField(2);
             JTextField dest = new JTextField(2);
+            JComboBox<String> combo = new JComboBox<>();
+            String choix1 = "Rapide";
+            String choix2 = "Court";
+            String choix3 = "Fiable";
+            combo.addItem(choix1);
+            combo.addItem(choix2);
+            combo.addItem(choix3);
 
             JPanel myPanel = new JPanel();
             myPanel.add(new JLabel("Origine:"));
@@ -103,8 +121,52 @@ public class FenetreChargementGraphe extends Fenetre {
             myPanel.add(Box.createHorizontalStrut(15)); // a spacer
             myPanel.add(new JLabel("Arrive:"));
             myPanel.add(dest);
+            myPanel.add(Box.createHorizontalStrut(15)); // a spacer
+            myPanel.add(new JLabel("Choix:"));
+            myPanel.add(combo);
             int result = JOptionPane.showConfirmDialog(null, myPanel,"Entrer vos sommet de départ et d'arrivé", JOptionPane.OK_CANCEL_OPTION);
             if (result == JOptionPane.OK_OPTION) {
+                switch (combo.getSelectedItem().toString()) {
+                    case "Rapide":
+                        List a1 = this.graphe.dijkstrarapide(ori.getText(),dest.getText());
+                        List arc1 = (List) a1.get(1);
+                        for (Object obj : arc1) {
+                            //recuperer l'arc listearretegraphique
+                            for (AreteGraphe arete : this.listearretegraphique) {
+                                if (arete.getAreteNom().equals(obj)) {
+                                    arete.setCouleurActuelle(Color.red);
+                                }
+                            }
+                        }
+                        this.repaint();
+                        break;
+                    case "Court":
+                        List a2 = this.graphe.dijkstracourt(ori.getText(),dest.getText());
+                        List arc2 = (List) a2.get(1);
+                        for (Object obj : arc2) {
+                            //recuperer l'arc listearretegraphique
+                            for (AreteGraphe arete : this.listearretegraphique) {
+                                if (arete.getAreteNom().equals(obj)) {
+                                    arete.setCouleurActuelle(Color.red);
+                                }
+                            }
+                        }
+                        this.repaint();
+                        break;
+                    case "Fiable":
+                        List a3 = this.graphe.dijkstrafiable(ori.getText(),dest.getText());
+                        List arc3 = (List) a3.get(1);
+                        for (Object obj : arc3) {
+                            //recuperer l'arc listearretegraphique
+                            for (AreteGraphe arete : this.listearretegraphique) {
+                                if (arete.getAreteNom().equals(obj)) {
+                                    arete.setCouleurActuelle(Color.red);
+                                }
+                            }
+                        }
+                        this.repaint();
+                        break;
+                }
                 List a = this.graphe.dijkstracourt(ori.getText(),dest.getText());
                 List arc = (List) a.get(1);
                 for (Object obj : arc) {

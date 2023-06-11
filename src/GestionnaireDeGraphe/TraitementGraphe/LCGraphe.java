@@ -302,14 +302,14 @@ public class LCGraphe {
         }
         return false;
     }
-    public List ListingTwoDistNeighbors(String dep){
+    public ArrayList<String> ListingTwoDistNeighbors(String dep){
         /*
          * @autor : Haithem
          * @description : liste les voisins a 2 distance d'un sommet
          * @param : String dep
          * @return : List
          */
-        List res = new ArrayList();
+        ArrayList<String> res = new ArrayList<String>();
         MaillonGraphe tmp = this.premier;
         while (!tmp.nom.equals(dep)) {
             tmp = tmp.suiv;
@@ -983,6 +983,7 @@ public class LCGraphe {
     }
 
     public MaillonGrapheSec recherchearrete(String nom){
+
         MaillonGraphe tmp = this.premier;
         while (tmp != null) {
             MaillonGrapheSec tmp2 = tmp.lVois;
