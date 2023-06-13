@@ -111,9 +111,16 @@ public class FenetreChargementGraphe extends Fenetre {
         });
         this.Distance2.addActionListener(e -> {
             String nomSommet = JOptionPane.showInputDialog(this, "Entrez le nom du sommet", "Distance 2", JOptionPane.QUESTION_MESSAGE);
-            ArrayList<String> a = this.graphe.ListingTwoDistNeighbors(nomSommet);
-            for(String s : a){
-                System.out.println(s);
+
+            List<LCGraphe.MaillonGraphe> lSommets = this.graphe.getListSommet2Dist(graphe.recherchenom(nomSommet));
+            for (LCGraphe.MaillonGraphe sommetADessiner : lSommets) {
+                for (SommetGraphe sommetGraphe : this.listesommetgraphique) {
+                    if (sommetGraphe.getNomSommet().equals(sommetADessiner.getNom())) {
+                        sommetGraphe.setCouleurDuPoint(Color.green);
+//                        TODO fix le fait que lorsqu'on déplcale le point il rechange de couleur
+                    }
+                }
+                this.repaint();
             }
         });
         this.Parcours.addActionListener(e -> {
