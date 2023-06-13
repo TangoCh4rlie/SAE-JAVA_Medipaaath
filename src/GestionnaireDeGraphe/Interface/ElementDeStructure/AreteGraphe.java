@@ -20,7 +20,7 @@ public class AreteGraphe extends JLabel implements MouseListener {
         this.arete = arete;
         this.origine = origine;
         this.destination = destination;
-        this.couleurActuelle = couleurAreteNormal;
+        this.couleurActuelle = arete.getCouleur();
         addMouseListener(this);
     }
 
@@ -51,6 +51,9 @@ public class AreteGraphe extends JLabel implements MouseListener {
     }
     public void setCouleurActuelle(Color couleurActuelle) {
         this.couleurActuelle = couleurActuelle;
+    }
+    public void updateCouleur() {
+        this.couleurActuelle = this.arete.getCouleur();
     }
 
     @Override

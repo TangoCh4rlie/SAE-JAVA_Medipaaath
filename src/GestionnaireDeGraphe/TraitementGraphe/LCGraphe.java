@@ -916,7 +916,7 @@ public class LCGraphe {
         return listSommet;
     }
 
-    public List<MaillonGrapheSec> getAretesAdj(MaillonGraphe m) {
+    public List<MaillonGrapheSec> getListAretesAdj(MaillonGraphe m) {
         /*
          * @autor : Elouan
          * @description : retourne la liste d'aretes adjacentes a un sommet

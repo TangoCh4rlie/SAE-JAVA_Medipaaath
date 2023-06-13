@@ -84,15 +84,34 @@ public class FenetreChargementGraphe extends Fenetre {
     private void initActionListener() {
         this.Distance1.addActionListener(e -> {
             String nomSommet = JOptionPane.showInputDialog(this, "Entrez le nom du sommet", "Distance 1", JOptionPane.QUESTION_MESSAGE);
-            LCGraphe.MaillonGraphe sommetATraiter = this.graphe.recherchenom(nomSommet);
-            List<LCGraphe.MaillonGrapheSec> aretesATraiter = this.graphe.getAretesAdj(sommetATraiter);
-            for (LCGraphe.MaillonGrapheSec aretes : aretesATraiter) {
-                aretes.setCouleur(Color.red);
+
+            List<LCGraphe.MaillonGrapheSec> lAretes = this.graphe.getListAretesAdj(graphe.recherchenom(nomSommet));
+            for (LCGraphe.MaillonGrapheSec obj : lAretes) {
+                for (AreteGraphe arete : this.listearretegraphique) {
+                    if (arete.getAreteNom().equals(obj.getNomArete())) {
+                        obj.setCouleur(Color.red);
+                        arete.updateCouleur();
+                    }
+                }
+                this.repaint();
             }
-//            TODO ca fait des trucs louche la couleur est pas prise en compte
-            this.listeArete = new HashMap<>(this.graphe.getListAretes());
-            dessinerArc();
-            this.repaint();
+
+
+
+
+
+
+
+
+//            LCGraphe.MaillonGraphe sommetATraiter = this.graphe.recherchenom(nomSommet);
+//            List<LCGraphe.MaillonGrapheSec> aretesATraiter = this.graphe.getAretesAdj(sommetATraiter);
+//            for (LCGraphe.MaillonGrapheSec aretes : aretesATraiter) {
+//                aretes.setCouleurActue(Color.red);
+//            }
+////            TODO ca fait des trucs louche la couleur est pas prise en compte
+//            this.listeArete = new HashMap<>(this.graphe.getListAretes());
+//            dessinerArc();
+//            this.repaint();
         });
         this.Distance2.addActionListener(e -> {
             String nomSommet = JOptionPane.showInputDialog(this, "Entrez le nom du sommet", "Distance 2", JOptionPane.QUESTION_MESSAGE);
