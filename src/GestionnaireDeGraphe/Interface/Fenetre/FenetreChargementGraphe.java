@@ -16,6 +16,7 @@ public class FenetreChargementGraphe extends Fenetre {
     private List<LCGraphe.MaillonGraphe> listeSommets;
     private HashMap<String, LCGraphe.MaillonGrapheSec> listeArete;
     private List<AreteGraphe> listearretegraphique;
+    private List<SommetGraphe> listesommetgraphique;
 
 //    Tout ce qui est relatif au menu
     private JMenu Traitement;
@@ -30,6 +31,7 @@ public class FenetreChargementGraphe extends Fenetre {
         this.listeSommets = new ArrayList<>(this.graphe.getListSommet());
         this.listeArete = new HashMap<>(this.graphe.getListAretes());
         this.listearretegraphique = new ArrayList<>();
+        this.listesommetgraphique = new ArrayList<>();
         initComponents();
         this.dessinerSommet();
         this.dessinerArc();
@@ -53,6 +55,7 @@ public class FenetreChargementGraphe extends Fenetre {
             SommetGraphe s = new SommetGraphe(sommet);
 //            TODO générer des vrai points
             s.setBounds(sommet.getCoordonnees().x,sommet.getCoordonnees().y,35,35);
+            this.listesommetgraphique.add(s);
 //            s.setBorder(BorderFactory.createLineBorder(java.awt.Color.green));
 //            s.setBounds(sommet.getCoordonnees().x, sommet.getCoordonnees().y, 30, 30);
             super.addJLabelToContent(s);
@@ -86,32 +89,25 @@ public class FenetreChargementGraphe extends Fenetre {
             String nomSommet = JOptionPane.showInputDialog(this, "Entrez le nom du sommet", "Distance 1", JOptionPane.QUESTION_MESSAGE);
 
             List<LCGraphe.MaillonGrapheSec> lAretes = this.graphe.getListAretesAdj(graphe.recherchenom(nomSommet));
-            for (LCGraphe.MaillonGrapheSec obj : lAretes) {
-                for (AreteGraphe arete : this.listearretegraphique) {
-                    if (arete.getAreteNom().equals(obj.getNomArete())) {
-                        obj.setCouleur(Color.red);
-                        arete.updateCouleur();
+            for (LCGraphe.MaillonGrapheSec aretesADessiner : lAretes) {
+                for (AreteGraphe areteGraphe : this.listearretegraphique) {
+                    if (areteGraphe.getAreteNom().equals(aretesADessiner.getNomArete())) {
+                        areteGraphe.setCouleurActuelle(Color.red);
                     }
                 }
                 this.repaint();
             }
 
-
-
-
-
-
-
-
-//            LCGraphe.MaillonGraphe sommetATraiter = this.graphe.recherchenom(nomSommet);
-//            List<LCGraphe.MaillonGrapheSec> aretesATraiter = this.graphe.getAretesAdj(sommetATraiter);
-//            for (LCGraphe.MaillonGrapheSec aretes : aretesATraiter) {
-//                aretes.setCouleurActue(Color.red);
-//            }
-////            TODO ca fait des trucs louche la couleur est pas prise en compte
-//            this.listeArete = new HashMap<>(this.graphe.getListAretes());
-//            dessinerArc();
-//            this.repaint();
+            List<LCGraphe.MaillonGraphe> lSommets = this.graphe.getListSommetAdj(graphe.recherchenom(nomSommet));
+            for (LCGraphe.MaillonGraphe sommetADessiner : lSommets) {
+                for (SommetGraphe sommetGraphe : this.listesommetgraphique) {
+                    if (sommetGraphe.getNomSommet().equals(sommetADessiner.getNom())) {
+                        sommetGraphe.setCouleurDuPoint(Color.green);
+//                        TODO fix le fait que lorsqu'on déplcale le point il rechange de couleur
+                    }
+                }
+                this.repaint();
+            }
         });
         this.Distance2.addActionListener(e -> {
             String nomSommet = JOptionPane.showInputDialog(this, "Entrez le nom du sommet", "Distance 2", JOptionPane.QUESTION_MESSAGE);

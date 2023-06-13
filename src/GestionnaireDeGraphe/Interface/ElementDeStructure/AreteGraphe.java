@@ -7,7 +7,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class AreteGraphe extends JLabel implements MouseListener {
+public class AreteGraphe extends JLabel {
     private LCGraphe.MaillonGrapheSec arete;
     private LCGraphe.MaillonGraphe origine;
     private LCGraphe.MaillonGraphe destination;
@@ -21,7 +21,6 @@ public class AreteGraphe extends JLabel implements MouseListener {
         this.origine = origine;
         this.destination = destination;
         this.couleurActuelle = arete.getCouleur();
-        addMouseListener(this);
     }
 
     @Override
@@ -51,32 +50,5 @@ public class AreteGraphe extends JLabel implements MouseListener {
     }
     public void setCouleurActuelle(Color couleurActuelle) {
         this.couleurActuelle = couleurActuelle;
-    }
-    public void updateCouleur() {
-        this.couleurActuelle = this.arete.getCouleur();
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
     }
 }
