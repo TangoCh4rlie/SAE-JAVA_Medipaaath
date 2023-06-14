@@ -283,7 +283,7 @@ public class LCGraphe {
         return res;
     }
 
-    public boolean VerifyTwoDistNeighborsVerify(String dep,String arv){
+    public boolean VerifyTwoDistNeighbors(String dep,String arv){
         /*
          * @autor : Haithem
          * @description : verifie si deux sommets sont voisins a 2 distance
