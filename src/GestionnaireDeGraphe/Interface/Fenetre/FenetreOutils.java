@@ -16,10 +16,12 @@ public class FenetreOutils extends JFrame {
     private HashMap<String, LCGraphe.MaillonGrapheSec> listeArete;
     private List<AreteGraphe> listearretegraphique;
     private List<SommetGraphe> listesommetgraphique;
+    private FenetreChargementGraphe fenetreChargementGraphe;
 
     //    Tout ce qui est relatif au menU
     private JMenuBar menu;
     private JMenu traitement;
+    private JMenuItem reinit;
     private JMenuItem distance1;
     private JMenuItem parcours;
     private JMenuItem distance2;
@@ -27,10 +29,13 @@ public class FenetreOutils extends JFrame {
 //    Tout ce qui est relatif au contenu de la fenetre
     public JPanel content;
 
-    public FenetreOutils(LCGraphe graphe, List<AreteGraphe> listearretegraphique, List<SommetGraphe> listesommetgraphique) {
+    public FenetreOutils(LCGraphe graphe, List<LCGraphe.MaillonGraphe> listeSommets, HashMap<String, LCGraphe.MaillonGrapheSec> listeArete, List<AreteGraphe> listearretegraphique, List<SommetGraphe> listesommetgraphique, FenetreChargementGraphe fenetreChargementGraphe) {
         this.graphe = graphe;
         this.listearretegraphique = listearretegraphique;
         this.listesommetgraphique = listesommetgraphique;
+        this.fenetreChargementGraphe = fenetreChargementGraphe;
+        this.listeSommets = listeSommets;
+        this.listeArete = listeArete;
         initComponents();
         initActionListener();
         this.pack();
@@ -44,10 +49,12 @@ public class FenetreOutils extends JFrame {
 
         this.menu = new JMenuBar();
         traitement = new JMenu("Traitement");
+        reinit = new JMenuItem("Reinitialiser");
         distance1 = new JMenuItem("Distance 1");
         distance2 = new JMenuItem("Distance 2");
-        parcours = new JMenuItem("arcours");
+        parcours = new JMenuItem("Parcours");
 
+        this.traitement.add(reinit);
         this.traitement.add(distance1);
         this.traitement.add(distance2);
         this.traitement.add(parcours);
@@ -68,8 +75,29 @@ public class FenetreOutils extends JFrame {
         this.setVisible(true);
     }
 
+    public void reinitCouleurSommet(){
+        for (LCGraphe.MaillonGraphe listeSommet : listeSommets) {
+            for (SommetGraphe sommetGraphe : this.listesommetgraphique) {
+                if (sommetGraphe.getNomSommet().equals(listeSommet.getNom()))
+                    sommetGraphe.setCouleurDuPoint(listeSommet.getType().getColor());
+            }
+        }
+    }
+    public void reinitCouleurArete(){
+        for (AreteGraphe areteGraphe : this.listearretegraphique) {
+            areteGraphe.setCouleurActuelle(Color.black);
+        }
+    }
+
     private void initActionListener() {
+        this.reinit.addActionListener(e -> {
+            reinitCouleurArete();
+            reinitCouleurSommet();
+            fenetreChargementGraphe.repaint();
+        });
         this.distance1.addActionListener(e -> {
+            reinitCouleurArete();
+            reinitCouleurSommet();
             String nomSommet = JOptionPane.showInputDialog(this, "Entrez le nom du sommet", "Distance 1", JOptionPane.QUESTION_MESSAGE);
 
             java.util.List<LCGraphe.MaillonGrapheSec> lAretes = this.graphe.getListAretesAdj(graphe.recherchenom(nomSommet));
@@ -79,7 +107,7 @@ public class FenetreOutils extends JFrame {
                         areteGraphe.setCouleurActuelle(Color.red);
                     }
                 }
-                .repaint();
+                fenetreChargementGraphe.repaint();
             }
 
             java.util.List<LCGraphe.MaillonGraphe> lSommets = this.graphe.getListSommetAdj(graphe.recherchenom(nomSommet));
@@ -90,10 +118,12 @@ public class FenetreOutils extends JFrame {
 //                        TODO fix le fait que lorsqu'on déplcale le point il rechange de couleur
                     }
                 }
-                this.repaint();
+                fenetreChargementGraphe.repaint();
             }
         });
         this.distance2.addActionListener(e -> {
+            reinitCouleurArete();
+            reinitCouleurSommet();
             String nomSommet = JOptionPane.showInputDialog(this, "Entrez le nom du sommet", "Distance 2", JOptionPane.QUESTION_MESSAGE);
 
             java.util.List<LCGraphe.MaillonGrapheSec> lAretes = this.graphe.getListArete2Distance(graphe.recherchenom(nomSommet));
@@ -103,7 +133,7 @@ public class FenetreOutils extends JFrame {
                         areteGraphe.setCouleurActuelle(Color.red);
                     }
                 }
-                this.repaint();
+                fenetreChargementGraphe.repaint();
             }
 
             java.util.List<LCGraphe.MaillonGraphe> lSommets = this.graphe.getListSommet2Dist(graphe.recherchenom(nomSommet));
@@ -114,13 +144,12 @@ public class FenetreOutils extends JFrame {
 //                        TODO fix le fait que lorsqu'on déplcale le point il rechange de couleur
                     }
                 }
-                this.repaint();
+                fenetreChargementGraphe.repaint();
             }
         });
         this.parcours.addActionListener(e -> {
-            for (AreteGraphe arete : this.listearretegraphique) {
-                arete.setCouleurActuelle(Color.black);
-            }
+            reinitCouleurArete();
+            reinitCouleurSommet();
             JTextField ori = new JTextField(2);
             JTextField dest = new JTextField(2);
             JComboBox<String> combo = new JComboBox<>();
@@ -154,7 +183,7 @@ public class FenetreOutils extends JFrame {
                                 }
                             }
                         }
-                        this.repaint();
+                        fenetreChargementGraphe.repaint();
                         break;
                     case "Court":
                         java.util.List a2 = this.graphe.dijkstracourt(ori.getText(),dest.getText());
@@ -167,7 +196,7 @@ public class FenetreOutils extends JFrame {
                                 }
                             }
                         }
-                        this.repaint();
+                        fenetreChargementGraphe.repaint();
                         break;
                     case "Fiable":
                         java.util.List a3 = this.graphe.dijkstrafiable(ori.getText(),dest.getText());
@@ -180,7 +209,7 @@ public class FenetreOutils extends JFrame {
                                 }
                             }
                         }
-                        this.repaint();
+                        fenetreChargementGraphe.repaint();
                         break;
                 }
                 java.util.List a = this.graphe.dijkstracourt(ori.getText(),dest.getText());
@@ -193,7 +222,7 @@ public class FenetreOutils extends JFrame {
                         }
                     }
                 }
-                this.repaint();
+                fenetreChargementGraphe.repaint();
             }
         });
     }

@@ -34,6 +34,7 @@ public class FenetreChargementGraphe extends Fenetre {
         this.dessinerSommet();
         this.dessinerArc();
         initActionListener();
+        new FenetreOutils(this.graphe, this.listeSommets, this.listeArete, this.listearretegraphique, this.listesommetgraphique, this);
     }
 
     private void initComponents() {
@@ -68,18 +69,7 @@ public class FenetreChargementGraphe extends Fenetre {
         }
     }
 
-    public void reinitCouleurSommet(){
-        for (LCGraphe.MaillonGraphe listeSommet : listeSommets) {
-            for (SommetGraphe sommetGraphe : this.listesommetgraphique) {
-                sommetGraphe.setCouleurDuPoint(listeSommet.getType().getColor());
-            }
-        }
-    }
-    public void reinitCouleurArete(){
-        for (AreteGraphe areteGraphe : this.listearretegraphique) {
-            areteGraphe.setCouleurActuelle(Color.black);
-        }
-    }
+
 
     public Component getComponentnamed(String name) {
         for (Component c : this.getContentPane().getComponents()) {
@@ -92,8 +82,7 @@ public class FenetreChargementGraphe extends Fenetre {
 
     public void initActionListener() {
     outilsItem.addActionListener(e -> {
-        FenetreOutils fenetreOutils = new FenetreOutils(this.graphe, this.listearretegraphique, this.listesommetgraphique);
-        fenetreOutils.setVisible(true);
+        new FenetreOutils(this.graphe, this.listeSommets, this.listeArete, this.listearretegraphique, this.listesommetgraphique, this);
     });
 }
 }
