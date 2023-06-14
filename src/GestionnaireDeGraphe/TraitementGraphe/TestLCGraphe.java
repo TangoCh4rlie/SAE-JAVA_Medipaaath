@@ -3,6 +3,7 @@ import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 public class TestLCGraphe {
@@ -23,6 +24,10 @@ public class TestLCGraphe {
             Assert.assertEquals("S5 - ",graphe.printNutrition());
             Assert.assertEquals("S3 - ",graphe.printBlock());
             Assert.assertEquals("Les deux sommets ont le meme nombre de voisins de type Matérnité",graphe.CompareTwoDistNeighbors("S2","S5","Matérnité"));
+            graphe.addEdge("A56", "S5","S1", 0.90, 200,40);
+            Assert.assertEquals(graphe.countEdges(), 13);
+            List a = graphe.dijkstracourt("S1","S5");
+            Assert.assertNotEquals(a.get(0), "S1");
         }
 
 }

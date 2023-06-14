@@ -48,7 +48,7 @@ public class FenetreOutils extends JFrame {
         traitement = new JMenu("Traitement");
         distance1 = new JMenuItem("Distance 1");
         distance2 = new JMenuItem("Distance 2");
-        parcours = new JMenuItem("arcours");
+        parcours = new JMenuItem("Parcours");
 
         this.traitement.add(distance1);
         this.traitement.add(distance2);
