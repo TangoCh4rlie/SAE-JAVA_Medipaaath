@@ -99,7 +99,6 @@ public class FenetreChargementGraphe extends Fenetre {
             ArrayList<String> a = this.graphe.ListingTwoDistNeighbors(nomSommet);
             for(String s : a){
                 System.out.println(s);
-//              TODO Crée label de sortie d'info
             }
         });
         this.Parcours.addActionListener(e -> {

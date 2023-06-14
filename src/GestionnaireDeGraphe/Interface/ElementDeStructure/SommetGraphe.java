@@ -10,6 +10,7 @@ import java.awt.event.MouseMotionListener;
 
 public class SommetGraphe extends JLabel implements MouseListener, MouseMotionListener {
     private LCGraphe.MaillonGraphe sommet;
+    private String nomSommet;
     private int mouseX;
     private int mouseY;
     private Color couleurDuPoint;
@@ -17,6 +18,7 @@ public class SommetGraphe extends JLabel implements MouseListener, MouseMotionLi
     public SommetGraphe(LCGraphe.MaillonGraphe sommet) {
         super();
         this.sommet = sommet;
+        this.nomSommet = sommet.getNom();
         this.couleurDuPoint = sommet.getType().getColor();
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -54,6 +56,13 @@ public class SommetGraphe extends JLabel implements MouseListener, MouseMotionLi
             });
         }
 
+    }
+
+    public String getNomSommet() {
+        return this.nomSommet;
+    }
+    public void setCouleurDuPoint(Color couleur) {
+        this.couleurDuPoint = couleur;
     }
 
     @Override
