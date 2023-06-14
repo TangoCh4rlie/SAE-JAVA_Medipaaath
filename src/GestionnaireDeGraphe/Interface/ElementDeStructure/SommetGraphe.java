@@ -42,6 +42,13 @@ public class SommetGraphe extends JLabel implements MouseListener, MouseMotionLi
         g2d.drawString(sommet.getNom(), 5, 23);
     }
 
+    public String getNomSommet() {
+        return this.nomSommet;
+    }
+    public void setCouleurDuPoint(Color couleur) {
+        this.couleurDuPoint = couleur;
+    }
+
     @Override
     public void mouseClicked(MouseEvent e) {
 //        check if it's a right click
@@ -56,13 +63,6 @@ public class SommetGraphe extends JLabel implements MouseListener, MouseMotionLi
             });
         }
 
-    }
-
-    public String getNomSommet() {
-        return this.nomSommet;
-    }
-    public void setCouleurDuPoint(Color couleur) {
-        this.couleurDuPoint = couleur;
     }
 
     @Override
@@ -94,6 +94,16 @@ public class SommetGraphe extends JLabel implements MouseListener, MouseMotionLi
         int deltaY = e.getY() - mouseY;
         int newX = this.getX() + deltaX;
         int newY = this.getY() + deltaY;
+        if (newX < 0) {
+        newX = 0;
+        } else if (newX > getParent().getWidth() - getWidth()) {
+            newX = getParent().getWidth() - getWidth();
+        }
+        if (newY < 0) {
+            newY = 0;
+        } else if (newY > getParent().getHeight() - getHeight()) {
+            newY = getParent().getHeight() - getHeight();
+        }
         this.setLocation(newX, newY);
         this.sommet.setCoordonnees(new Point(newX, newY));
         getParent().repaint();
