@@ -12,7 +12,6 @@ public class Fenetre extends JFrame {
     private JMenuBar menuBar = new JMenuBar();
     private JMenu menu = new JMenu("Menu");
     private JMenuItem menuOuvrir = new JMenuItem("Ouvrir");
-    private JMenuItem menuAide = new JMenuItem("Aide");
     private JMenuItem menuQuitter = new JMenuItem("Quitter");
 
 //     Tout ce qui est relatif au contenu de la fenetre
@@ -39,7 +38,6 @@ public class Fenetre extends JFrame {
         }
 
         this.menu.add(menuOuvrir);
-        this.menu.add(menuAide);
         this.menu.add(menuQuitter);
         this.menuBar.add(menu);
         this.setJMenuBar(this.menuBar);
@@ -69,9 +67,6 @@ public class Fenetre extends JFrame {
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
-        });
-        this.menuAide.addActionListener(e -> {
-            new FenetreAide();
         });
     }
 

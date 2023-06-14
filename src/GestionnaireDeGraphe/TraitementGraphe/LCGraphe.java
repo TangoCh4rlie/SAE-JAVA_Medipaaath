@@ -954,6 +954,28 @@ public class LCGraphe {
         return listSommet;
     }
 
+    public List<MaillonGrapheSec> getListArete2Distance(MaillonGraphe m) {
+        /*
+         * @autor : Elouan
+         * @description : retourne la liste chainee d'aretes a 2 de distance d'un sommet
+         * @param : MaillonGraphe m
+         * @return : List<MaillonGrapheSec>
+         */
+        List<MaillonGrapheSec> listAretes = new ArrayList<>();
+        MaillonGrapheSec tmp = m.lVois;
+        while (tmp != null) {
+            MaillonGraphe tmp2 = this.premier;
+            while (tmp2 != null && !tmp2.nom.equals(tmp.dest)) {
+                tmp2 = tmp2.suiv;
+            }
+            if (tmp2 != null) {
+                listAretes.addAll(this.getListAretesAdj(tmp2));
+            }
+            tmp = tmp.suiv;
+        }
+        return listAretes;
+    }
+
     public void listedarretes(){
         /*
          * @autor : Haithem
