@@ -16,6 +16,7 @@ public class FenetreOutils extends JFrame {
     private HashMap<String, LCGraphe.MaillonGrapheSec> listeArete;
     private List<AreteGraphe> listearretegraphique;
     private List<SommetGraphe> listesommetgraphique;
+    private FenetreChargementGraphe fenetreChargementGraphe;
 
     //    Tout ce qui est relatif au menU
     private JMenuBar menu;
@@ -27,10 +28,11 @@ public class FenetreOutils extends JFrame {
 //    Tout ce qui est relatif au contenu de la fenetre
     public JPanel content;
 
-    public FenetreOutils(LCGraphe graphe, List<AreteGraphe> listearretegraphique, List<SommetGraphe> listesommetgraphique) {
+    public FenetreOutils(LCGraphe graphe, List<AreteGraphe> listearretegraphique, List<SommetGraphe> listesommetgraphique, FenetreChargementGraphe fenetreChargementGraphe) {
         this.graphe = graphe;
         this.listearretegraphique = listearretegraphique;
         this.listesommetgraphique = listesommetgraphique;
+        this.fenetreChargementGraphe = fenetreChargementGraphe;
         initComponents();
         initActionListener();
         this.pack();
@@ -79,7 +81,7 @@ public class FenetreOutils extends JFrame {
                         areteGraphe.setCouleurActuelle(Color.red);
                     }
                 }
-                .repaint();
+                fenetreChargementGraphe.repaint();
             }
 
             java.util.List<LCGraphe.MaillonGraphe> lSommets = this.graphe.getListSommetAdj(graphe.recherchenom(nomSommet));
@@ -90,7 +92,7 @@ public class FenetreOutils extends JFrame {
 //                        TODO fix le fait que lorsqu'on déplcale le point il rechange de couleur
                     }
                 }
-                this.repaint();
+                fenetreChargementGraphe.repaint();
             }
         });
         this.distance2.addActionListener(e -> {
@@ -154,7 +156,7 @@ public class FenetreOutils extends JFrame {
                                 }
                             }
                         }
-                        this.repaint();
+                        fenetreChargementGraphe.repaint();
                         break;
                     case "Court":
                         java.util.List a2 = this.graphe.dijkstracourt(ori.getText(),dest.getText());
@@ -167,7 +169,7 @@ public class FenetreOutils extends JFrame {
                                 }
                             }
                         }
-                        this.repaint();
+                        fenetreChargementGraphe.repaint();
                         break;
                     case "Fiable":
                         java.util.List a3 = this.graphe.dijkstrafiable(ori.getText(),dest.getText());
