@@ -92,7 +92,7 @@ public class FenetreChargementGraphe extends Fenetre {
 
     public void initActionListener() {
     outilsItem.addActionListener(e -> {
-        FenetreOutils fenetreOutils = new FenetreOutils();
+        FenetreOutils fenetreOutils = new FenetreOutils(this.graphe, this.listearretegraphique, this.listesommetgraphique);
         fenetreOutils.setVisible(true);
     });
 }

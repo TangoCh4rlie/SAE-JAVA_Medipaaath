@@ -27,7 +27,10 @@ public class FenetreOutils extends JFrame {
 //    Tout ce qui est relatif au contenu de la fenetre
     public JPanel content;
 
-    public FenetreOutils() {
+    public FenetreOutils(LCGraphe graphe, List<AreteGraphe> listearretegraphique, List<SommetGraphe> listesommetgraphique) {
+        this.graphe = graphe;
+        this.listearretegraphique = listearretegraphique;
+        this.listesommetgraphique = listesommetgraphique;
         initComponents();
         initActionListener();
         this.pack();
@@ -76,7 +79,7 @@ public class FenetreOutils extends JFrame {
                         areteGraphe.setCouleurActuelle(Color.red);
                     }
                 }
-                this.repaint();
+                .repaint();
             }
 
             java.util.List<LCGraphe.MaillonGraphe> lSommets = this.graphe.getListSommetAdj(graphe.recherchenom(nomSommet));
