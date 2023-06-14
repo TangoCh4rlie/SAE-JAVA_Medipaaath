@@ -204,14 +204,14 @@ public class LCGraphe {
     public String printBlock(){
         /*
          * @autor : Haithem
-         * @description : affiche les sommets de type Block opératoire "B"
+         * @description : affiche les sommets de type Block opératoire "O"
          * @param : void
          * @return : String
          */
         String res = "";
         MaillonGraphe tmp = this.premier;
         while (tmp != null) {
-            if (tmp.type.equals("B")) res+= tmp.nom + " - ";
+            if (tmp.type.getCaption().equals("Opératoire")) res+= tmp.nom + " - ";
             tmp = tmp.suiv;
         }
         return res;
@@ -220,14 +220,14 @@ public class LCGraphe {
     public String printMaternite(){
         /*
          * @autor : Haithem
-         * @description : affiche les sommets de type Maternité "M"
+         * @description : affiche les sommets de type Maternité
          * @param : void
          * @return : String
          */
         String res = "";
         MaillonGraphe tmp = this.premier;
         while (tmp != null) {
-            if (tmp.type.equals("M")) res+= tmp.nom + " - ";
+            if (tmp.type.getCaption().equals("Maternité")) res+= tmp.nom + " - ";
             tmp = tmp.suiv;
         }
         return res;
@@ -236,23 +236,25 @@ public class LCGraphe {
     public String printNutrition(){
         /*
          * @autor : Haithem
-         * @description : affiche les sommets de type Nutrition "N"
+         * @description : affiche les sommets de type Nutrition
          * @param : void
          * @return : String
          */
         String res = "";
         MaillonGraphe tmp = this.premier;
         while (tmp != null) {
-            if (tmp.type.equals("N")) res+= tmp.nom + " - ";
+            if(tmp.type.getCaption().equals("Nutrition")){
+                res+= tmp.nom + " - ";
+            }
             tmp = tmp.suiv;
         }
         return res;
     }
 
-    public String oneDistNeighbors(String disp){
+    public String oneDistNeighbors(String disp) {
         /*
          * @autor : Haithem
-         * @description : affiche les voisins a 1 distance d'un sommet
+         * @description : affiche les voisins directement reliés à un sommet
          * @param : String disp
          * @return : String
          */
@@ -262,20 +264,18 @@ public class LCGraphe {
             tmp = tmp.suiv;
         }
         MaillonGrapheSec tmp2 = tmp.lVois;
-
         while (tmp2 != null) {
-            if (tmp2.dist == 1){
-                res += tmp2.dest + " - ";
-            }
+            res += tmp2.dest + " - ";
             tmp2 = tmp2.suiv;
         }
         return res;
     }
 
-    public boolean VerifyTwoDistNeighborsVerify(String dep,String arv){
+
+    public boolean VerifyTwoDistNeighbors(String dep,String arv){
         /*
          * @autor : Haithem
-         * @description : verifie si deux sommets sont voisins a 2 distance
+         * @description : verifie si deux sommets sont accesible avec seulement 2 arc
          * @param : String dep, String arv
          * @return : boolean
          */
@@ -284,19 +284,14 @@ public class LCGraphe {
             tmp = tmp.suiv;
         }
         MaillonGrapheSec tmp2 = tmp.lVois;
-        while (tmp2 != null) {
-            if (tmp2.dist == 1){
-                MaillonGraphe tmp3 = this.premier;
-                while (!tmp3.nom.equals(tmp2.dest)) {
-                    tmp3 = tmp3.suiv;
+        while (tmp2 != null){
+            MaillonGraphe tmp3 = this.recherchenom(tmp2.dest);
+            MaillonGrapheSec tmp4 = tmp3.lVois;
+            while (tmp4 != null){
+                if (tmp4.dest.equals(arv)){
+                    return true;
                 }
-                MaillonGrapheSec tmp4 = tmp3.lVois;
-                while (tmp4 != null) {
-                    if (tmp4.dist == 1){
-                        if (tmp4.dest.equals(arv)) return true;
-                    }
-                    tmp4 = tmp4.suiv;
-                }
+                tmp4 = tmp4.suiv;
             }
             tmp2 = tmp2.suiv;
         }
@@ -348,31 +343,33 @@ public class LCGraphe {
             while (!tmp.nom.equals(listing.get(i))) {
                 tmp = tmp.suiv;
             }
-            if (tmp.type.equals(type)){
+            if (tmp.type.getCaption().equals(type)){
                 res++;
                 }
         }
         return res;
     }
 
-    public void CompareTwoDistNeighbors(String sommet1,String sommet2,String type){
+    public String CompareTwoDistNeighbors(String sommet1,String sommet2,String type){
         /*
          * @autor : Haithem
          * @description : compare le nombre de voisins de type "type" a 2 distance de deux sommets
          * @param : String sommet1, String sommet2, String type
-         * @return : void
+         * @return : sTRING
          */
         int res1 = TypeTwoDistNeighbors(sommet1,type);
         int res2 = TypeTwoDistNeighbors(sommet2,type);
+        String sortie = "";
         if (res1 > res2){
-            System.out.println("Le sommet " + sommet1 + " a plus de voisins de type " + type + " que le sommet " + sommet2);
+            sortie =  "Le sommet " + sommet1 + " a plus de voisins de type " + type + " que le sommet " + sommet2;
         }
         else if (res1 < res2){
-            System.out.println("Le sommet " + sommet2 + " a plus de voisins de type " + type + " que le sommet " + sommet1);
+            sortie =  "Le sommet " + sommet2 + " a plus de voisins de type " + type + " que le sommet " + sommet1;
         }
         else{
-            System.out.println("Les deux sommets ont le meme nombre de voisins de type " + type);
+            sortie =  "Les deux sommets ont le meme nombre de voisins de type " + type;
         }
+        return sortie;
     }
 
     public MaillonGraphe recherchenom(String nom){
@@ -818,7 +815,25 @@ public class LCGraphe {
         return result;
     }
 
-    public void countEdges(){
+    public int countSommet(){
+        /*
+         * @autor : Haithem
+         * @description : compte le nombre de sommets dans le graphe
+         * @param : void
+         * @return : int
+         * @complexite : O(n)
+         */
+        MaillonGraphe tmp = this.premier;
+        int count = 0;
+        while (tmp != null) {
+            // ajout de 1 a chaque sommet
+            count++;
+            tmp = tmp.suiv;
+        }
+        return count;
+    }
+
+    public int countEdges(){
         /*
          * @autor : Haithem
          * @description : compte le nombre d'arretes dans le graphe
@@ -837,7 +852,7 @@ public class LCGraphe {
             }
             tmp = tmp.suiv;
         }
-        System.out.println("Nb arretes = "+count);
+        return count;
     }
 
     public List<MaillonGraphe> getListSommet() {
@@ -1004,9 +1019,11 @@ public class LCGraphe {
         g.charg();
         System.out.println(g.toString());
         System.out.println("////");
+        System.out.println(g.CompareTwoDistNeighbors("S2","S5","Matérnité"));
         System.out.println("////");
         System.out.println();
         g.dijkstrarapide("S2","S5");
         g.dijkstracourt("S2","S5");
+
     }
 }
