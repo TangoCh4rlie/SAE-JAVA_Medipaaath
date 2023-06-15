@@ -772,6 +772,7 @@ public class LCGraphe {
                         // Mise à jour du chemin vers le sommet suivant
                         List<String> newPath = new ArrayList<>(paths.get(current.nom)); // Copie du chemin actuel
                         newPath.add(edge.nomArete); // Ajout de l'arête au chemin
+                        newPath.add(next.nom);
                         paths.put(next.nom, newPath);
                     }
                 }
@@ -781,7 +782,8 @@ public class LCGraphe {
         }
 
         List<String> path = paths.get(end);
-        List<String> arc = new ArrayList<>(path); // Arcs = Chemin pour le chemin le plus rapide
+        List<String> arc = new ArrayList<>();
+        arc.addAll(path); // Copie des éléments de path vers arc
         Collections.reverse(arc);
 
         if (path == null || durations.get(end) == Double.POSITIVE_INFINITY) {
@@ -789,6 +791,7 @@ public class LCGraphe {
             System.out.println("No path found.");
             return null;
         }
+        System.out.println();
 
         // Affichage du chemin
         System.out.print("Chemin le plus rapide: " + path.get(0));
@@ -821,13 +824,18 @@ public class LCGraphe {
      * @complexite : O(n^2)
      */
     public List dijkstrafiable(String start, String end) {
-
-        Map<String, Double> reliabilities = new HashMap<>(); // Remplace "distances"
-        Map<String, List<String>> paths = new HashMap<>(); // Nouvelle variable pour stocker les chemins
+        /*
+         * @autor : Haithem
+         * @description : applique l'algorithme de Dijkstra pour trouver le chemin le plus fiable entre deux sommets
+         * @param : String start, String end
+         * @return : List
+         * @complexite : O(n^2)
+         */
+        Map<String, Double> reliabilities = new HashMap<>();
+        Map<String, List<String>> paths = new HashMap<>();
         MaillonGraphe current = premier;
 
         while (current != null) {
-            // Initialisation des fiabilités à 0.0 (représentant l'infini)
             reliabilities.put(current.nom, 0.0);
             current = current.suiv;
         }
@@ -837,16 +845,14 @@ public class LCGraphe {
         current = premier;
 
         while (current != null) {
-            // Ajout des sommets à la file de priorité
             if (current.nom.equals(start)) {
                 queue.add(current);
-                paths.put(current.nom, new ArrayList<>()); // Nouveau chemin vide pour le sommet de départ
+                paths.put(current.nom, new ArrayList<>());
             }
             current = current.suiv;
         }
 
         while (!queue.isEmpty()) {
-            // Relâchement des arêtes
             current = queue.poll();
             current.listed = true;
             MaillonGrapheSec edge = current.lVois;
@@ -855,23 +861,19 @@ public class LCGraphe {
                 MaillonGraphe next = premier;
 
                 while (next != null && !next.nom.equals(edge.dest)) {
-                    // Parcours de la liste chaînée de sommets
                     next = next.suiv;
                 }
 
                 if (next != null && !next.listed) {
-                    // Si le sommet n'a pas encore été visité
                     double newRel = reliabilities.get(current.nom) * edge.fiab;
 
                     if (newRel > reliabilities.get(next.nom)) {
-                        // Mise à jour de la fiabilité
                         reliabilities.put(next.nom, newRel);
                         queue.remove(next);
                         queue.add(next);
 
-                        // Mise à jour du chemin vers le sommet suivant
-                        List<String> newPath = new ArrayList<>(paths.get(current.nom)); // Copie du chemin actuel
-                        newPath.add(edge.nomArete); // Ajout de l'arête au chemin
+                        List<String> newPath = new ArrayList<>(paths.get(current.nom));
+                        newPath.add(next.nom); // Ajout du sommet suivant au chemin au lieu de l'arête
                         paths.put(next.nom, newPath);
                     }
                 }
@@ -881,16 +883,13 @@ public class LCGraphe {
         }
 
         List<String> path = paths.get(end);
-        List<String> arc = new ArrayList<>(path); // Arcs = Chemin pour le chemin le plus fiable
-        Collections.reverse(arc);
+        List<String> arc = new ArrayList<>(); // Liste d'arêtes vide car le chemin le plus fiable ne contient pas d'arêtes
 
         if (path == null || reliabilities.get(end) == 0.0) {
-            // Si le sommet n'est pas atteignable (graphe non connexe)
             System.out.println("No path found.");
             return null;
         }
 
-        // Affichage du chemin
         System.out.print("Chemin le plus fiable: " + path.get(0));
         for (int i = 1; i < path.size(); i++) {
             System.out.print(" -> " + path.get(i));
@@ -898,10 +897,9 @@ public class LCGraphe {
         System.out.println();
         System.out.println("Fiabilité totale : " + reliabilities.get(end));
 
-        // Affichage des arêtes
-        System.out.print("Arcs : " + arc.get(0));
-        for (int i = 1; i < arc.size(); i++) {
-            System.out.print(" -> " + arc.get(i));
+        System.out.println("Arcs : "); // Affichage des arêtes (vides pour le chemin le plus fiable)
+        for(String s : arc) {
+            System.out.println(s + " ->");
         }
 
         List result = new ArrayList();
@@ -909,9 +907,9 @@ public class LCGraphe {
         result.add(path);
         result.add(arc);
         result.add(reliabilities.get(end));
-        LOGGER.log( Level.INFO, "Le graphe a était parcouru - plus fiable" );
         return result;
     }
+
 
     /**
      *@autor : Haithem
@@ -1212,11 +1210,9 @@ public class LCGraphe {
         g.charg();
         System.out.println(g.toString());
         System.out.println("////");
-        List a = g.dijkstrarapide("S2","S5");
-        System.out.println(a.get(0));
         System.out.println("////");
         System.out.println();
-        g.dijkstrarapide("S2","S5");
-        g.dijkstracourt("S2","S5");
+        g.dijkstrafiable("S2","S5");
+
     }
 }
