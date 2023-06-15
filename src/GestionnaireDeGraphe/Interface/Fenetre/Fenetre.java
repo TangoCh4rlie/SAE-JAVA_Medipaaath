@@ -3,6 +3,9 @@ package GestionnaireDeGraphe.Interface.Fenetre;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 
 import javax.swing.*;
+
+import org.w3c.dom.events.MouseEvent;
+
 import java.awt.*;
 import java.io.IOException;
 
@@ -42,11 +45,9 @@ public class Fenetre extends JFrame {
         this.menuBar.add(menu);
         this.setJMenuBar(this.menuBar);
 
-        this.content = new JPanel();
+        this.content = (JPanel) getContentPane();
         this.content.setLayout(null);
-//        this.content.setBorder(BorderFactory.createLineBorder(Color.red));
-
-        this.setContentPane(this.content);
+        this.content.setBorder(BorderFactory.createLineBorder(Color.red));
     }
 
     private void initActionListener() {
@@ -58,9 +59,9 @@ public class Fenetre extends JFrame {
             fileChooser.setCurrentDirectory(new java.io.File("./common"));
             fileChooser.showOpenDialog(this);
             String path = fileChooser.getSelectedFile().getAbsolutePath();
-            if(path == null) return;
+            if (path == null) return;
             if (path.equals("")) return;
-            if(!path.contains(".csv")) return;
+            if (!path.contains(".csv")) return;
             this.dispose();
             try {
                 new FenetreChargementGraphe(path);

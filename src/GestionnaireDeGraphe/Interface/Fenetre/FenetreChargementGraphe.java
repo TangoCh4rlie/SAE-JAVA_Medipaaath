@@ -84,5 +84,6 @@ public class FenetreChargementGraphe extends Fenetre {
     outilsItem.addActionListener(e -> {
         new FenetreOutils(this.graphe, this.listeSommets, this.listeArete, this.listearretegraphique, this.listesommetgraphique, this);
     });
+
 }
 }

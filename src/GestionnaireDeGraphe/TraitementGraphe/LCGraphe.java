@@ -126,6 +126,12 @@ public class LCGraphe {
         public void setCoordonnees(Point p) {
             this.coordonnees = p;
         }
+        public void setType(TypeDispensaire t){
+            this.type = t;
+        }
+        public void setNom(String n){
+            this.nom = n;
+        }
 
         public String toString() {
             return nom;
@@ -412,13 +418,13 @@ public class LCGraphe {
         int res2 = TypeTwoDistNeighbors(sommet2,type);
         String res = "";
         if (res1 > res2){
-            res = "Le sommet " + sommet1 + " a plus de voisins de type " + type + " que le sommet " + sommet2;
+            res = "Le sommet " + sommet1 + " a plus de voisins \nde type " + type + " que le sommet " + sommet2;
         }
         else if (res1 < res2){
-            res = "Le sommet " + sommet2 + " a plus de voisins de type " + type + " que le sommet " + sommet1;
+            res = "Le sommet " + sommet2 + " a plus de voisins \nde type " + type + " que le sommet " + sommet1;
         }
         else{
-            res ="Les deux sommets ont le meme nombre de voisins de type " + type;
+            res ="Les deux sommets ont le meme nombre de voisins de\ntype " + type;
         }
         LOGGER.log( Level.INFO, "Deux sommets on était comparé" );
         return res;
@@ -448,8 +454,8 @@ public class LCGraphe {
             MaillonGrapheSec tmp2 = tmp.lVois;
             while (tmp2 != null) {
                 if (tmp2.fiab <= seuil) {
-                    if (res.contains(tmp2.getNomArete()) == false){
-                    res += tmp2.getNomArete() + "\n";
+                    if (!res.contains(tmp2.getNomArete())){
+                        res += tmp2.getNomArete() + "\n";
                     }
                 }
                 tmp2 = tmp2.suiv;

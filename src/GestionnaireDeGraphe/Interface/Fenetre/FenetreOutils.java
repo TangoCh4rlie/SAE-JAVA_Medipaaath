@@ -3,6 +3,7 @@ package GestionnaireDeGraphe.Interface.Fenetre;
 import GestionnaireDeGraphe.Interface.ElementDeStructure.AreteGraphe;
 import GestionnaireDeGraphe.Interface.ElementDeStructure.SommetGraphe;
 import GestionnaireDeGraphe.TraitementGraphe.LCGraphe;
+import GestionnaireDeGraphe.TraitementGraphe.TypeDispensaire;
 
 import javax.swing.*;
 import java.awt.*;
@@ -142,6 +143,13 @@ public class FenetreOutils extends JFrame {
 
     public LCGraphe.MaillonGrapheSec getArete(String nomArete){
         return this.listeArete.get(nomArete);
+    }
+    public LCGraphe.MaillonGraphe getSommet(String nomSommet){
+        for (LCGraphe.MaillonGraphe listeSommet : listeSommets) {
+            if (listeSommet.getNom().equals(nomSommet))
+                return listeSommet;
+        }
+        return null;
     }
 
     public void reinitCouleurSommet(){
@@ -351,6 +359,44 @@ public class FenetreOutils extends JFrame {
                     arrete_a_modifier.setDist(Integer.parseInt(dist.getText()));
                 }
         });
+        this.modifie_sommet.addActionListener(e -> {
+            JComboBox<String> selected_sommet = new JComboBox<>();
+            for (SommetGraphe listeSommet : listesommetgraphique) {
+                selected_sommet.addItem(listeSommet.getNomSommet());
+            }
+            JComboBox<String> selected_type = new JComboBox<>();
+            for (TypeDispensaire typeDispensaire : TypeDispensaire.values()) {
+                selected_type.addItem(typeDispensaire.toString());
+            }
+            JPanel myPanel = new JPanel();
+            myPanel.add(new JLabel("Sommet:"));
+            myPanel.add(selected_sommet);
+            JTextField nom = new JTextField(2);
+            myPanel.add(Box.createHorizontalStrut(15));
+            myPanel.add(new JLabel("Nom:"));
+            myPanel.add(nom);
+            myPanel.add(Box.createHorizontalStrut(15));
+            myPanel.add(new JLabel("Type:"));
+            myPanel.add(selected_type);
+            int result = JOptionPane.showConfirmDialog(null, myPanel,"Entrer vos sommet de départ et d'arrivé", JOptionPane.OK_CANCEL_OPTION);
+               if (result == JOptionPane.OK_OPTION) {
+                    LCGraphe.MaillonGraphe sommet_a_modifier = this.getSommet((String) selected_sommet.getSelectedItem());
+                    if (nom.getText().equals("")) {
+                        JOptionPane.showMessageDialog(null, "Vous devez rentrer un nom", "Erreur", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        sommet_a_modifier.setNom(nom.getText());
+                        if (selected_type.getSelectedItem().equals("Maternité")) {
+                            sommet_a_modifier.setType(TypeDispensaire.MATERNITE);
+
+                        } else if (selected_type.getSelectedItem().equals("Nutrition")) {
+                            sommet_a_modifier.setType(TypeDispensaire.NUTRITION);
+                        } else if (selected_type.getSelectedItem().equals("Opératoire")) {
+                            sommet_a_modifier.setType(TypeDispensaire.OPERATOIRE);
+                        }
+                    }
+               }
+               fenetreChargementGraphe.repaint();
+        });
         this.afficheDataArete.addActionListener(e -> {
             JComboBox<String> selected_arrete = new JComboBox<>();
             for (AreteGraphe listeArete : listearretegraphique) {
@@ -403,7 +449,7 @@ public class FenetreOutils extends JFrame {
                        JOptionPane.showMessageDialog(null, "Vous devez entrer un seuil", "Erreur", JOptionPane.ERROR_MESSAGE);
                        return;
                    }
-                   if (Integer.parseInt(seuil.getText()) < 0 || Integer.parseInt(seuil.getText()) > 10) {
+                   if (Integer.parseInt(seuil.getText()) < 0 || Integer.parseInt(seuil.getText()) > 100) {
                        JOptionPane.showMessageDialog(null, "Le seuil doit être compris entre 0 et 100", "Erreur", JOptionPane.ERROR_MESSAGE);
                        return;
                    }
