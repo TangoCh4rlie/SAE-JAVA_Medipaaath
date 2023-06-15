@@ -206,7 +206,7 @@ public class FenetreOutils extends JFrame {
             myPanel.add(combo);
             int result = JOptionPane.showConfirmDialog(null, myPanel,"Entrer vos sommet de départ et d'arrivé", JOptionPane.OK_CANCEL_OPTION);
             if (result == JOptionPane.OK_OPTION) {
-                if (ori.getSelectedItem().equals(ori.getSelectedItem())){
+                if (ori.getSelectedItem().equals(dest.getSelectedItem())){
                     JOptionPane.showMessageDialog(null, "Les sommets de départ et d'arrivé doivent être différents", "Erreur", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
