@@ -22,12 +22,16 @@ public class FenetreOutils extends JFrame {
     private JMenuBar menu;
     private JMenu traitement;
     private JMenu modification;
+    private JMenu affichage;
     private JMenuItem modifie_arete;
     private JMenuItem modifie_sommet;
     private JMenuItem reinit;
     private JMenuItem distance1;
     private JMenuItem parcours;
     private JMenuItem distance2;
+    private JMenuItem afficheDataArete;
+    private JMenuItem afficheDataSommet;
+
 
 //    Tout ce qui est relatif au contenu de la fenetre
     private JLabel titre;
@@ -56,27 +60,39 @@ public class FenetreOutils extends JFrame {
         this.menu = new JMenuBar();
         traitement = new JMenu("Traitement");
         modification = new JMenu("Modification");
+        affichage = new JMenu("Affichage");
+
         reinit = new JMenuItem("Reinitialiser");
         distance1 = new JMenuItem("Distance 1");
         distance2 = new JMenuItem("Distance 2");
         parcours = new JMenuItem("Parcours");
+
         modifie_arete = new JMenuItem("Modifier une arete");
         modifie_sommet = new JMenuItem("Modifier un sommet");
 
+        afficheDataArete = new JMenuItem("Afficher les données d'une arete");
+        afficheDataSommet = new JMenuItem("Afficher les données d'un sommet");
 
         this.traitement.add(reinit);
         this.traitement.add(distance1);
         this.traitement.add(distance2);
         this.traitement.add(parcours);
+
         this.modification.add(modifie_arete);
         this.modification.add(modifie_sommet);
+
+        this.affichage.add(afficheDataArete);
+        this.affichage.add(afficheDataSommet);
+
         this.menu.add(traitement);
         this.menu.add(modification);
+        this.menu.add(affichage);
         this.setJMenuBar(this.menu);
 
         this.textArea = new JTextArea();
-        this.textArea.setPreferredSize(new Dimension(360, 450));
+        this.textArea.setPreferredSize(new Dimension(360, 400));
         this.textArea.setEditable(false);
+        this.textArea.setBorder(BorderFactory.createLineBorder(Color.black));
         this.textArea.setText("Effectuer un traitement\nsur le graphe");
 
 //        this.titre = new JLabel("Outils");
@@ -309,6 +325,20 @@ public class FenetreOutils extends JFrame {
                     arrete_a_modifier.setFiab(Integer.parseInt(fiab.getText()));
                     arrete_a_modifier.setDur(Integer.parseInt(duree.getText()));
                     arrete_a_modifier.setDist(Integer.parseInt(dist.getText()));
+                }
+        });
+        this.afficheDataArete.addActionListener(e -> {
+            JComboBox<String> selected_arrete = new JComboBox<>();
+            for (AreteGraphe listeArete : listearretegraphique) {
+                selected_arrete.addItem(listeArete.getAreteNom());
+            }
+            JPanel myPanel = new JPanel();
+            myPanel.add(new JLabel("Arete:"));
+            myPanel.add(selected_arrete);
+            int result = JOptionPane.showConfirmDialog(null, myPanel,"Entrer vos sommet de départ et d'arrivé", JOptionPane.OK_CANCEL_OPTION);
+               if (result == JOptionPane.OK_OPTION) {
+                    LCGraphe.MaillonGrapheSec arrete_a_afficher = this.getArete((String) selected_arrete.getSelectedItem());
+                    this.textArea.setText("La fiabilité est de : " + arrete_a_afficher.getFiab() + "\n" + "La durée est de : " + arrete_a_afficher.getDur() + "\n" + "La distance est de : " + arrete_a_afficher.getDist());
                 }
         });
     }
