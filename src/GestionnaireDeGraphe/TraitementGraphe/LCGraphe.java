@@ -339,7 +339,6 @@ public class LCGraphe {
      * @return : List
      */
     public ArrayList<String> ListingTwoDistNeighbors(String dep){
-
         ArrayList<String> res = new ArrayList<String>();
         MaillonGraphe tmp = this.premier;
         while (!tmp.nom.equals(dep)) {
@@ -425,6 +424,25 @@ public class LCGraphe {
             tmp = tmp.suiv;
         }
         return tmp;
+    }
+
+    public String seuil(int seuil){
+        //Renvoie le nom des aretes ayant une fiabilité infereure au seuil
+        String res = "";
+        MaillonGraphe tmp = this.premier;
+        while (tmp != null) {
+            MaillonGrapheSec tmp2 = tmp.lVois;
+            while (tmp2 != null) {
+                if (tmp2.fiab <= seuil) {
+                    if (res.contains(tmp2.getNomArete()) == false){
+                    res += tmp2.getNomArete() + "\n";
+                    }
+                }
+                tmp2 = tmp2.suiv;
+            }
+            tmp = tmp.suiv;
+        }
+        return res;
     }
 
     /**
@@ -916,6 +934,42 @@ public class LCGraphe {
             tmp = tmp.suiv;
         }
         return count;
+    }
+
+    public int countMaternite(){
+            MaillonGraphe tmp = this.premier;
+            int count = 0;
+            while (tmp != null) {
+                if(tmp.type.getCaption().equals("Maternité")){
+                    count++;
+                }
+                tmp = tmp.suiv;
+            }
+            return count;
+    }
+
+    public int countNutrition(){
+            MaillonGraphe tmp = this.premier;
+            int count = 0;
+            while (tmp != null) {
+                if(tmp.type.getCaption().equals("Nutrition")){
+                    count++;
+                }
+                tmp = tmp.suiv;
+            }
+            return count;
+    }
+
+    public int countOperatoire(){
+            MaillonGraphe tmp = this.premier;
+            int count = 0;
+            while (tmp != null) {
+                if(tmp.type.getCaption().equals("Opératoire")){
+                    count++;
+                }
+                tmp = tmp.suiv;
+            }
+            return count;
     }
 
     /**

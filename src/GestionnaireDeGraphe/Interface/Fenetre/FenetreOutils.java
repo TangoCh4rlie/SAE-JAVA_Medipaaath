@@ -23,6 +23,9 @@ public class FenetreOutils extends JFrame {
     private JMenu traitement;
     private JMenu modification;
     private JMenu affichage;
+    private JMenuItem disp_type;
+    private JMenuItem disp_dec;
+    private JMenuItem disp_risque;
     private JMenuItem modifie_arete;
     private JMenuItem modifie_sommet;
     private JMenuItem reinit;
@@ -73,6 +76,10 @@ public class FenetreOutils extends JFrame {
         afficheDataArete = new JMenuItem("Afficher les données d'une arete");
         afficheDataSommet = new JMenuItem("Afficher les données d'un sommet");
 
+        disp_type = new JMenuItem("Afficher les sommets d'un type");
+        disp_dec = new JMenuItem("Décompte des types");
+        disp_risque = new JMenuItem("Afficher chemin le plus risqué");
+
         this.traitement.add(reinit);
         this.traitement.add(distance1);
         this.traitement.add(distance2);
@@ -83,6 +90,9 @@ public class FenetreOutils extends JFrame {
 
         this.affichage.add(afficheDataArete);
         this.affichage.add(afficheDataSommet);
+        this.affichage.add(disp_type);
+        this.affichage.add(disp_dec);
+        this.affichage.add(disp_risque);
 
         this.menu.add(traitement);
         this.menu.add(modification);
@@ -339,6 +349,51 @@ public class FenetreOutils extends JFrame {
                if (result == JOptionPane.OK_OPTION) {
                     LCGraphe.MaillonGrapheSec arrete_a_afficher = this.getArete((String) selected_arrete.getSelectedItem());
                     this.textArea.setText("La fiabilité est de : " + arrete_a_afficher.getFiab() + "\n" + "La durée est de : " + arrete_a_afficher.getDur() + "\n" + "La distance est de : " + arrete_a_afficher.getDist());
+                }
+        });
+        this.disp_type.addActionListener(e -> {
+            JComboBox<String> type = new JComboBox<>();
+            type.addItem("Matérnité");
+            type.addItem("Nutrition");
+            type.addItem("Opératoire");
+
+            JPanel myPanel = new JPanel();
+            myPanel.add(new JLabel("Type:"));
+            myPanel.add(type);
+            int result = JOptionPane.showConfirmDialog(null, myPanel,"Entrer vos sommet de départ et d'arrivé", JOptionPane.OK_CANCEL_OPTION);
+               if (result == JOptionPane.OK_OPTION) {
+                   switch (type.getSelectedItem().toString()) {
+                       case "Matérnité":
+                           this.textArea.setText("Les matérnité sont : " + this.graphe.printMaternite());
+                           break;
+                       case "Nutrition":
+                           this.textArea.setText("Les nutrition sont : " + this.graphe.printNutrition());
+                           break;
+                       case "Opératoire":
+                           this.textArea.setText("Les opératoire sont : " + this.graphe.printBlock());
+                           break;
+                   }
+                }
+        });
+        this.disp_dec.addActionListener(e -> {
+            this.textArea.setText("Il y'a " + this.graphe.countMaternite() + " Matérnité" + "\n" + "Il y'a " + this.graphe.countNutrition() + " Centre de Nutrition" + "\n" + "Il y'a " + this.graphe.countOperatoire() + " Bloc Opératoire");
+        });
+        this.disp_risque.addActionListener(e ->{
+            JPanel myPanel = new JPanel();
+            myPanel.add(new JLabel("Seuil:"));
+            JTextField seuil = new JTextField(2);
+            myPanel.add(seuil);
+            int result = JOptionPane.showConfirmDialog(null, myPanel,"Entrer vos sommet de départ et d'arrivé", JOptionPane.OK_CANCEL_OPTION);
+               if (result == JOptionPane.OK_OPTION) {
+                   if (seuil.getText().equals("")) {
+                       JOptionPane.showMessageDialog(null, "Vous devez entrer un seuil", "Erreur", JOptionPane.ERROR_MESSAGE);
+                       return;
+                   }
+                   if (Integer.parseInt(seuil.getText()) < 0 || Integer.parseInt(seuil.getText()) > 10) {
+                       JOptionPane.showMessageDialog(null, "Le seuil doit être compris entre 0 et 100", "Erreur", JOptionPane.ERROR_MESSAGE);
+                       return;
+                   }
+                   this.textArea.setText("Les arrêtes à risque sont : " + this.graphe.seuil(Integer.parseInt(seuil.getText())));
                 }
         });
     }
