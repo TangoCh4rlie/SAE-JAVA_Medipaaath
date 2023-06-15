@@ -8,6 +8,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class AreteGraphe extends JLabel {
+    /**
+     * Classe qui permet de dessiner les arêtes du graphe
+     */
     private LCGraphe.MaillonGrapheSec arete;
     private LCGraphe.MaillonGraphe origine;
     private LCGraphe.MaillonGraphe destination;

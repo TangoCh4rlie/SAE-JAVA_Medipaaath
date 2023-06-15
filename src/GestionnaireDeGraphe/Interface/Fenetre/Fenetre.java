@@ -58,9 +58,9 @@ public class Fenetre extends JFrame {
             fileChooser.setCurrentDirectory(new java.io.File("./common"));
             fileChooser.showOpenDialog(this);
             String path = fileChooser.getSelectedFile().getAbsolutePath();
-//            TODO verifier que c'est bien un fichier .csv
-//            /mnt/DA8682C68682A31D/Documents/IUT ECOLE SUP/TAFFFFFFFF/JAVA/SAE/liste-test.csv
-//            /mnt/DA8682C68682A31D/Documents/IUT ECOLE SUP/TAFFFFFFFF/JAVA/SAE/liste-adjacence-jeuEssai.csv
+            if(path == null) return;
+            if (path.equals("")) return;
+            if(!path.contains(".csv")) return;
             this.dispose();
             try {
                 new FenetreChargementGraphe(path);
