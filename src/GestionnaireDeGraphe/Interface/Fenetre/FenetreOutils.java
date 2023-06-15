@@ -162,6 +162,7 @@ public class FenetreOutils extends JFrame {
                 }
                 fenetreChargementGraphe.repaint();
             }
+            this.textArea.setText("Sommet adjacent : " + lSommets.toString() + "\n" + "Arete adjacent : " + lAretes.toString());
         });
         this.parcours.addActionListener(e -> {
             reinitCouleurArete();
@@ -200,6 +201,7 @@ public class FenetreOutils extends JFrame {
                             }
                         }
                         fenetreChargementGraphe.repaint();
+                        this.textArea.setText("Le chemin le plus rapide est : " + a1.get(1) + "\n" + "Les sommets empruntés sont : " + a1.get(0));
                         break;
                     case "Court":
                         java.util.List a2 = this.graphe.dijkstracourt(ori.getText(),dest.getText());
@@ -213,6 +215,7 @@ public class FenetreOutils extends JFrame {
                             }
                         }
                         fenetreChargementGraphe.repaint();
+                        this.textArea.setText("Le chemin le plus court est : " + a2.get(1) + "\n" + "Les sommets empruntés sont : " + a2.get(0));
                         break;
                     case "Fiable":
                         java.util.List a3 = this.graphe.dijkstrafiable(ori.getText(),dest.getText());
@@ -226,6 +229,7 @@ public class FenetreOutils extends JFrame {
                             }
                         }
                         fenetreChargementGraphe.repaint();
+                        this.textArea.setText("Le chemin le plus fiable est : " + a3.get(1) + "\n" + "Les sommets empruntés sont : " + a3.get(0));
                         break;
                 }
                 java.util.List a = this.graphe.dijkstracourt(ori.getText(),dest.getText());
