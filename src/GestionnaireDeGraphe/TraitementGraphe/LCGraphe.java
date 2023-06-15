@@ -84,6 +84,9 @@ public class LCGraphe {
         public void setCouleur(Color couleur) {
             this.couleur = couleur;
         }
+        public String toString(){
+            return this.nomArete;
+        }
     }
     public class MaillonGraphe {
         private String nom;
@@ -122,6 +125,10 @@ public class LCGraphe {
         }
         public void setCoordonnees(Point p) {
             this.coordonnees = p;
+        }
+
+        public String toString() {
+            return nom;
         }
 
         /**
