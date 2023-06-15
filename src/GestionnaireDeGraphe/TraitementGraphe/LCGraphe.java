@@ -60,6 +60,15 @@ public class LCGraphe {
         public double getDur(){
             return this.dur;
         }
+        public void setFiab(double f){
+            this.fiab = f;
+        }
+        public void setDist(double d){
+            this.dist = d;
+        }
+        public void setDur(double d){
+            this.dur = d;
+        }
         public String getOrig(){
             return this.orig;
         }
@@ -531,10 +540,11 @@ public class LCGraphe {
     }
 
     /**
+     * attribue un type de dispensaire a partir d'un string
      * @autor : Haithem
      * @param type
      * @return  TypeDispensaire
-     * description : attribue un type de dispensaire a partir d'un string
+     *
      */
     public TypeDispensaire attribueTypeDispensaire(String type){
         TypeDispensaire typeDispensaire = null;
