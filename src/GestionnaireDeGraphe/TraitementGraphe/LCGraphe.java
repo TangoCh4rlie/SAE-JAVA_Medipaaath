@@ -338,30 +338,44 @@ public class LCGraphe {
      * @param : String dep
      * @return : List
      */
-    public ArrayList<String> ListingTwoDistNeighbors(String dep){
-        ArrayList<String> res = new ArrayList<String>();
+    public ArrayList<String> ListingTwoDistNeighbors(String dep) {
+        ArrayList<String> listing = new ArrayList<String>();
         MaillonGraphe tmp = this.premier;
-        while (!tmp.nom.equals(dep)) {
+        // Recherche du sommet donné
+        while (tmp != null && !tmp.nom.equals(dep)) {
             tmp = tmp.suiv;
         }
-        MaillonGrapheSec tmp2 = tmp.lVois;
-        while (tmp2 != null) {
-            if (tmp2.dist == 1){
-                MaillonGraphe tmp3 = this.premier;
-                while (!tmp3.nom.equals(tmp2.dest)) {
-                    tmp3 = tmp3.suiv;
-                }
-                MaillonGrapheSec tmp4 = tmp3.lVois;
-                while (tmp4 != null) {
-                    if (tmp4.dist == 1){
-                        res.add(tmp4.dest);
+
+        String dist1 = this.oneDistNeighbors(dep);
+
+        if (tmp != null) {
+            // Parcourir les voisins du sommet donné
+            MaillonGrapheSec tmp2 = tmp.lVois;
+            while (tmp2 != null) {
+                String voisin = tmp2.dest;
+
+                // Rechercher le sommet voisin
+                MaillonGraphe voisinSommet = recherchenom(voisin);
+                if (voisinSommet != null) {
+                    // Parcourir les voisins du sommet voisin
+                    MaillonGrapheSec tmp3 = voisinSommet.lVois;
+                    while (tmp3 != null) {
+                        String voisinVoisin = tmp3.dest;
+
+                        // Vérifier si le voisin des voisins est différent du sommet initial
+                        if (!voisinVoisin.equals(dep) && !listing.contains(voisinVoisin) && !dist1.contains(voisinVoisin)) {
+                            listing.add(voisinVoisin);
+                        }
+
+                        tmp3 = tmp3.suiv;
                     }
-                    tmp4 = tmp4.suiv;
                 }
+
+                tmp2 = tmp2.suiv;
             }
-            tmp2 = tmp2.suiv;
         }
-        return res;
+
+        return listing;
     }
 
     /**
@@ -453,10 +467,15 @@ public class LCGraphe {
     public void removeFirstEdges(){
         MaillonGraphe current = premier;
         while(current!= null){
-            MaillonGrapheSec as = current.lVois;
-            MaillonGrapheSec np = as.suiv;
-            current.lVois = np;
-            current = current.suiv;
+            if (current != this.premier){
+                MaillonGrapheSec as = current.lVois;
+                MaillonGrapheSec np = as.suiv;
+                current.lVois = np;
+                current = current.suiv;
+            }
+            else{
+                current = current.suiv;
+            }
         }
     }
 
@@ -467,7 +486,6 @@ public class LCGraphe {
      * @return : void
      */
     public void removeDuplicateEdges() {
-
         MaillonGraphe current = premier;
         while (current != null) {
             String test = current.getNom();

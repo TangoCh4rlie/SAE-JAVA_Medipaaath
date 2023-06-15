@@ -23,6 +23,10 @@ public class FenetreOutils extends JFrame {
     private JMenu traitement;
     private JMenu modification;
     private JMenu affichage;
+    private JMenu analyse;
+    private JMenuItem disp_proche;
+    private JMenuItem disp_2dist;
+    private JMenuItem disp_comp;
     private JMenuItem disp_type;
     private JMenuItem disp_dec;
     private JMenuItem disp_risque;
@@ -64,6 +68,7 @@ public class FenetreOutils extends JFrame {
         traitement = new JMenu("Traitement");
         modification = new JMenu("Modification");
         affichage = new JMenu("Affichage");
+        analyse = new JMenu("Analyse");
 
         reinit = new JMenuItem("Reinitialiser");
         distance1 = new JMenuItem("Distance 1");
@@ -80,6 +85,10 @@ public class FenetreOutils extends JFrame {
         disp_dec = new JMenuItem("Décompte des types");
         disp_risque = new JMenuItem("Afficher chemin le plus risqué");
 
+        disp_proche = new JMenuItem("Afficher les sommets les plus proches");
+        disp_2dist = new JMenuItem("Afficher les sommets à 2 de distance");
+        disp_comp = new JMenuItem("Comparer deux sommets");
+
         this.traitement.add(reinit);
         this.traitement.add(distance1);
         this.traitement.add(distance2);
@@ -94,9 +103,14 @@ public class FenetreOutils extends JFrame {
         this.affichage.add(disp_dec);
         this.affichage.add(disp_risque);
 
+        this.analyse.add(disp_proche);
+        this.analyse.add(disp_2dist);
+        this.analyse.add(disp_comp);
+
         this.menu.add(traitement);
         this.menu.add(modification);
         this.menu.add(affichage);
+        this.menu.add(analyse);
         this.setJMenuBar(this.menu);
 
         this.textArea = new JTextArea();
@@ -394,6 +408,75 @@ public class FenetreOutils extends JFrame {
                        return;
                    }
                    this.textArea.setText("Les arrêtes à risque sont : " + this.graphe.seuil(Integer.parseInt(seuil.getText())));
+                }
+        });
+        this.disp_proche.addActionListener(e -> {
+            JComboBox<String> cible = new JComboBox<>();
+            for (LCGraphe.MaillonGraphe listeSommet : listeSommets) {
+                cible.addItem(listeSommet.getNom());
+            }
+            JPanel myPanel = new JPanel();
+            myPanel.add(new JLabel("Cible:"));
+            myPanel.add(cible);
+            int result = JOptionPane.showConfirmDialog(null, myPanel,"Entrer vos sommet de départ", JOptionPane.OK_CANCEL_OPTION);
+               if (result == JOptionPane.OK_OPTION) {
+                   String res = this.graphe.oneDistNeighbors(cible.getSelectedItem().toString());
+                     if (res.equals("")) {
+                          this.textArea.setText("Il n'y a pas de sommet proche de " + cible.getSelectedItem().toString());
+                     } else {
+                          this.textArea.setText("Les sommets proches de " + cible.getSelectedItem().toString() + " sont : " + res);
+                     }
+                }
+        });
+        this.disp_2dist.addActionListener(e -> {
+            JComboBox<String> cible = new JComboBox<>();
+            for (LCGraphe.MaillonGraphe listeSommet : listeSommets) {
+                cible.addItem(listeSommet.getNom());
+            }
+            JPanel myPanel = new JPanel();
+            myPanel.add(new JLabel("Cible:"));
+            myPanel.add(cible);
+            int result = JOptionPane.showConfirmDialog(null, myPanel,"Entrer vos sommet de départ", JOptionPane.OK_CANCEL_OPTION);
+               if (result == JOptionPane.OK_OPTION) {
+                   List res = this.graphe.ListingTwoDistNeighbors(cible.getSelectedItem().toString());
+                     if (res.size() == 0) {
+                          this.textArea.setText("Il n'y a pas de sommet à 2 distance de " + cible.getSelectedItem().toString());
+                     } else {
+                         String res2 = "";
+                            for (Object re : res) {
+                                res2 += re.toString() + " ";
+                            }
+                          this.textArea.setText("Les sommets à 2 distance de " + cible.getSelectedItem().toString() + " sont : " + res2);
+                     }
+                }
+        });
+        this.disp_comp.addActionListener(e -> {
+            JComboBox<String> cible1 = new JComboBox<>();
+            for (LCGraphe.MaillonGraphe listeSommet : listeSommets) {
+                cible1.addItem(listeSommet.getNom());
+            }
+            JComboBox<String> cible2 = new JComboBox<>();
+            for (LCGraphe.MaillonGraphe listeSommet : listeSommets) {
+                cible2.addItem(listeSommet.getNom());
+            }
+            JComboBox<String> type = new JComboBox<>();
+            type.addItem("Matérnité");
+            type.addItem("Nutrition");
+            type.addItem("Opératoire");
+            JPanel myPanel = new JPanel();
+            myPanel.add(new JLabel("Cible 1:"));
+            myPanel.add(cible1);
+            myPanel.add(Box.createHorizontalStrut(15)); // a spacer
+            myPanel.add(new JLabel("Cible 2:"));
+            myPanel.add(cible2);
+            myPanel.add(Box.createHorizontalStrut(15)); // a spacer
+            myPanel.add(new JLabel("Type:"));
+            myPanel.add(type);
+
+            int result = JOptionPane.showConfirmDialog(null, myPanel,"Entrer vos sommet de départ", JOptionPane.OK_CANCEL_OPTION);
+               if (result == JOptionPane.OK_OPTION) {
+                      String res = this.graphe.CompareTwoDistNeighbors(cible1.getSelectedItem().toString(), cible2.getSelectedItem().toString(), type.getSelectedItem().toString());
+                      this.textArea.setText(res);
                 }
         });
     }
