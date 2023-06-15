@@ -27,7 +27,10 @@ public class FenetreOutils extends JFrame {
     private JMenuItem distance2;
 
 //    Tout ce qui est relatif au contenu de la fenetre
-    public JPanel content;
+    private JLabel titre;
+    private JPanel titrePanel;
+    private JTextArea textArea;
+    private JPanel content;
 
     public FenetreOutils(LCGraphe graphe, List<LCGraphe.MaillonGraphe> listeSommets, HashMap<String, LCGraphe.MaillonGrapheSec> listeArete, List<AreteGraphe> listearretegraphique, List<SommetGraphe> listesommetgraphique, FenetreChargementGraphe fenetreChargementGraphe) {
         this.graphe = graphe;
@@ -44,7 +47,7 @@ public class FenetreOutils extends JFrame {
     private void initComponents() {
         this.setTitle("Outils");
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        this.setPreferredSize(new Dimension(250,400));
+        this.setPreferredSize(new Dimension(400,500));
         this.setVisible(true);
 
         this.menu = new JMenuBar();
@@ -61,11 +64,23 @@ public class FenetreOutils extends JFrame {
         this.menu.add(traitement);
         this.setJMenuBar(this.menu);
 
-        this.content = new JPanel();
-        this.content.setLayout(null);
-        this.content.setBorder(BorderFactory.createLineBorder(Color.red));
+        this.textArea = new JTextArea();
+        this.textArea.setPreferredSize(new Dimension(360, 450));
+        this.textArea.setEditable(false);
+        this.textArea.setText("Effectuer un traitement\nsur le graphe");
 
-        this.setContentPane(this.content);
+//        this.titre = new JLabel("Outils");
+//
+//        this.titrePanel = new JPanel();
+//        this.titrePanel.add(this.titre);
+//        this.titrePanel.setBorder(BorderFactory.createLineBorder(Color.green));
+
+        this.content = new JPanel();
+        this.content.setBorder(BorderFactory.createLineBorder(Color.red));
+        this.content.add(this.textArea);
+
+//        this.add(this.titrePanel);
+        this.add(this.content);
     }
 
     private void initWindow() {
@@ -120,6 +135,7 @@ public class FenetreOutils extends JFrame {
                 }
                 fenetreChargementGraphe.repaint();
             }
+            this.textArea.setText("Sommet adjacent : " + lSommets.toString() + "\n" + "Arete adjacent : " + lAretes.toString());
         });
         this.distance2.addActionListener(e -> {
             reinitCouleurArete();
