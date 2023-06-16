@@ -150,6 +150,13 @@ public class FenetreOutils extends JFrame {
     public LCGraphe.MaillonGrapheSec getArete(String nomArete){
         return this.listeArete.get(nomArete);
     }
+    public LCGraphe.MaillonGraphe getSommet(String nomSommet){
+        for (LCGraphe.MaillonGraphe listeSommet : listeSommets) {
+            if (listeSommet.getNom().equals(nomSommet))
+                return listeSommet;
+        }
+        return null;
+    }
 
     public void reinitCouleurSommet(){
         for (LCGraphe.MaillonGraphe listeSommet : listeSommets) {
@@ -242,16 +249,16 @@ public class FenetreOutils extends JFrame {
             combo.addItem(choix2);
             combo.addItem(choix3);
 
-            JPanel myPanel = new JPanel();
-            myPanel.add(new JLabel("Origine:"));
-            myPanel.add(ori);
-            myPanel.add(Box.createHorizontalStrut(15)); // a spacer
-            myPanel.add(new JLabel("Arrive:"));
-            myPanel.add(dest);
-            myPanel.add(Box.createHorizontalStrut(15)); // a spacer
-            myPanel.add(new JLabel("Choix:"));
-            myPanel.add(combo);
-            int result = JOptionPane.showConfirmDialog(null, myPanel,"Entrer vos sommet de départ et d'arrivé", JOptionPane.OK_CANCEL_OPTION);
+            JPanel panelPopup = new JPanel();
+            panelPopup.add(new JLabel("Origine:"));
+            panelPopup.add(ori);
+            panelPopup.add(Box.createHorizontalStrut(15)); // a spacer
+            panelPopup.add(new JLabel("Arrive:"));
+            panelPopup.add(dest);
+            panelPopup.add(Box.createHorizontalStrut(15)); // a spacer
+            panelPopup.add(new JLabel("Choix:"));
+            panelPopup.add(combo);
+            int result = JOptionPane.showConfirmDialog(null, panelPopup,"Entrer vos sommet de départ et d'arrivé", JOptionPane.OK_CANCEL_OPTION);
             if (result == JOptionPane.OK_OPTION) {
                 if (ori.getSelectedItem().equals(dest.getSelectedItem())){
                     JOptionPane.showMessageDialog(null, "Les sommets de départ et d'arrivé doivent être différents", "Erreur", JOptionPane.ERROR_MESSAGE);
@@ -316,25 +323,24 @@ public class FenetreOutils extends JFrame {
         });
         this.modifie_arete.addActionListener(e -> {
             JComboBox<String> selected_arrete = new JComboBox<>();
-            for (AreteGraphe listeArete : listearretegraphique) {
+            for (AreteGraphe listeArete : listearretegraphique)
                 selected_arrete.addItem(listeArete.getAreteNom());
-            }
-            JPanel myPanel = new JPanel();
-            myPanel.add(new JLabel("Arete:"));
-            myPanel.add(selected_arrete);
+            JPanel panelPopup = new JPanel();
+            panelPopup.add(new JLabel("Arete:"));
+            panelPopup.add(selected_arrete);
             JTextField fiab = new JTextField(2);
             JTextField duree = new JTextField(2);
             JTextField dist = new JTextField(2);
-            myPanel.add(Box.createHorizontalStrut(15)); // a spacer
-            myPanel.add(new JLabel("Fiabilité:"));
-            myPanel.add(fiab);
-            myPanel.add(Box.createHorizontalStrut(15)); // a spacer
-            myPanel.add(new JLabel("Durée:"));
-            myPanel.add(duree);
-            myPanel.add(Box.createHorizontalStrut(15)); // a spacer
-            myPanel.add(new JLabel("Distance:"));
-            myPanel.add(dist);
-            int result = JOptionPane.showConfirmDialog(null, myPanel,"Entrer vos sommet de départ et d'arrivé", JOptionPane.OK_CANCEL_OPTION);
+            panelPopup.add(Box.createHorizontalStrut(15)); // a spacer
+            panelPopup.add(new JLabel("Fiabilité:"));
+            panelPopup.add(fiab);
+            panelPopup.add(Box.createHorizontalStrut(15)); // a spacer
+            panelPopup.add(new JLabel("Durée:"));
+            panelPopup.add(duree);
+            panelPopup.add(Box.createHorizontalStrut(15)); // a spacer
+            panelPopup.add(new JLabel("Distance:"));
+            panelPopup.add(dist);
+            int result = JOptionPane.showConfirmDialog(null, panelPopup,"Entrer vos sommet de départ et d'arrivé", JOptionPane.OK_CANCEL_OPTION);
                if (result == JOptionPane.OK_OPTION) {
                     LCGraphe.MaillonGrapheSec arrete_a_modifier = this.getArete((String) selected_arrete.getSelectedItem());
                     if (fiab.getText().equals("") || duree.getText().equals("") || dist.getText().equals("")) {
@@ -358,19 +364,70 @@ public class FenetreOutils extends JFrame {
                     arrete_a_modifier.setDist(Integer.parseInt(dist.getText()));
                 }
         });
-        this.afficheDataArete.addActionListener(e -> {
-            JComboBox<String> selected_arrete = new JComboBox<>();
-            for (AreteGraphe listeArete : listearretegraphique) {
-                selected_arrete.addItem(listeArete.getAreteNom());
+        this.modifie_sommet.addActionListener(e -> {
+            JComboBox<String> selected_sommet = new JComboBox<>();
+            for (SommetGraphe listeSommet : listesommetgraphique) {
+                selected_sommet.addItem(listeSommet.getNomSommet());
             }
-            JPanel myPanel = new JPanel();
-            myPanel.add(new JLabel("Arete:"));
-            myPanel.add(selected_arrete);
-            int result = JOptionPane.showConfirmDialog(null, myPanel,"Entrer vos sommet de départ et d'arrivé", JOptionPane.OK_CANCEL_OPTION);
+            JComboBox<String> selected_type = new JComboBox<>();
+            for (TypeDispensaire typeDispensaire : TypeDispensaire.values()) {
+                selected_type.addItem(typeDispensaire.toString());
+            }
+            JPanel panelPopup = new JPanel();
+            panelPopup.add(new JLabel("Sommet:"));
+            panelPopup.add(selected_sommet);
+            JTextField nom = new JTextField(2);
+            panelPopup.add(Box.createHorizontalStrut(15));
+            panelPopup.add(new JLabel("Nom:"));
+            panelPopup.add(nom);
+            panelPopup.add(Box.createHorizontalStrut(15));
+            panelPopup.add(new JLabel("Type:"));
+            panelPopup.add(selected_type);
+            int result = JOptionPane.showConfirmDialog(null, panelPopup,"Entrer vos sommet de départ et d'arrivé", JOptionPane.OK_CANCEL_OPTION);
                if (result == JOptionPane.OK_OPTION) {
-                    LCGraphe.MaillonGrapheSec arrete_a_afficher = this.getArete((String) selected_arrete.getSelectedItem());
+                    LCGraphe.MaillonGraphe sommet_a_modifier = this.getSommet((String) selected_sommet.getSelectedItem());
+                    if (nom.getText().equals("")) {
+                        JOptionPane.showMessageDialog(null, "Vous devez rentrer un nom", "Erreur", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        sommet_a_modifier.setNom(nom.getText());
+                        if (selected_type.getSelectedItem().equals("Maternité")) {
+                            sommet_a_modifier.setType(TypeDispensaire.MATERNITE);
+                        } else if (selected_type.getSelectedItem().equals("Nutrition")) {
+                            sommet_a_modifier.setType(TypeDispensaire.NUTRITION);
+                        } else if (selected_type.getSelectedItem().equals("Opératoire")) {
+                            sommet_a_modifier.setType(TypeDispensaire.OPERATOIRE);
+                        }
+                    }
+               }
+               fenetreChargementGraphe.dessinerSommet();
+               fenetreChargementGraphe.repaint();
+        });
+        this.afficheDataArete.addActionListener(e -> {
+            JComboBox<String> selectedArrete = new JComboBox<>();
+            for (AreteGraphe listeArete : listearretegraphique) {
+                selectedArrete.addItem(listeArete.getAreteNom());
+            }
+            JPanel panelPopup = new JPanel();
+            panelPopup.add(new JLabel("Arete:"));
+            panelPopup.add(selectedArrete);
+            int result = JOptionPane.showConfirmDialog(null, panelPopup,"Entrer vos sommet de départ et d'arrivé", JOptionPane.OK_CANCEL_OPTION);
+               if (result == JOptionPane.OK_OPTION) {
+                    LCGraphe.MaillonGrapheSec arrete_a_afficher = this.getArete((String) selectedArrete.getSelectedItem());
                     this.textArea.setText("La fiabilité est de : " + arrete_a_afficher.getFiab() + "\n" + "La durée est de : " + arrete_a_afficher.getDur() + "\n" + "La distance est de : " + arrete_a_afficher.getDist());
                 }
+        });
+        this.afficheDataSommet.addActionListener(e -> {
+            JComboBox<String> selectedSommet = new JComboBox<>();
+            for (SommetGraphe listeSommet : listesommetgraphique)
+                selectedSommet.addItem(listeSommet.getNomSommet());
+            JPanel panelPopup = new JPanel();
+            panelPopup.add(new JLabel("Sommet:"));
+            panelPopup.add(selectedSommet);
+            int result = JOptionPane.showConfirmDialog(null, panelPopup,"Entrer vos sommet de départ et d'arrivé", JOptionPane.OK_CANCEL_OPTION);
+               if (result == JOptionPane.OK_OPTION) {
+                    LCGraphe.MaillonGraphe sommet_a_afficher = this.getSommet((String) selectedSommet.getSelectedItem());
+                    this.textArea.setText("Le nom est : " + sommet_a_afficher.getNom() + "\n" + "Le type est : " + sommet_a_afficher.getType());
+               }
         });
         this.disp_type.addActionListener(e -> {
             JComboBox<String> type = new JComboBox<>();
@@ -378,10 +435,10 @@ public class FenetreOutils extends JFrame {
             type.addItem("Nutrition");
             type.addItem("Opératoire");
 
-            JPanel myPanel = new JPanel();
-            myPanel.add(new JLabel("Type:"));
-            myPanel.add(type);
-            int result = JOptionPane.showConfirmDialog(null, myPanel,"Entrer vos sommet de départ et d'arrivé", JOptionPane.OK_CANCEL_OPTION);
+            JPanel panelPopup = new JPanel();
+            panelPopup.add(new JLabel("Type:"));
+            panelPopup.add(type);
+            int result = JOptionPane.showConfirmDialog(null, panelPopup,"Entrer vos sommet de départ et d'arrivé", JOptionPane.OK_CANCEL_OPTION);
                if (result == JOptionPane.OK_OPTION) {
                    switch (type.getSelectedItem().toString()) {
                        case "Matérnité":
@@ -400,17 +457,17 @@ public class FenetreOutils extends JFrame {
             this.textArea.setText("Il y'a " + this.graphe.countMaternite() + " Matérnité" + "\n" + "Il y'a " + this.graphe.countNutrition() + " Centre de Nutrition" + "\n" + "Il y'a " + this.graphe.countOperatoire() + " Bloc Opératoire");
         });
         this.disp_risque.addActionListener(e ->{
-            JPanel myPanel = new JPanel();
-            myPanel.add(new JLabel("Seuil:"));
+            JPanel panelPopup = new JPanel();
+            panelPopup.add(new JLabel("Seuil:"));
             JTextField seuil = new JTextField(2);
-            myPanel.add(seuil);
-            int result = JOptionPane.showConfirmDialog(null, myPanel,"Entrer vos sommet de départ et d'arrivé", JOptionPane.OK_CANCEL_OPTION);
+            panelPopup.add(seuil);
+            int result = JOptionPane.showConfirmDialog(null, panelPopup,"Entrer vos sommet de départ et d'arrivé", JOptionPane.OK_CANCEL_OPTION);
                if (result == JOptionPane.OK_OPTION) {
                    if (seuil.getText().equals("")) {
                        JOptionPane.showMessageDialog(null, "Vous devez entrer un seuil", "Erreur", JOptionPane.ERROR_MESSAGE);
                        return;
                    }
-                   if (Integer.parseInt(seuil.getText()) < 0 || Integer.parseInt(seuil.getText()) > 10) {
+                   if (Integer.parseInt(seuil.getText()) < 0 || Integer.parseInt(seuil.getText()) > 100) {
                        JOptionPane.showMessageDialog(null, "Le seuil doit être compris entre 0 et 100", "Erreur", JOptionPane.ERROR_MESSAGE);
                        return;
                    }
@@ -422,10 +479,10 @@ public class FenetreOutils extends JFrame {
             for (LCGraphe.MaillonGraphe listeSommet : listeSommets) {
                 cible.addItem(listeSommet.getNom());
             }
-            JPanel myPanel = new JPanel();
-            myPanel.add(new JLabel("Cible:"));
-            myPanel.add(cible);
-            int result = JOptionPane.showConfirmDialog(null, myPanel,"Entrer vos sommet de départ", JOptionPane.OK_CANCEL_OPTION);
+            JPanel panelPopup = new JPanel();
+            panelPopup.add(new JLabel("Cible:"));
+            panelPopup.add(cible);
+            int result = JOptionPane.showConfirmDialog(null, panelPopup,"Entrer vos sommet de départ", JOptionPane.OK_CANCEL_OPTION);
                if (result == JOptionPane.OK_OPTION) {
                    String res = this.graphe.oneDistNeighbors(cible.getSelectedItem().toString());
                      if (res.equals("")) {
@@ -440,10 +497,10 @@ public class FenetreOutils extends JFrame {
             for (LCGraphe.MaillonGraphe listeSommet : listeSommets) {
                 cible.addItem(listeSommet.getNom());
             }
-            JPanel myPanel = new JPanel();
-            myPanel.add(new JLabel("Cible:"));
-            myPanel.add(cible);
-            int result = JOptionPane.showConfirmDialog(null, myPanel,"Entrer vos sommet de départ", JOptionPane.OK_CANCEL_OPTION);
+            JPanel panelPopup = new JPanel();
+            panelPopup.add(new JLabel("Cible:"));
+            panelPopup.add(cible);
+            int result = JOptionPane.showConfirmDialog(null, panelPopup,"Entrer vos sommet de départ", JOptionPane.OK_CANCEL_OPTION);
                if (result == JOptionPane.OK_OPTION) {
                    List res = this.graphe.ListingTwoDistNeighbors(cible.getSelectedItem().toString());
                      if (res.size() == 0) {
@@ -470,17 +527,17 @@ public class FenetreOutils extends JFrame {
             type.addItem("Matérnité");
             type.addItem("Nutrition");
             type.addItem("Opératoire");
-            JPanel myPanel = new JPanel();
-            myPanel.add(new JLabel("Cible 1:"));
-            myPanel.add(cible1);
-            myPanel.add(Box.createHorizontalStrut(15)); // a spacer
-            myPanel.add(new JLabel("Cible 2:"));
-            myPanel.add(cible2);
-            myPanel.add(Box.createHorizontalStrut(15)); // a spacer
-            myPanel.add(new JLabel("Type:"));
-            myPanel.add(type);
+            JPanel panelPopup = new JPanel();
+            panelPopup.add(new JLabel("Cible 1:"));
+            panelPopup.add(cible1);
+            panelPopup.add(Box.createHorizontalStrut(15)); // a spacer
+            panelPopup.add(new JLabel("Cible 2:"));
+            panelPopup.add(cible2);
+            panelPopup.add(Box.createHorizontalStrut(15)); // a spacer
+            panelPopup.add(new JLabel("Type:"));
+            panelPopup.add(type);
 
-            int result = JOptionPane.showConfirmDialog(null, myPanel,"Entrer vos sommet de départ", JOptionPane.OK_CANCEL_OPTION);
+            int result = JOptionPane.showConfirmDialog(null, panelPopup,"Entrer vos sommet de départ", JOptionPane.OK_CANCEL_OPTION);
                if (result == JOptionPane.OK_OPTION) {
                       String res = this.graphe.CompareTwoDistNeighbors(cible1.getSelectedItem().toString(), cible2.getSelectedItem().toString(), type.getSelectedItem().toString());
                       this.textArea.setText(res);

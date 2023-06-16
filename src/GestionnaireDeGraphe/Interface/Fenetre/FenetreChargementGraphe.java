@@ -44,18 +44,16 @@ public class FenetreChargementGraphe extends Fenetre {
         super.addJMenuToMenuBar(outils);
     }
 
-    private void dessinerSommet() {
+    public void dessinerSommet() {
         for (LCGraphe.MaillonGraphe sommet : this.listeSommets) {
             SommetGraphe s = new SommetGraphe(sommet);
 //            TODO générer des vrai points
             s.setBounds(sommet.getCoordonnees().x,sommet.getCoordonnees().y,35,35);
             this.listesommetgraphique.add(s);
-//            s.setBorder(BorderFactory.createLineBorder(java.awt.Color.green));
-//            s.setBounds(sommet.getCoordonnees().x, sommet.getCoordonnees().y, 30, 30);
             super.addJLabelToContent(s);
         }
     }
-    private void dessinerArc() {
+    public void dessinerArc() {
         for (LCGraphe.MaillonGrapheSec arete : this.listeArete.values()) {
             if(arete.getListed() == false){
                 LCGraphe.MaillonGraphe origine = this.graphe.recherchenom(arete.getOrig());
@@ -84,5 +82,6 @@ public class FenetreChargementGraphe extends Fenetre {
     outilsItem.addActionListener(e -> {
         new FenetreOutils(this.graphe, this.listeSommets, this.listeArete, this.listearretegraphique, this.listesommetgraphique, this);
     });
+
 }
 }
