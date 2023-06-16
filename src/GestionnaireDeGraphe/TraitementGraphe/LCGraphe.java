@@ -169,12 +169,11 @@ public class LCGraphe {
      * @param : String ori, String t
      * @return : void
      */
-    public void addMain(String ori, TypeDispensaire t){
-
-
+    public boolean addMain(String ori, TypeDispensaire t){
         MaillonGraphe nouv = new MaillonGraphe(ori,t);
         nouv.suiv= this.premier;
         this.premier = nouv;
+        return true;
     }
 
     /**
@@ -1205,9 +1204,6 @@ public class LCGraphe {
         g.charg();
         System.out.println(g.toString());
         System.out.println("////");
-        System.out.println("////");
-        System.out.println();
-
-        System.out.println(g.CompareTwoDistNeighbors("S1","S5","Nutrition"));
+        System.out.println(g.toString());
     }
 }
