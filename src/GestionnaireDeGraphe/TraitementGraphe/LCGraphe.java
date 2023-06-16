@@ -388,14 +388,9 @@ public class LCGraphe {
 
         int res = 0;
         List listing = ListingTwoDistNeighbors(dep);
-        for (int i = 0; i < listing.size(); i++) {
-            MaillonGraphe tmp = this.premier;
-            while (!tmp.nom.equals(listing.get(i))) {
-                tmp = tmp.suiv;
-            }
-            if (tmp.type.equals(type)){
-                res++;
-                }
+        for (String s : (ArrayList<String>) listing) {
+            MaillonGraphe tmp = recherchenom(s);
+            if (tmp.type.getCaption().equals(type)) res++;
         }
         return res;
     }
@@ -1212,7 +1207,7 @@ public class LCGraphe {
         System.out.println("////");
         System.out.println("////");
         System.out.println();
-        g.dijkstrafiable("S2","S5");
 
+        System.out.println(g.CompareTwoDistNeighbors("S1","S5","Nutrition"));
     }
 }
