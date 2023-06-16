@@ -610,7 +610,32 @@ public class FenetreOutils extends JFrame {
             myPanel.add(Box.createHorizontalStrut(15)); // a spacer
             myPanel.add(new JLabel("Temps:"));
             myPanel.add(temps);
-            
+            int result = JOptionPane.showConfirmDialog(null, myPanel, "Nouveaux sommet", JOptionPane.OK_CANCEL_OPTION);
+            if (result == JOptionPane.OK_OPTION) {
+                String c1 = cible1.getSelectedItem().toString();
+                String c2 = cible2.getSelectedItem().toString();
+                if (c1.equals(c2)) {
+                    JOptionPane.showMessageDialog(null, "Vous ne pouvez pas ajouter un arc sur le même sommet", "Erreur", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if (fiabilite.getText().equals("") || distance.getText().equals("") || temps.getText().equals("")) {
+                    JOptionPane.showMessageDialog(null, "Vous devez entrer une fiabilité, une distance et un temps", "Erreur", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                double fiab = Double.parseDouble(fiabilite.getText());
+                double dist = Double.parseDouble(distance.getText());
+                double temp = Double.parseDouble(temps.getText());
+                int i = this.graphe.countEdges() + 1;
+                String nom_edge = "a" + i;
+                boolean a = this.graphe.addEdge(nom_edge,c1, c2, fiab, dist, temp);
+                this.graphe.addEdge(nom_edge,c2, c1, fiab, dist, temp);
+                if (a) {
+                    JOptionPane.showMessageDialog(null, "L'arc a été ajouté", "Succès", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "L'arc n'a pas été ajouté", "Erreur", JOptionPane.ERROR_MESSAGE);
+                }
+                //TODO Faire l'affichage de l'arrete
+            }
         });
     }
 }

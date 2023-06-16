@@ -187,11 +187,9 @@ public class LCGraphe {
      * @description : ajoute une arete au graphe a partir de son origine, sa destination,
      * sa fiabilite, sa distance et sa duree
      * @param : String o, String d, double fiab, double dist, double dur
-     * @return : void
+     * @return : boolean
      */
-    public void addEdge(String nom, String o, String d, double fiab, double dist, double dur){
-
-
+    public boolean addEdge(String nom, String o, String d, double fiab, double dist, double dur){
         MaillonGrapheSec nouv = new MaillonGrapheSec(nom, fiab, dist, dur, o, d);
         MaillonGraphe tmp = this.premier;
         while (tmp != null && !tmp.nom.equals(o)){
@@ -211,6 +209,7 @@ public class LCGraphe {
             nouv2.suiv = tmp.lVois;
             tmp.lVois = nouv2;
         }
+        return true;
     }
 
     /**
