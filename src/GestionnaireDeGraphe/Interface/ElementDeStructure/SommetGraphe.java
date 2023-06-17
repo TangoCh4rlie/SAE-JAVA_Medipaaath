@@ -2,8 +2,13 @@ package GestionnaireDeGraphe.Interface.ElementDeStructure;
 
 import GestionnaireDeGraphe.TraitementGraphe.LCGraphe;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JLabel;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.BasicStroke;
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -14,7 +19,6 @@ public class SommetGraphe extends JLabel implements MouseListener, MouseMotionLi
     private int mouseX;
     private int mouseY;
     private Color couleurDuPoint;
-    private JToolTip toolTip;
     public SommetGraphe(LCGraphe.MaillonGraphe sommet) {
         super();
         this.sommet = sommet;
@@ -51,17 +55,6 @@ public class SommetGraphe extends JLabel implements MouseListener, MouseMotionLi
 
     @Override
     public void mouseClicked(MouseEvent e) {
-//        check if it's a right click
-        if (SwingUtilities.isRightMouseButton(e)) {
-            JPopupMenu popupMenu = new JPopupMenu();
-            JMenuItem supprimer = new JMenuItem("Supprimer");
-            popupMenu.add(supprimer);
-            popupMenu.show(this, e.getX(), e.getY());
-            supprimer.addActionListener(e1 -> {
-                this.sommet.supprimer();
-                getParent().repaint();
-            });
-        }
 
     }
 
