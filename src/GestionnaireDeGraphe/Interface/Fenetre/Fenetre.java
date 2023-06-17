@@ -30,6 +30,7 @@ public class Fenetre extends JFrame {
     private JMenu menu = new JMenu("Menu");
     private JMenu ajouter = new JMenu("Ajouter");
     private JMenuItem menuOuvrir = new JMenuItem("Ouvrir");
+    private JMenuItem menuSauvegarder = new JMenuItem("Sauvegarder");
     private JMenuItem menuQuitter = new JMenuItem("Quitter");
     private JMenuItem aj_sommet = new JMenuItem("Ajouter un sommet");
     private JMenuItem aj_arete = new JMenuItem("Ajouter une arete");
@@ -58,6 +59,7 @@ public class Fenetre extends JFrame {
         }
 
         this.menu.add(menuOuvrir);
+        this.menu.add(menuSauvegarder);
         this.menu.add(menuQuitter);
         this.ajouter.add(aj_sommet);
         this.ajouter.add(aj_arete);
@@ -154,9 +156,10 @@ public class Fenetre extends JFrame {
                 }
                 this.listeSommets = this.graphe.getListSommet();
                 LCGraphe.MaillonGraphe nouvSommet = this.listeSommets.get(0);
+                nouvSommet.setCoordonnees(new Point(0, 0));
 
                 SommetGraphe sommetGraphe = new SommetGraphe(nouvSommet);
-                sommetGraphe.setBounds(0, 0, 35, 35);
+                sommetGraphe.setBounds(nouvSommet.getCoordonnees().x, nouvSommet.getCoordonnees().y, 35, 35);
                 this.listesommetgraphique.add(sommetGraphe);
                 addJLabelToContent(sommetGraphe);
 
@@ -222,7 +225,22 @@ public class Fenetre extends JFrame {
                 this.addListeAretesGraphique(areteGraphe);
                 areteGraphe.setBounds(0, 0, getWidth(), getHeight());
                 this.addJLabelToContent(areteGraphe);
+                this.graphe.listedarrete(nouvArete);
             }
+        });
+        this.menuSauvegarder.addActionListener(e -> {
+            JFileChooser choixFichier = new JFileChooser();
+            choixFichier.setDialogTitle("Sauvegarder");
+            choixFichier.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+            String chemin = choixFichier.getCurrentDirectory().getAbsolutePath();
+
+            String nom = JOptionPane.showInputDialog(this, "Entrez le nom du fichier", "Nom", JOptionPane.QUESTION_MESSAGE);
+            if (nom == null) {
+                return;
+            }
+            File fileToSave = new File(chemin + "/" + nom + ".csv");
+            this.graphe.sauvegardeFichierCsv(fileToSave.getAbsolutePath());
         });
     }
 
