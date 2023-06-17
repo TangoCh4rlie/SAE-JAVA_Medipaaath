@@ -22,11 +22,13 @@ public class FenetreChargementGraphe extends Fenetre {
     private JMenu outils;
     private JMenuItem outilsItem;
 
-    public FenetreChargementGraphe(String filePath) throws IOException {
+    public FenetreChargementGraphe(String filePath, List<LCGraphe.MaillonGraphe> listeSommets, HashMap<String, LCGraphe.MaillonGrapheSec> listeAretes, List<AreteGraphe> listearretegraphique, List<SommetGraphe> listesommetgraphique) throws IOException {
         super();
         this.graphe = new LCGraphe(filePath);
         this.graphe.charg();
         this.listeSommets = new ArrayList<>(this.graphe.getListSommet());
+        if (listeSommets != null)
+            this.listeSommets.addAll(listeSommets);
         this.listeArete = new HashMap<>(this.graphe.getListAretes());
         this.listearretegraphique = new ArrayList<>();
         this.listesommetgraphique = new ArrayList<>();

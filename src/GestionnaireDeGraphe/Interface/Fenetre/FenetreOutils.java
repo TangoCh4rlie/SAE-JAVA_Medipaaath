@@ -25,8 +25,6 @@ public class FenetreOutils extends JFrame {
     private JMenu modification;
     private JMenu affichage;
     private JMenu analyse;
-    private JMenuItem aj_s;
-    private JMenuItem aj_a;
     private JMenuItem disp_proche;
     private JMenuItem disp_2dist;
     private JMenuItem disp_comp;
@@ -44,8 +42,6 @@ public class FenetreOutils extends JFrame {
 
 
 //    Tout ce qui est relatif au contenu de la fenetre
-    private JLabel titre;
-    private JPanel titrePanel;
     private JTextArea textArea;
     private JPanel content;
 
@@ -80,8 +76,6 @@ public class FenetreOutils extends JFrame {
 
         modifie_arete = new JMenuItem("Modifier une arete");
         modifie_sommet = new JMenuItem("Modifier un sommet");
-        aj_a = new JMenuItem("Ajouter une arete");
-        aj_s = new JMenuItem("Ajouter un sommet");
 
         afficheDataArete = new JMenuItem("Afficher les données d'une arete");
         afficheDataSommet = new JMenuItem("Afficher les données d'un sommet");
@@ -101,8 +95,6 @@ public class FenetreOutils extends JFrame {
 
         this.modification.add(modifie_arete);
         this.modification.add(modifie_sommet);
-        this.modification.add(aj_s);
-        this.modification.add(aj_a);
 
         this.affichage.add(afficheDataArete);
         this.affichage.add(afficheDataSommet);
@@ -542,100 +534,6 @@ public class FenetreOutils extends JFrame {
                       String res = this.graphe.CompareTwoDistNeighbors(cible1.getSelectedItem().toString(), cible2.getSelectedItem().toString(), type.getSelectedItem().toString());
                       this.textArea.setText(res);
                 }
-        });
-        this.aj_s.addActionListener(e -> {
-            JComboBox<String> type = new JComboBox<>();
-            type.addItem("Matérnité");
-            type.addItem("Nutrition");
-            type.addItem("Opératoire");
-            JTextField saisie_n = new JTextField(5);
-            JPanel myPanel = new JPanel();
-            myPanel.add(new JLabel("Nom:"));
-            myPanel.add(saisie_n);
-            myPanel.add(Box.createHorizontalStrut(15)); // a spacer
-            myPanel.add(new JLabel("Type:"));
-            myPanel.add(type);
-
-            int result = JOptionPane.showConfirmDialog(null, myPanel, "Entrer vos sommet de départ", JOptionPane.OK_CANCEL_OPTION);
-            if (result == JOptionPane.OK_OPTION) {
-                TypeDispensaire val = TypeDispensaire.MATERNITE;
-                if (type.getSelectedItem() == "Matérnité") {
-                    val = TypeDispensaire.MATERNITE;
-                } else if (type.getSelectedItem() == "Nutrition") {
-                    val = TypeDispensaire.NUTRITION;
-                } else if (type.getSelectedItem() == "Opératoire") {
-                    val = TypeDispensaire.OPERATOIRE;
-                }
-
-
-            String nom = saisie_n.getText();
-            if (nom.equals("")) {
-                JOptionPane.showMessageDialog(null, "Vous devez entrer un nom", "Erreur", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            boolean a = this.graphe.addMain(nom, val);
-            if (a) {
-                JOptionPane.showMessageDialog(null, "Le sommet a été ajouté", "Succès", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(null, "Le sommet n'a pas été ajouté", "Erreur", JOptionPane.ERROR_MESSAGE);
-            }
-
-            }
-            //TODO AFFICHER LE GRAPHE AVEC SON NOUVEAUX POINTS
-        });
-        this.aj_a.addActionListener(e -> {
-            JComboBox<String> cible1 = new JComboBox<>();
-            for (LCGraphe.MaillonGraphe listeSommet : listeSommets) {
-                cible1.addItem(listeSommet.getNom());
-            }
-            JComboBox<String> cible2 = new JComboBox<>();
-            for (LCGraphe.MaillonGraphe listeSommet : listeSommets) {
-                cible2.addItem(listeSommet.getNom());
-            }
-            JTextField fiabilite = new JTextField(5);
-            JTextField distance = new JTextField(5);
-            JTextField temps = new JTextField(5);
-            JPanel myPanel = new JPanel();
-            myPanel.add(new JLabel("Cible 1:"));
-            myPanel.add(cible1);
-            myPanel.add(Box.createHorizontalStrut(15)); // a spacer
-            myPanel.add(new JLabel("Cible 2:"));
-            myPanel.add(cible2);
-            myPanel.add(Box.createHorizontalStrut(15)); // a spacer
-            myPanel.add(new JLabel("Fiabilité:"));
-            myPanel.add(fiabilite);
-            myPanel.add(Box.createHorizontalStrut(15)); // a spacer
-            myPanel.add(new JLabel("Distance:"));
-            myPanel.add(distance);
-            myPanel.add(Box.createHorizontalStrut(15)); // a spacer
-            myPanel.add(new JLabel("Temps:"));
-            myPanel.add(temps);
-            int result = JOptionPane.showConfirmDialog(null, myPanel, "Nouveaux sommet", JOptionPane.OK_CANCEL_OPTION);
-            if (result == JOptionPane.OK_OPTION) {
-                String c1 = cible1.getSelectedItem().toString();
-                String c2 = cible2.getSelectedItem().toString();
-                if (c1.equals(c2)) {
-                    JOptionPane.showMessageDialog(null, "Vous ne pouvez pas ajouter un arc sur le même sommet", "Erreur", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                if (fiabilite.getText().equals("") || distance.getText().equals("") || temps.getText().equals("")) {
-                    JOptionPane.showMessageDialog(null, "Vous devez entrer une fiabilité, une distance et un temps", "Erreur", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                double fiab = Double.parseDouble(fiabilite.getText());
-                double dist = Double.parseDouble(distance.getText());
-                double temp = Double.parseDouble(temps.getText());
-                int i = this.graphe.countEdges() + 1;
-                String nom_edge = "a" + i;
-                boolean a = this.graphe.addEdge(nom_edge,c1, c2, fiab, dist, temp);
-                this.graphe.addEdge(nom_edge,c2, c1, fiab, dist, temp);
-                if (a) {
-                    JOptionPane.showMessageDialog(null, "L'arc a été ajouté", "Succès", JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(null, "L'arc n'a pas été ajouté", "Erreur", JOptionPane.ERROR_MESSAGE);
-                }
-                //TODO Faire l'affichage de l'arrete
-            }
         });
     }
 }
