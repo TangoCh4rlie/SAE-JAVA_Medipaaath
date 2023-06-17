@@ -14,29 +14,23 @@ import java.util.concurrent.TimeUnit;
 
 public class FenetreChargementGraphe extends Fenetre {
     private LCGraphe graphe;
-    private List<LCGraphe.MaillonGraphe> listeSommets;
-    private HashMap<String, LCGraphe.MaillonGrapheSec> listeArete;
-    private List<AreteGraphe> listearretegraphique;
-    private List<SommetGraphe> listesommetgraphique;
-
     private JMenu outils;
     private JMenuItem outilsItem;
 
-    public FenetreChargementGraphe(String filePath, List<LCGraphe.MaillonGraphe> listeSommets, HashMap<String, LCGraphe.MaillonGrapheSec> listeAretes, List<AreteGraphe> listearretegraphique, List<SommetGraphe> listesommetgraphique) throws IOException {
+    public FenetreChargementGraphe(String filePath) throws IOException {
         super();
         this.graphe = new LCGraphe(filePath);
         this.graphe.charg();
-        this.listeSommets = new ArrayList<>(this.graphe.getListSommet());
-        if (listeSommets != null)
-            this.listeSommets.addAll(listeSommets);
-        this.listeArete = new HashMap<>(this.graphe.getListAretes());
-        this.listearretegraphique = new ArrayList<>();
-        this.listesommetgraphique = new ArrayList<>();
+        this.setListeSommets(this.graphe.getListSommet());
+        this.setListeAretes(this.graphe.getListAretes());
+        this.setListeSommetsGraphique(new ArrayList<>());
+        this.setListeAretesGraphique(new ArrayList<>());
+
         initComponents();
         this.dessinerSommet();
         this.dessinerArc();
         initActionListener();
-        new FenetreOutils(this.graphe, this.listeSommets, this.listeArete, this.listearretegraphique, this.listesommetgraphique, this);
+        new FenetreOutils(this.graphe, this.getListeSommets(), this.getListeAretes(), this.getListearretegraphique(), this.getListesommetgraphique(), this);
     }
 
     private void initComponents() {
@@ -47,21 +41,21 @@ public class FenetreChargementGraphe extends Fenetre {
     }
 
     public void dessinerSommet() {
-        for (LCGraphe.MaillonGraphe sommet : this.listeSommets) {
+        for (LCGraphe.MaillonGraphe sommet : this.getListeSommets()) {
             SommetGraphe s = new SommetGraphe(sommet);
 //            TODO générer des vrai points
             s.setBounds(sommet.getCoordonnees().x,sommet.getCoordonnees().y,35,35);
-            this.listesommetgraphique.add(s);
+            this.addListeSommetsGraphique(s);
             super.addJLabelToContent(s);
         }
     }
     public void dessinerArc() {
-        for (LCGraphe.MaillonGrapheSec arete : this.listeArete.values()) {
+        for (LCGraphe.MaillonGrapheSec arete : this.getListeAretes().values()) {
             if(arete.getListed() == false){
                 LCGraphe.MaillonGraphe origine = this.graphe.recherchenom(arete.getOrig());
                 LCGraphe.MaillonGraphe destination = this.graphe.recherchenom(arete.getDest());
                 AreteGraphe a = new AreteGraphe(arete.getNomArete(), origine, destination, arete);
-                this.listearretegraphique.add(a);
+                this.addListeAretesGraphique(a);
                 a.setBounds(0, 0, getWidth(), getHeight());
                 super.addJLabelToContent(a);
                 this.graphe.listedarrete(arete);
@@ -69,20 +63,9 @@ public class FenetreChargementGraphe extends Fenetre {
         }
     }
 
-
-
-    public Component getComponentnamed(String name) {
-        for (Component c : this.getContentPane().getComponents()) {
-            if (c.getName().equals(name)) {
-                return c;
-            }
-        }
-        return null;
-    }
-
     public void initActionListener() {
     outilsItem.addActionListener(e -> {
-        new FenetreOutils(this.graphe, this.listeSommets, this.listeArete, this.listearretegraphique, this.listesommetgraphique, this);
+        new FenetreOutils(this.graphe, this.getListeSommets(), this.getListeAretes(), this.getListearretegraphique(), this.getListesommetgraphique(), this);
     });
 
 }

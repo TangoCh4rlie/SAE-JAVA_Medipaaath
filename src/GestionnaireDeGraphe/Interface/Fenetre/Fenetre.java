@@ -31,8 +31,8 @@ public class Fenetre extends JFrame {
     private JMenu ajouter = new JMenu("Ajouter");
     private JMenuItem menuOuvrir = new JMenuItem("Ouvrir");
     private JMenuItem menuQuitter = new JMenuItem("Quitter");
-    private JMenuItem aj_sommet = new JMenuItem("Ajouter une arete");
-    private JMenuItem aj_arete = new JMenuItem("Ajouter un sommet");
+    private JMenuItem aj_sommet = new JMenuItem("Ajouter un sommet");
+    private JMenuItem aj_arete = new JMenuItem("Ajouter une arete");
 
 //     Tout ce qui est relatif au contenu de la fenetre
     public JPanel content;
@@ -93,7 +93,7 @@ public class Fenetre extends JFrame {
             if (!path.contains(".csv")) return;
             this.dispose();
             try {
-                new FenetreChargementGraphe(path, listeSommets, listeAretes, listearretegraphique, listesommetgraphique);
+                new FenetreChargementGraphe(path);
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -204,5 +204,35 @@ public class Fenetre extends JFrame {
     protected void addJMenuToMenuBar(JMenu traitement) {
         this.menuBar.add(traitement);
         this.setJMenuBar(this.menuBar);
+    }
+    public void setListeAretes(HashMap<String, LCGraphe.MaillonGrapheSec> arete) {
+        this.listeAretes.putAll(arete);
+    }
+    public void setListeSommets(List<LCGraphe.MaillonGraphe> sommet) {
+        this.listeSommets.addAll(sommet);
+    }
+    public void setListeSommetsGraphique(List<SommetGraphe> sommet) {
+        this.listesommetgraphique.addAll(sommet);
+    }
+    public void setListeAretesGraphique(List<AreteGraphe> arete) {
+        this.listearretegraphique.addAll(arete);
+    }
+    public void addListeSommetsGraphique(SommetGraphe sommet) {
+        this.listesommetgraphique.add(sommet);
+    }
+    public void addListeAretesGraphique(AreteGraphe arete) {
+        this.listearretegraphique.add(arete);
+    }
+    public HashMap<String, LCGraphe.MaillonGrapheSec> getListeAretes() {
+        return listeAretes;
+    }
+    public List<LCGraphe.MaillonGraphe> getListeSommets() {
+        return listeSommets;
+    }
+    public List<SommetGraphe> getListesommetgraphique() {
+        return listesommetgraphique;
+    }
+    public List<AreteGraphe> getListearretegraphique() {
+        return listearretegraphique;
     }
 }
