@@ -70,7 +70,21 @@ public class Fenetre extends JFrame {
         this.content.setBorder(BorderFactory.createLineBorder(Color.red));
 
         File newFile = new File("./common/grapheGenere.csv");
-        newFile.delete();
+        if (!newFile.exists()) {
+            try {
+                newFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            try {
+                newFile.delete();
+                newFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
         this.graphe = new LCGraphe("./common/grapheGenere.csv");
         this.listeAretes = this.graphe.getListAretes();
@@ -113,28 +127,40 @@ public class Fenetre extends JFrame {
 
             int result = JOptionPane.showConfirmDialog(null, myPanel, "Entrer vos sommet de départ", JOptionPane.OK_CANCEL_OPTION);
             if (result == JOptionPane.OK_OPTION) {
-                TypeDispensaire val = TypeDispensaire.MATERNITE;
+                TypeDispensaire typeDisp = TypeDispensaire.MATERNITE;
                 if (type.getSelectedItem() == "Matérnité") {
-                    val = TypeDispensaire.MATERNITE;
+                    typeDisp = TypeDispensaire.MATERNITE;
                 } else if (type.getSelectedItem() == "Nutrition") {
-                    val = TypeDispensaire.NUTRITION;
+                    typeDisp = TypeDispensaire.NUTRITION;
                 } else if (type.getSelectedItem() == "Opératoire") {
-                    val = TypeDispensaire.OPERATOIRE;
+                    typeDisp = TypeDispensaire.OPERATOIRE;
                 }
                 String nom = saisie_n.getText();
                 if (nom.equals("")) {
                     JOptionPane.showMessageDialog(null, "Vous devez entrer un nom", "Erreur", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                boolean a = this.graphe.addMain(nom, val);
-                if (a) {
-                    JOptionPane.showMessageDialog(null, "Le sommet a été ajouté", "Succès", JOptionPane.INFORMATION_MESSAGE);
-                } else {
+//                Verifie si le sommet existe déjà
+                for (LCGraphe.MaillonGraphe sommet : this.listeSommets) {
+                    if (sommet.getNom().equals(nom)) {
+                        JOptionPane.showMessageDialog(null, "Le sommet existe déjà", "Erreur", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                }
+                boolean a = this.graphe.addMain(nom, typeDisp);
+                if (!a) {
                     JOptionPane.showMessageDialog(null, "Le sommet n'a pas été ajouté", "Erreur", JOptionPane.ERROR_MESSAGE);
                 }
+                this.listeSommets = this.graphe.getListSommet();
+                LCGraphe.MaillonGraphe nouvSommet = this.listeSommets.get(this.listeSommets.size() - 1);
 
+                SommetGraphe sommetGraphe = new SommetGraphe(nouvSommet);
+                sommetGraphe.setBounds(0, 0, 35, 35);
+                this.listesommetgraphique.add(sommetGraphe);
+                addJLabelToContent(sommetGraphe);
+
+                JOptionPane.showMessageDialog(null, "Le sommet a été ajouté", "Succès", JOptionPane.INFORMATION_MESSAGE);
             }
-            //TODO AFFICHER LE GRAPHE AVEC SON NOUVEAUX POINTS
         });
         this.aj_arete.addActionListener(e -> {
             JComboBox<String> cible1 = new JComboBox<>();
@@ -179,7 +205,7 @@ public class Fenetre extends JFrame {
                 double dist = Double.parseDouble(distance.getText());
                 double temp = Double.parseDouble(temps.getText());
                 int i = this.graphe.countEdges() + 1;
-                String nom_edge = "a" + i;
+                String nom_edge = "A" + i;
                 boolean a = this.graphe.addEdge(nom_edge,c1, c2, fiab, dist, temp);
                 this.graphe.addEdge(nom_edge,c2, c1, fiab, dist, temp);
                 if (a) {
@@ -205,6 +231,10 @@ public class Fenetre extends JFrame {
         this.menuBar.add(traitement);
         this.setJMenuBar(this.menuBar);
     }
+
+    public void setGraphe(LCGraphe graphe) {
+        this.graphe = graphe;
+    }
     public void setListeAretes(HashMap<String, LCGraphe.MaillonGrapheSec> arete) {
         this.listeAretes.putAll(arete);
     }
@@ -222,6 +252,10 @@ public class Fenetre extends JFrame {
     }
     public void addListeAretesGraphique(AreteGraphe arete) {
         this.listearretegraphique.add(arete);
+    }
+
+    public LCGraphe getGraphe() {
+        return graphe;
     }
     public HashMap<String, LCGraphe.MaillonGrapheSec> getListeAretes() {
         return listeAretes;
