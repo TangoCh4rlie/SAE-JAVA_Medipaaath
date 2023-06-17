@@ -1202,8 +1202,37 @@ public class LCGraphe {
         return null;
     }
 
-    public void sauvegardeFichierCsv(String cheminFichier) {
+    public void sauvegardeFichierCsv(File cheminFichier) {
+        try (PrintWriter writer = new PrintWriter(cheminFichier)) {
+            MaillonGraphe sommet = this.premier;
+            while (sommet != null) {
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append(sommet.nom).append(";").append(sommet.type).append(";");
 
+                MaillonGrapheSec arete = sommet.lVois;
+                while (arete != null) {
+                    stringBuilder.append(arete.dest).append(",");
+                    arete = arete.suiv;
+                }
+                stringBuilder.append("0;");
+                arete = sommet.lVois;
+                while (arete != null) {
+                    stringBuilder.append(arete.fiab).append(",");
+                    arete = arete.suiv;
+                }
+                stringBuilder.append("0;");
+                arete = sommet.lVois;
+                while (arete != null) {
+                    stringBuilder.append(arete.dur).append(",");
+                    arete = arete.suiv;
+                }
+                stringBuilder.append("0\n");
+                writer.write(stringBuilder.toString());
+                sommet = sommet.suiv;
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
 

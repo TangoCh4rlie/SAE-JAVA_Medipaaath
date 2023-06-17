@@ -72,27 +72,32 @@ public class Fenetre extends JFrame {
         this.content.setBorder(BorderFactory.createLineBorder(Color.red));
 
         File newFile = new File("./common/grapheGenere.csv");
-        if (!newFile.exists()) {
-            try {
-                newFile.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        else {
-            try {
-                newFile.delete();
-                newFile.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        checkIfFileExist(newFile);
+
 
         this.graphe = new LCGraphe("./common/grapheGenere.csv");
         this.listeAretes = this.graphe.getListAretes();
         this.listeSommets = this.graphe.getListSommet();
         this.listearretegraphique = new ArrayList<>();
         this.listesommetgraphique = new ArrayList<>();
+    }
+
+    public void checkIfFileExist(File file) {
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            try {
+                file.delete();
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void initActionListener() {
@@ -229,18 +234,28 @@ public class Fenetre extends JFrame {
             }
         });
         this.menuSauvegarder.addActionListener(e -> {
-            JFileChooser choixFichier = new JFileChooser();
-            choixFichier.setDialogTitle("Sauvegarder");
-            choixFichier.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-
-            String chemin = choixFichier.getCurrentDirectory().getAbsolutePath();
-
+//            JFileChooser choixFichier = new JFileChooser();
+//            choixFichier.setDialogTitle("Sauvegarder");
+//            choixFichier.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+//            int result = choixFichier.showOpenDialog(this);
+//            if (result != JFileChooser.APPROVE_OPTION) {
+//                return;
+//            }
+//            String chemin = choixFichier.getCurrentDirectory().getAbsolutePath();
+//
             String nom = JOptionPane.showInputDialog(this, "Entrez le nom du fichier", "Nom", JOptionPane.QUESTION_MESSAGE);
             if (nom == null) {
                 return;
             }
-            File fileToSave = new File(chemin + "/" + nom + ".csv");
-            this.graphe.sauvegardeFichierCsv(fileToSave.getAbsolutePath());
+            File fileToSave = new File("./common/" + nom + ".csv");
+            fileToSave.delete();
+            try {
+                fileToSave.createNewFile();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+            System.out.println(fileToSave);
+            this.graphe.sauvegardeFichierCsv(fileToSave);
         });
     }
 
