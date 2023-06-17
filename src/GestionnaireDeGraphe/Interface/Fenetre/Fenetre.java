@@ -136,6 +136,7 @@ public class Fenetre extends JFrame {
                     typeDisp = TypeDispensaire.OPERATOIRE;
                 }
                 String nom = saisie_n.getText();
+                System.out.println(nom);
                 if (nom.equals("")) {
                     JOptionPane.showMessageDialog(null, "Vous devez entrer un nom", "Erreur", JOptionPane.ERROR_MESSAGE);
                     return;
@@ -152,7 +153,7 @@ public class Fenetre extends JFrame {
                     JOptionPane.showMessageDialog(null, "Le sommet n'a pas été ajouté", "Erreur", JOptionPane.ERROR_MESSAGE);
                 }
                 this.listeSommets = this.graphe.getListSommet();
-                LCGraphe.MaillonGraphe nouvSommet = this.listeSommets.get(this.listeSommets.size() - 1);
+                LCGraphe.MaillonGraphe nouvSommet = this.listeSommets.get(0);
 
                 SommetGraphe sommetGraphe = new SommetGraphe(nouvSommet);
                 sommetGraphe.setBounds(0, 0, 35, 35);
@@ -214,6 +215,13 @@ public class Fenetre extends JFrame {
                     JOptionPane.showMessageDialog(null, "L'arc n'a pas été ajouté", "Erreur", JOptionPane.ERROR_MESSAGE);
                 }
                 //TODO Faire l'affichage de l'arrete
+                this.listeAretes = this.graphe.getListAretes();
+                LCGraphe.MaillonGrapheSec nouvArete = this.listeAretes.get(nom_edge);
+
+                AreteGraphe areteGraphe = new AreteGraphe(nom_edge, this.graphe.recherchenom(c1), this.graphe.recherchenom(c2),  nouvArete);
+                this.addListeAretesGraphique(areteGraphe);
+                areteGraphe.setBounds(0, 0, getWidth(), getHeight());
+                this.addJLabelToContent(areteGraphe);
             }
         });
     }
