@@ -5,11 +5,28 @@ import GestionnaireDeGraphe.Interface.ElementDeStructure.SommetGraphe;
 import GestionnaireDeGraphe.TraitementGraphe.LCGraphe;
 import GestionnaireDeGraphe.TraitementGraphe.TypeDispensaire;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
+import java.awt.Color;
+import java.awt.Dimension;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * @author Elouan
+ * @description Classe qui permet de créer la fenêtre d'outils où se trouve les différents outils de traitement du graphe
+ */
 public class FenetreOutils extends JFrame {
 
     private LCGraphe graphe;
@@ -45,6 +62,16 @@ public class FenetreOutils extends JFrame {
     private JTextArea textArea;
     private JPanel content;
 
+    /**
+     * @autor Elouan
+     * @description Constructeur de la fenêtre d'outils
+     * @param graphe
+     * @param listeSommets
+     * @param listeArete
+     * @param listearretegraphique
+     * @param listesommetgraphique
+     * @param fenetreChargementGraphe
+     */
     public FenetreOutils(LCGraphe graphe, List<LCGraphe.MaillonGraphe> listeSommets, HashMap<String, LCGraphe.MaillonGrapheSec> listeArete, List<AreteGraphe> listearretegraphique, List<SommetGraphe> listesommetgraphique, FenetreChargementGraphe fenetreChargementGraphe) {
         this.graphe = graphe;
         this.listearretegraphique = listearretegraphique;
@@ -57,6 +84,10 @@ public class FenetreOutils extends JFrame {
         this.pack();
     }
 
+    /**
+     * @autor Elouan
+     * @description Méthode qui permet d'initialiser les composants de la fenêtre
+     */
     private void initComponents() {
         this.setTitle("Outils");
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -118,12 +149,6 @@ public class FenetreOutils extends JFrame {
         this.textArea.setBorder(BorderFactory.createLineBorder(Color.black));
         this.textArea.setText("Effectuer un traitement\nsur le graphe");
 
-//        this.titre = new JLabel("Outils");
-//
-//        this.titrePanel = new JPanel();
-//        this.titrePanel.add(this.titre);
-//        this.titrePanel.setBorder(BorderFactory.createLineBorder(Color.green));
-
         this.content = new JPanel();
         this.content.setBorder(BorderFactory.createLineBorder(Color.red));
         this.content.add(this.textArea);
@@ -132,16 +157,20 @@ public class FenetreOutils extends JFrame {
         this.add(this.content);
     }
 
-    private void initWindow() {
-        this.setTitle("Outils");
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        this.setPreferredSize(new Dimension(250,400));
-        this.setVisible(true);
-    }
-
+    /**
+     * @autor Elouan
+     * @description Méthode qui permet de recuperer le nom d'une arete
+     * @param nomArete
+     */
     public LCGraphe.MaillonGrapheSec getArete(String nomArete){
         return this.listeArete.get(nomArete);
     }
+
+    /**
+     * @autor Elouan
+     * @description Méthode qui permet de recuperer un sommet
+     * @param nomSommet
+     */
     public LCGraphe.MaillonGraphe getSommet(String nomSommet){
         for (LCGraphe.MaillonGraphe listeSommet : listeSommets) {
             if (listeSommet.getNom().equals(nomSommet))
@@ -150,6 +179,11 @@ public class FenetreOutils extends JFrame {
         return null;
     }
 
+    /**
+     * @autor Elouan
+     * @description Méthode qui permet de reinitaliser la couleur d'un sommet
+     * @param nomSommet
+     */
     public void reinitCouleurSommet(){
         for (LCGraphe.MaillonGraphe listeSommet : listeSommets) {
             for (SommetGraphe sommetGraphe : this.listesommetgraphique) {
@@ -158,12 +192,21 @@ public class FenetreOutils extends JFrame {
             }
         }
     }
+
+    /**
+     * @autor Elouan
+     * @description Méthode qui permet de reinitaliser la couleur d'une arete
+     */
     public void reinitCouleurArete(){
         for (AreteGraphe areteGraphe : this.listearretegraphique) {
             areteGraphe.setCouleurActuelle(Color.black);
         }
     }
 
+    /**
+     * @autor Elouan
+     * @description Méthode qui permet d'initialiser les actionListener
+     */
     private void initActionListener() {
         this.reinit.addActionListener(e -> {
             reinitCouleurArete();
