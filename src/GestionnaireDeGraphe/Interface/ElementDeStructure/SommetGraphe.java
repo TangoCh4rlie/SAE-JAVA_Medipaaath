@@ -2,7 +2,7 @@ package GestionnaireDeGraphe.Interface.ElementDeStructure;
 
 import GestionnaireDeGraphe.TraitementGraphe.LCGraphe;
 
-import javax.swing.JLabel;
+import javax.swing.*;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;

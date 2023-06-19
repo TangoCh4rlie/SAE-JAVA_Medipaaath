@@ -8,8 +8,6 @@ import com.formdev.flatlaf.FlatIntelliJLaf;
 
 import javax.swing.*;
 
-import org.w3c.dom.events.MouseEvent;
-
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -28,12 +26,14 @@ public class Fenetre extends JFrame {
 //    Tout ce qui est relatif au menu
     private JMenuBar menuBar = new JMenuBar();
     private JMenu menu = new JMenu("Menu");
-    private JMenu ajouter = new JMenu("Ajouter");
+    private JMenu ajouter = new JMenu("Ajouter/Supprimer");
     private JMenuItem menuOuvrir = new JMenuItem("Ouvrir");
     private JMenuItem menuSauvegarder = new JMenuItem("Sauvegarder");
     private JMenuItem menuQuitter = new JMenuItem("Quitter");
     private JMenuItem aj_sommet = new JMenuItem("Ajouter un sommet");
     private JMenuItem aj_arete = new JMenuItem("Ajouter une arete");
+    private JMenuItem sup_sommet = new JMenuItem("Supprimer un sommet");
+    private JMenuItem sup_arete = new JMenuItem("Supprimer une arete");
 
 //     Tout ce qui est relatif au contenu de la fenetre
     public JPanel content;
@@ -47,7 +47,7 @@ public class Fenetre extends JFrame {
     private void initComponents() {
         this.setTitle("Placement des points");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setPreferredSize(new Dimension(800,800));
+        this.setPreferredSize(new Dimension(1520,1080));
         this.setLocationRelativeTo(null);
         this.setVisible(true);
 
@@ -63,6 +63,8 @@ public class Fenetre extends JFrame {
         this.menu.add(menuQuitter);
         this.ajouter.add(aj_sommet);
         this.ajouter.add(aj_arete);
+        this.ajouter.add(sup_sommet);
+        this.ajouter.add(sup_arete);
         this.menuBar.add(menu);
         this.menuBar.add(ajouter);
         this.setJMenuBar(this.menuBar);
@@ -226,11 +228,70 @@ public class Fenetre extends JFrame {
                 this.listeAretes = this.graphe.getListAretes();
                 LCGraphe.MaillonGrapheSec nouvArete = this.listeAretes.get(nom_edge);
 
-                AreteGraphe areteGraphe = new AreteGraphe(nom_edge, this.graphe.recherchenom(c1), this.graphe.recherchenom(c2),  nouvArete);
+                AreteGraphe areteGraphe = new AreteGraphe(nom_edge, this.graphe.rechercheNomSommet(c1), this.graphe.rechercheNomSommet(c2),  nouvArete);
                 this.addListeAretesGraphique(areteGraphe);
                 areteGraphe.setBounds(0, 0, getWidth(), getHeight());
                 this.addJLabelToContent(areteGraphe);
-                this.graphe.listedarrete(nouvArete);
+                this.graphe.listedArete(nouvArete);
+            }
+        });
+        this.sup_sommet.addActionListener(e -> {
+            JComboBox choixSommet = new JComboBox<>();
+            for (LCGraphe.MaillonGraphe sommet : listeSommets) {
+                choixSommet.addItem(sommet.getNom());
+            }
+            JPanel myPanel = new JPanel();
+            myPanel.add(new JLabel("Cible 1:"));
+            myPanel.add(choixSommet);
+            int result = JOptionPane.showConfirmDialog(null, myPanel, "Supprimer un sommet", JOptionPane.OK_CANCEL_OPTION);
+            if (result == JOptionPane.OK_OPTION) {
+                String c1 = choixSommet.getSelectedItem().toString();
+                LCGraphe.MaillonGraphe sommet = this.graphe.rechercheNomSommet(c1);
+                sommet.supprimerSommet();
+                this.listeSommets = this.graphe.getListSommet();
+                for (SommetGraphe sommetASup : listesommetgraphique) {
+                    if (sommetASup.getNomSommet().equals(c1)) {
+                        this.listesommetgraphique.remove(sommetASup);
+                        this.removeJLabelToContent(sommetASup);
+                        break;
+                    }
+                }
+//                supprimer les aretes liés a ce sommet
+                List< LCGraphe.MaillonGrapheSec> listAreteASup = this.graphe.getListAretesAdj(sommet);
+                for (LCGraphe.MaillonGrapheSec arete : listAreteASup) {
+                    arete.supprimerArete();
+                    for (AreteGraphe areteASup : listearretegraphique) {
+                        if (areteASup.getAreteNom().equals(arete.getNomArete())) {
+                            this.listearretegraphique.remove(areteASup);
+                            this.removeJLabelToContent(areteASup);
+                            break;
+                        }
+                    }
+                }
+                this.listeAretes = this.graphe.getListAretes();
+            }
+        });
+        this.sup_arete.addActionListener(e -> {
+            JComboBox choixArete = new JComboBox<>();
+            for (AreteGraphe arete : listearretegraphique) {
+                choixArete.addItem(arete.getAreteNom());
+            }
+            JPanel myPanel = new JPanel();
+            myPanel.add(new JLabel("Arete:"));
+            myPanel.add(choixArete);
+            int result = JOptionPane.showConfirmDialog(null, myPanel, "Supprimer une arete", JOptionPane.OK_CANCEL_OPTION);
+            if (result == JOptionPane.OK_OPTION) {
+                String nomArete = choixArete.getSelectedItem().toString();
+                LCGraphe.MaillonGrapheSec arete = this.graphe.rechercheNomArete(nomArete);
+                arete.supprimerArete();
+                this.listeAretes = this.graphe.getListAretes();
+                for (AreteGraphe areteASup : listearretegraphique) {
+                    if (areteASup.getAreteNom().equals(nomArete)) {
+                        this.listearretegraphique.remove(areteASup);
+                        this.removeJLabelToContent(areteASup);
+                        break;
+                    }
+                }
             }
         });
         this.menuSauvegarder.addActionListener(e -> {
@@ -263,6 +324,12 @@ public class Fenetre extends JFrame {
         this.content.add(label);
         this.setContentPane(this.content);
     }
+
+    public void removeJLabelToContent(JLabel label) {
+        this.content.remove(label);
+        this.setContentPane(this.content);
+    }
+
     public void addJPanelToContent(JPanel panel) {
         this.content.add(panel);
         this.setContentPane(this.content);

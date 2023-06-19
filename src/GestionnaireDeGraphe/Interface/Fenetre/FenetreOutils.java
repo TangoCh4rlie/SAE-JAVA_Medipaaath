@@ -175,7 +175,7 @@ public class FenetreOutils extends JFrame {
             reinitCouleurSommet();
             String nomSommet = JOptionPane.showInputDialog(this, "Entrez le nom du sommet", "Distance 1", JOptionPane.QUESTION_MESSAGE);
 
-            java.util.List<LCGraphe.MaillonGrapheSec> lAretes = this.graphe.getListAretesAdj(graphe.recherchenom(nomSommet));
+            java.util.List<LCGraphe.MaillonGrapheSec> lAretes = this.graphe.getListAretesAdj(graphe.rechercheNomSommet(nomSommet));
             for (LCGraphe.MaillonGrapheSec aretesADessiner : lAretes) {
                 for (AreteGraphe areteGraphe : this.listearretegraphique) {
                     if (areteGraphe.getAreteNom().equals(aretesADessiner.getNomArete())) {
@@ -185,7 +185,7 @@ public class FenetreOutils extends JFrame {
                 fenetreChargementGraphe.repaint();
             }
 
-            java.util.List<LCGraphe.MaillonGraphe> lSommets = this.graphe.getListSommetAdj(graphe.recherchenom(nomSommet));
+            java.util.List<LCGraphe.MaillonGraphe> lSommets = this.graphe.getListSommetAdj(graphe.rechercheNomSommet(nomSommet));
             for (LCGraphe.MaillonGraphe sommetADessiner : lSommets) {
                 for (SommetGraphe sommetGraphe : this.listesommetgraphique) {
                     if (sommetGraphe.getNomSommet().equals(sommetADessiner.getNom())) {
@@ -202,7 +202,7 @@ public class FenetreOutils extends JFrame {
             reinitCouleurSommet();
             String nomSommet = JOptionPane.showInputDialog(this, "Entrez le nom du sommet", "Distance 2", JOptionPane.QUESTION_MESSAGE);
 
-            java.util.List<LCGraphe.MaillonGrapheSec> lAretes = this.graphe.getListArete2Distance(graphe.recherchenom(nomSommet));
+            java.util.List<LCGraphe.MaillonGrapheSec> lAretes = this.graphe.getListArete2Distance(graphe.rechercheNomSommet(nomSommet));
             for (LCGraphe.MaillonGrapheSec aretesADessiner : lAretes) {
                 for (AreteGraphe areteGraphe : this.listearretegraphique) {
                     if (areteGraphe.getAreteNom().equals(aretesADessiner.getNomArete())) {
@@ -212,7 +212,7 @@ public class FenetreOutils extends JFrame {
                 fenetreChargementGraphe.repaint();
             }
 
-            java.util.List<LCGraphe.MaillonGraphe> lSommets = this.graphe.getListSommet2Dist(graphe.recherchenom(nomSommet));
+            java.util.List<LCGraphe.MaillonGraphe> lSommets = this.graphe.getListSommet2Dist(graphe.rechercheNomSommet(nomSommet));
             for (LCGraphe.MaillonGraphe sommetADessiner : lSommets) {
                 for (SommetGraphe sommetGraphe : this.listesommetgraphique) {
                     if (sommetGraphe.getNomSommet().equals(sommetADessiner.getNom())) {

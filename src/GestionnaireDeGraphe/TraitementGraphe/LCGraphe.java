@@ -87,6 +87,21 @@ public class LCGraphe {
         public String toString(){
             return this.nomArete;
         }
+
+        public void supprimerArete(){
+            MaillonGraphe tmp = premier;
+            while (tmp != null) {
+                MaillonGrapheSec tmp2 = tmp.lVois;
+                while (tmp2 != null) {
+                    if (tmp2.dest.equals(this.dest)) {
+                        tmp2 = tmp2.suiv;
+                    } else {
+                        tmp2 = tmp2.suiv;
+                    }
+                }
+                tmp = tmp.suiv;
+            }
+        }
     }
     public class MaillonGraphe {
         private String nom;
@@ -102,7 +117,7 @@ public class LCGraphe {
             lVois = null;
             suiv = null;
             listed = false;
-            coordonnees = new Point ((int) (Math.random() * 500), (int) (Math.random() * 500));
+            coordonnees = new Point ((int) (Math.random() * 1360), (int) (Math.random() * 880));
         }
 
         public Point getCoordonnees() {
@@ -143,7 +158,7 @@ public class LCGraphe {
          * @param : void
          * @return : void
          */
-        public void supprimer() {
+        public void supprimerSommet() {
 
             MaillonGraphe tmp = premier;
             while (tmp != null) {
@@ -325,7 +340,7 @@ public class LCGraphe {
         }
         MaillonGrapheSec tmp2 = tmp.lVois;
         while(tmp2 != null){
-            MaillonGraphe tmp3 = recherchenom(tmp2.dest);
+            MaillonGraphe tmp3 = rechercheNomSommet(tmp2.dest);
             MaillonGrapheSec tmp4 = tmp3.lVois;
             while (tmp4 != null) {
                 if (tmp4.dest.equals(arv)) return true;
@@ -359,7 +374,7 @@ public class LCGraphe {
                 String voisin = tmp2.dest;
 
                 // Rechercher le sommet voisin
-                MaillonGraphe voisinSommet = recherchenom(voisin);
+                MaillonGraphe voisinSommet = rechercheNomSommet(voisin);
                 if (voisinSommet != null) {
                     // Parcourir les voisins du sommet voisin
                     MaillonGrapheSec tmp3 = voisinSommet.lVois;
@@ -393,7 +408,7 @@ public class LCGraphe {
         int res = 0;
         List listing = ListingTwoDistNeighbors(dep);
         for (String s : (ArrayList<String>) listing) {
-            MaillonGraphe tmp = recherchenom(s);
+            MaillonGraphe tmp = rechercheNomSommet(s);
             if (tmp.type.getCaption().equals(type)) res++;
         }
         return res;
@@ -429,10 +444,19 @@ public class LCGraphe {
      * @param : String nom
      * @return : MaillonGraphe
      */
-    public MaillonGraphe recherchenom(String nom){
+    public MaillonGraphe rechercheNomSommet(String nom){
 
         MaillonGraphe tmp = this.premier;
         while (tmp != null && !tmp.nom.equals(nom)) {
+            //Parcours de la liste chainee de sommets
+            tmp = tmp.suiv;
+        }
+        return tmp;
+    }
+
+    public MaillonGrapheSec rechercheNomArete(String nom) {
+        MaillonGrapheSec tmp = this.premier.lVois;
+        while (tmp != null && !tmp.nomArete.equals(nom)) {
             //Parcours de la liste chainee de sommets
             tmp = tmp.suiv;
         }
@@ -1067,14 +1091,14 @@ public class LCGraphe {
         return listAretes;
     }
 
-    /**
-     * @autor : Elouan
-     * @description : retourne la liste chainee de sommets a 2 de distance d'un sommet
-     * @param : MaillonGraphe m
-     * @return : List<MaillonGraphe>
-     */
-    public List<MaillonGraphe> getListSommet2Dist(MaillonGraphe m) {
 
+    public List<MaillonGraphe> getListSommet2Dist(MaillonGraphe m) {
+        /**
+         * @autor : Elouan
+         * @description : retourne la liste chainee de sommets a 2 de distance d'un sommet
+         * @param : MaillonGraphe m
+         * @return : List<MaillonGraphe>
+         */
         List<MaillonGraphe> listSommet = new ArrayList<>();
         MaillonGrapheSec tmp = m.lVois;
         while (tmp != null) {
@@ -1090,14 +1114,14 @@ public class LCGraphe {
         return listSommet;
     }
 
-    /**
-     * @autor : Elouan
-     * @description : retourne la liste chainee d'aretes a 2 de distance d'un sommet
-     * @param : MaillonGraphe m
-     * @return : List<MaillonGrapheSec>
-     */
-    public List<MaillonGrapheSec> getListArete2Distance(MaillonGraphe m) {
 
+    public List<MaillonGrapheSec> getListArete2Distance(MaillonGraphe m) {
+        /**
+         * @autor : Elouan
+         * @description : retourne la liste chainee d'aretes a 2 de distance d'un sommet
+         * @param : MaillonGraphe m
+         * @return : List<MaillonGrapheSec>
+         */
         List<MaillonGrapheSec> listAretes = new ArrayList<>();
         MaillonGrapheSec tmp = m.lVois;
         while (tmp != null) {
@@ -1113,15 +1137,15 @@ public class LCGraphe {
         return listAretes;
     }
 
-    /**
-     * @autor : Haithem
-     * @description : liste tout les arretes du graphe
-     * @param : void
-     * @return : void
-     * @complexite : O(n^2)
-     */
-    public void listedarretes(){
 
+    public void listedarretes(){
+        /**
+         * @autor : Haithem
+         * @description : liste tout les arretes du graphe
+         * @param : void
+         * @return : void
+         * @complexite : O(n^2)
+         */
         MaillonGraphe tmp = this.premier;
         while (tmp != null) {
             MaillonGrapheSec tmp2 = tmp.lVois;
@@ -1146,7 +1170,7 @@ public class LCGraphe {
         }
     }
 
-    public void listedarrete(MaillonGrapheSec a){
+    public void listedArete(MaillonGrapheSec a){
         /**
          * @autor : Haithem
          * @description : liste une arrete du graphe
@@ -1180,14 +1204,14 @@ public class LCGraphe {
         }
     }
 
-    /**
-     * @autor : Haithem
-     * @description : Renvoie l'adresse mémoire d'une arrete
-     * @param : String nom
-     * @return : MaillonGrapheSec
-     */
-    public MaillonGrapheSec recherchearrete(String nom){
 
+    public MaillonGrapheSec recherchearrete(String nom){
+        /**
+         * @autor : Haithem
+         * @description : Renvoie l'adresse mémoire d'une arrete
+         * @param : String nom
+         * @return : MaillonGrapheSec
+         */
         MaillonGraphe tmp = this.premier;
         while (tmp != null) {
             MaillonGrapheSec tmp2 = tmp.lVois;

@@ -47,13 +47,13 @@ public class FenetreChargementGraphe extends Fenetre {
     public void dessinerArc() {
         for (LCGraphe.MaillonGrapheSec arete : this.getListeAretes().values()) {
             if(arete.getListed() == false){
-                LCGraphe.MaillonGraphe origine = this.getGraphe().recherchenom(arete.getOrig());
-                LCGraphe.MaillonGraphe destination = this.getGraphe().recherchenom(arete.getDest());
+                LCGraphe.MaillonGraphe origine = this.getGraphe().rechercheNomSommet(arete.getOrig());
+                LCGraphe.MaillonGraphe destination = this.getGraphe().rechercheNomSommet(arete.getDest());
                 AreteGraphe a = new AreteGraphe(arete.getNomArete(), origine, destination, arete);
                 this.addListeAretesGraphique(a);
                 a.setBounds(0, 0, getWidth(), getHeight());
                 super.addJLabelToContent(a);
-                this.getGraphe().listedarrete(arete);
+                this.getGraphe().listedArete(arete);
             }
         }
     }
