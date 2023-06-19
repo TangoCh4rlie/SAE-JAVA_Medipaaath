@@ -17,6 +17,14 @@ public class AreteGraphe extends JLabel {
     private String areteNom;
     private Color couleurActuelle;
 
+    /**
+     * @author Elouan
+     * @description Constructeur de la classe AreteGraphe.
+     * @param areteNom le nom de l'arête
+     * @param origine le maillon du sommet d'origine de l'arête
+     * @param destination le maillon du sommet de destination de l'arête
+     * @param arete le maillon de l'arête à dessiner
+     */
     public AreteGraphe(String areteNom, LCGraphe.MaillonGraphe origine, LCGraphe.MaillonGraphe destination, LCGraphe.MaillonGrapheSec arete) {
         super();
         this.areteNom = areteNom;
@@ -25,6 +33,11 @@ public class AreteGraphe extends JLabel {
         this.couleurActuelle = arete.getCouleur();
     }
 
+    /**
+     * @author Elouan
+     * @description Redéfinition de la méthode paintComponent pour dessiner l'arête.
+     * @param g l'objet Graphics utilisé pour dessiner l'arête
+     */
     @Override
     public void paintComponent(java.awt.Graphics g) {
         super.paintComponent(g);
@@ -39,6 +52,12 @@ public class AreteGraphe extends JLabel {
     public String getAreteNom() {
         return areteNom;
     }
+    
+    /**
+     * @author Elouan
+     * @description Définit la couleur de l'arête.
+     * @param couleurActuelle la couleur de l'arête
+     */
     public void setCouleurActuelle(Color couleurActuelle) {
         this.couleurActuelle = couleurActuelle;
     }
