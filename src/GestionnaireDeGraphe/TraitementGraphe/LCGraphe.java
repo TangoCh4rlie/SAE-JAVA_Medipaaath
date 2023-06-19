@@ -7,6 +7,10 @@ import java.util.List;
 
 import java.util.logging.*;
 
+/**
+ * @autor : Elouan et Haithem
+ * @description : Classe LCGraphe
+ */
 public class LCGraphe {
     private static final Logger LOGGER = Logger.getLogger( "logs" );
     static {
@@ -31,6 +35,12 @@ public class LCGraphe {
 
         private boolean listed;
 
+        /**
+         * @autor : Elouan
+         * @description : constructeur de la classe MaillonGrapheSec
+         * @param : String nom, double f, double dt , double dr,String o, String d
+         * 
+         */ 
         private MaillonGrapheSec(String nom, double f, double dt , double dr,String o, String d) {
             nomArete = nom;
             fiab = f;
@@ -103,6 +113,11 @@ public class LCGraphe {
             }
         }
     }
+        
+    /**
+     * @autor Haithem
+     * @description : constructeur de la classe MaillonGraphe
+     */
     public class MaillonGraphe {
         private String nom;
         private TypeDispensaire type;
@@ -606,7 +621,7 @@ public class LCGraphe {
     }
 
     /**
-     * attribue un type de dispensaire a partir d'un string
+     * @description attribue un type de dispensaire a partir d'un string
      * @autor : Haithem
      * @param type
      * @return  TypeDispensaire
@@ -631,8 +646,7 @@ public class LCGraphe {
 
     /**
      * @autor : Haithem
-     * @description : applique l'algorithme de dijkstra pour trouver le plus court chemin
-     * entre deux sommets
+     * @description : applique l'algorithme de dijkstra pour trouver le plus court chemin entre deux sommets
      * @param : String start, String end
      * @return : List<String,String,Double>
      * @complexite : O(n^2)
@@ -847,13 +861,6 @@ public class LCGraphe {
      * @complexite : O(n^2)
      */
     public List dijkstrafiable(String start, String end) {
-        /*
-         * @autor : Haithem
-         * @description : applique l'algorithme de Dijkstra pour trouver le chemin le plus fiable entre deux sommets
-         * @param : String start, String end
-         * @return : List
-         * @complexite : O(n^2)
-         */
         Map<String, Double> reliabilities = new HashMap<>();
         Map<String, List<String>> paths = new HashMap<>();
         MaillonGraphe current = premier;
@@ -975,6 +982,13 @@ public class LCGraphe {
         return count;
     }
 
+    /**
+     * @autor : Haithem
+     * @description : compte le nombre de maternité dans le graphe
+     * @param : void
+     * @return : void
+     * @complexite : O(n^2)
+     */
     public int countMaternite(){
             MaillonGraphe tmp = this.premier;
             int count = 0;
@@ -987,6 +1001,13 @@ public class LCGraphe {
             return count;
     }
 
+    /**
+     * @autor : Haithem
+     * @description : compte le nombre de centre de nutrition dans le graphe
+     * @param : void
+     * @return : void
+     * @complexite : O(n^2)
+     */
     public int countNutrition(){
             MaillonGraphe tmp = this.premier;
             int count = 0;
@@ -999,6 +1020,13 @@ public class LCGraphe {
             return count;
     }
 
+    /**
+     * @autor : Haithem
+     * @description : compte le nombre de centre opératoires dans le graphe
+     * @param : void
+     * @return : void
+     * @complexite : O(n^2)
+     */
     public int countOperatoire(){
             MaillonGraphe tmp = this.premier;
             int count = 0;
@@ -1226,6 +1254,11 @@ public class LCGraphe {
         return null;
     }
 
+    /**
+     * @autor Elouan
+     * @description : sauvegarde le graphe dans un fichier csv
+     * @param cheminFichier
+     */
     public void sauvegardeFichierCsv(File cheminFichier) {
         try (PrintWriter writer = new PrintWriter(cheminFichier)) {
             MaillonGraphe sommet = this.premier;
@@ -1257,14 +1290,5 @@ public class LCGraphe {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-    }
-
-
-    public static void main(String[] args) throws IOException{
-        LCGraphe g = new LCGraphe("./common/liste-test.csv");
-        g.charg();
-        System.out.println(g.toString());
-        System.out.println("////");
-        System.out.println(g.toString());
     }
 }
