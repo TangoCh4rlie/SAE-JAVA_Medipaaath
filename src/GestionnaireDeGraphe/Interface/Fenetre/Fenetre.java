@@ -6,15 +6,35 @@ import GestionnaireDeGraphe.TraitementGraphe.LCGraphe;
 import GestionnaireDeGraphe.TraitementGraphe.TypeDispensaire;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.UnsupportedLookAndFeelException;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * @author Elouan
+ * @description Classe qui représente la fenêtre principale de l'application graphique.
+ */
 public class Fenetre extends JFrame {
 
     private LCGraphe graphe;
@@ -38,12 +58,21 @@ public class Fenetre extends JFrame {
 //     Tout ce qui est relatif au contenu de la fenetre
     public JPanel content;
 
+    /**
+     * @author Elouan
+     * @description Constructeur de la classe Fenetre.
+     * @param titre le titre de la fenêtre
+     */
     public Fenetre() {
         initComponents();
         initActionListener();
         this.pack();
     }
 
+    /**
+     * @author Elouan
+     * @description Initialise le menu de la fenêtre.
+     */
     private void initComponents() {
         this.setTitle("Placement des points");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -84,6 +113,11 @@ public class Fenetre extends JFrame {
         this.listesommetgraphique = new ArrayList<>();
     }
 
+    /**
+     * @author Elouan
+     * @description Vérifie si le fichier existe, si non il le crée.
+     * @param file le fichier à vérifier
+     */
     public void checkIfFileExist(File file) {
         if (!file.exists()) {
             try {
@@ -102,6 +136,10 @@ public class Fenetre extends JFrame {
         }
     }
 
+    /**
+     * @author Elouan
+     * @description Initialise les action listener de la fenêtre.
+     */
     private void initActionListener() {
         this.menuQuitter.addActionListener(e -> {
             this.dispose();
@@ -295,15 +333,15 @@ public class Fenetre extends JFrame {
             }
         });
         this.menuSauvegarder.addActionListener(e -> {
-//            JFileChooser choixFichier = new JFileChooser();
-//            choixFichier.setDialogTitle("Sauvegarder");
-//            choixFichier.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-//            int result = choixFichier.showOpenDialog(this);
-//            if (result != JFileChooser.APPROVE_OPTION) {
-//                return;
-//            }
-//            String chemin = choixFichier.getCurrentDirectory().getAbsolutePath();
-//
+           JFileChooser choixFichier = new JFileChooser();
+           choixFichier.setDialogTitle("Sauvegarder");
+           choixFichier.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+           int result = choixFichier.showOpenDialog(this);
+           if (result != JFileChooser.APPROVE_OPTION) {
+               return;
+           }
+           String chemin = choixFichier.getCurrentDirectory().getAbsolutePath();
+
             String nom = JOptionPane.showInputDialog(this, "Entrez le nom du fichier", "Nom", JOptionPane.QUESTION_MESSAGE);
             if (nom == null) {
                 return;
@@ -320,11 +358,21 @@ public class Fenetre extends JFrame {
         });
     }
 
+    /**
+     * @author Elouan
+     * @description Ajoute un JLabel au JPanel
+     * @param label
+     */
     public void addJLabelToContent(JLabel label) {
         this.content.add(label);
         this.setContentPane(this.content);
     }
 
+    /**
+     * @author Elouan
+     * @description Supprime un JLabel du JPanel
+     * @param label
+     */
     public void removeJLabelToContent(JLabel label) {
         this.content.remove(label);
         this.setContentPane(this.content);
@@ -335,6 +383,11 @@ public class Fenetre extends JFrame {
         this.setContentPane(this.content);
     }
 
+    /**
+     * @author Elouan
+     * @description Ajoute un JMenu au JMenuBar
+     * @param traitement
+     */
     protected void addJMenuToMenuBar(JMenu traitement) {
         this.menuBar.add(traitement);
         this.setJMenuBar(this.menuBar);
