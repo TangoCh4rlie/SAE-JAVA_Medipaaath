@@ -2,7 +2,7 @@ package GestionnaireDeGraphe.Interface.ElementDeStructure;
 
 import GestionnaireDeGraphe.TraitementGraphe.LCGraphe;
 
-import javax.swing.*;
+import javax.swing.JLabel;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -13,12 +13,23 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
+
+/**
+ * @author Elouan
+ * @description Classe qui permet de dessiner un sommet dans une interface graphique.
+ */
 public class SommetGraphe extends JLabel implements MouseListener, MouseMotionListener {
     private LCGraphe.MaillonGraphe sommet;
     private String nomSommet;
     private int mouseX;
     private int mouseY;
     private Color couleurDuPoint;
+
+    /**
+     * @author Elouan
+     * @description Constructeur de la classe SommetGraphe.
+     * @param sommet le maillon du sommet à dessiner
+     */
     public SommetGraphe(LCGraphe.MaillonGraphe sommet) {
         super();
         this.sommet = sommet;
@@ -26,12 +37,13 @@ public class SommetGraphe extends JLabel implements MouseListener, MouseMotionLi
         this.couleurDuPoint = sommet.getType().getColor();
         addMouseListener(this);
         addMouseMotionListener(this);
-        initActionListener();
     }
 
-    private void initActionListener() {
-
-    }
+    /**
+     * @author Elouan
+     * @description Redéfinition de la méthode paintComponent pour dessiner le sommet.
+     * @param g l'objet Graphics utilisé pour dessiner le sommet
+     */
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -42,7 +54,6 @@ public class SommetGraphe extends JLabel implements MouseListener, MouseMotionLi
         g2d.setColor(Color.BLACK);
         g2d.setStroke(new BasicStroke(2));
         g2d.drawOval(2,2,30,30);
-//            TODO faire un label pour le nom au lieux de faire un drawString
         g2d.drawString(sommet.getNom(), 5, 23);
     }
 
@@ -58,6 +69,11 @@ public class SommetGraphe extends JLabel implements MouseListener, MouseMotionLi
 
     }
 
+    /**
+     * @author Elouan
+     * @description Gestionnaire d'événements pour le pressage de souris.
+     * @param e l'événement de souris
+     */
     @Override
     public void mousePressed(MouseEvent e) {
         mouseX = e.getX();
@@ -65,6 +81,11 @@ public class SommetGraphe extends JLabel implements MouseListener, MouseMotionLi
         this.couleurDuPoint = sommet.getType().getColor().darker();
     }
 
+    /**
+     * @author Elouan
+     * @description Gestionnaire d'événements pour le relâchement de souris.
+     * @param e l'événement de souris
+     */
     @Override
     public void mouseReleased(MouseEvent e) {
         this.couleurDuPoint = sommet.getType().getColor();
@@ -81,6 +102,11 @@ public class SommetGraphe extends JLabel implements MouseListener, MouseMotionLi
 
     }
 
+    /**
+     * @author Elouan
+     * @description Gestionnaire d'événements pour le déplacement de souris.  
+     * @param e l'événement de souris
+     */   
     @Override
     public void mouseDragged(MouseEvent e) {
         int deltaX = e.getX() - mouseX;
