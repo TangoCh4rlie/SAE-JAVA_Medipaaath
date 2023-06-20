@@ -1356,7 +1356,7 @@ public class LCGraphe {
         return false;
     }
 
-    public String NeigborsType(String nom,TypeDispensaire type) {
+    public String neigborsType(String nom,TypeDispensaire type) {
         //retourne les voisins d'un sommet de type type
         String s = "";
         MaillonGraphe tmp = this.premier;

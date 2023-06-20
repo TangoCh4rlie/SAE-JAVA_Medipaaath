@@ -54,6 +54,7 @@ public class FenetreOutils extends JFrame {
     private JMenuItem distance2;
     private JMenuItem afficheDataArete;
     private JMenuItem afficheDataSommet;
+    private JMenuItem afficheVoisinsTypeDonne;
     private JMenuItem afficherToutesLesAretes;
 
 
@@ -110,6 +111,7 @@ public class FenetreOutils extends JFrame {
         afficheDataArete = new JMenuItem("Afficher les données d'une arete");
         afficheDataSommet = new JMenuItem("Afficher les données d'un sommet");
         afficherToutesLesAretes = new JMenuItem("Afficher toutes les aretes");
+        afficheVoisinsTypeDonne = new JMenuItem("Afficher les voisins d'un type donné");
 
         disp_type = new JMenuItem("Afficher les sommets d'un type");
         disp_dec = new JMenuItem("Décompte des types");
@@ -132,6 +134,7 @@ public class FenetreOutils extends JFrame {
         this.affichage.add(disp_dec);
         this.affichage.add(disp_risque);
         this.affichage.add(afficherToutesLesAretes);
+        this.affichage.add(afficheVoisinsTypeDonne);
 
         this.analyse.add(disp_comp);
 
@@ -510,6 +513,34 @@ public class FenetreOutils extends JFrame {
         });
         this.afficherToutesLesAretes.addActionListener(e -> {
             this.textArea.setText(this.graphe.printAllArete() + "\n" + "Il y'a " + this.graphe.countEdges() + " Arêtes");
+        });
+        this.afficheVoisinsTypeDonne.addActionListener(e -> {
+            JComboBox<String> type = new JComboBox<>();
+            for (TypeDispensaire value : TypeDispensaire.values()) {
+                type.addItem(value.toString());
+            }
+            JComboBox<String> Sommet = new JComboBox<>();
+            for (SommetGraphe listeSommet : listesommetgraphique)
+                Sommet.addItem(listeSommet.getNomSommet());
+
+            JPanel panelPopup = new JPanel();
+            panelPopup.add(new JLabel("Sommet:"));
+            panelPopup.add(Sommet);
+            panelPopup.add(new JLabel("Type:"));
+            panelPopup.add(type);
+            int result = JOptionPane.showConfirmDialog(null, panelPopup,"Entrer vos sommet de départ et d'arrivé", JOptionPane.OK_CANCEL_OPTION);
+               if (result == JOptionPane.OK_OPTION) {
+                   TypeDispensaire ty = TypeDispensaire.MATERNITE;
+                   if (type.getSelectedItem().equals("Maternité")) {
+                       ty = TypeDispensaire.MATERNITE;
+                   } else if (type.getSelectedItem().equals("Nutrition")) {
+                       ty = TypeDispensaire.NUTRITION;
+                   } else if (type.getSelectedItem().equals("Opératoire")) {
+                       ty = TypeDispensaire.OPERATOIRE;
+                   }
+
+                   this.textArea.setText(this.graphe.neigborsType((String) Sommet.getSelectedItem(), ty));
+               }
         });
         this.disp_dec.addActionListener(e -> {
             this.textArea.setText("Il y'a " + this.graphe.countMaternite() + " Matérnité" + "\n" + "Il y'a " + this.graphe.countNutrition() + " Centre de Nutrition" + "\n" + "Il y'a " + this.graphe.countOperatoire() + " Bloc Opératoire");
