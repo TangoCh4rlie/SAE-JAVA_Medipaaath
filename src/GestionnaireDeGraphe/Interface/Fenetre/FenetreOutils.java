@@ -509,7 +509,7 @@ public class FenetreOutils extends JFrame {
                 }
         });
         this.afficherToutesLesAretes.addActionListener(e -> {
-            this.textArea.setText(this.graphe.printAllArete());
+            this.textArea.setText(this.graphe.printAllArete() + "\n" + "Il y'a " + this.graphe.countEdges() + " Arêtes");
         });
         this.disp_dec.addActionListener(e -> {
             this.textArea.setText("Il y'a " + this.graphe.countMaternite() + " Matérnité" + "\n" + "Il y'a " + this.graphe.countNutrition() + " Centre de Nutrition" + "\n" + "Il y'a " + this.graphe.countOperatoire() + " Bloc Opératoire");
