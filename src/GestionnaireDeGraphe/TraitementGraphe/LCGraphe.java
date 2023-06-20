@@ -21,6 +21,21 @@ public class LCGraphe {
             LOGGER.log( Level.SEVERE, "Cannot read configuration file", exception );
         }
     }
+
+    public String printAllArete() {
+        String s = "";
+        MaillonGraphe tmp = premier;
+        while (tmp != null) {
+            MaillonGrapheSec tmp2 = tmp.lVois;
+            while (tmp2 != null) {
+                s += tmp2.nomArete + " ";
+                tmp2 = tmp2.suiv;
+            }
+            tmp = tmp.suiv;
+        }
+        return s;
+    }
+
     public class MaillonGrapheSec {
         private String nomArete;
         private double fiab;

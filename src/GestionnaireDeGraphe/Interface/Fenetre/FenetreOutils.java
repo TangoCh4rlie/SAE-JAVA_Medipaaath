@@ -42,8 +42,6 @@ public class FenetreOutils extends JFrame {
     private JMenu modification;
     private JMenu affichage;
     private JMenu analyse;
-    private JMenuItem disp_proche;
-    private JMenuItem disp_2dist;
     private JMenuItem disp_comp;
     private JMenuItem disp_type;
     private JMenuItem disp_dec;
@@ -56,6 +54,7 @@ public class FenetreOutils extends JFrame {
     private JMenuItem distance2;
     private JMenuItem afficheDataArete;
     private JMenuItem afficheDataSommet;
+    private JMenuItem afficherToutesLesAretes;
 
 
 //    Tout ce qui est relatif au contenu de la fenetre
@@ -110,13 +109,13 @@ public class FenetreOutils extends JFrame {
 
         afficheDataArete = new JMenuItem("Afficher les données d'une arete");
         afficheDataSommet = new JMenuItem("Afficher les données d'un sommet");
+        afficherToutesLesAretes = new JMenuItem("Afficher toutes les aretes");
 
         disp_type = new JMenuItem("Afficher les sommets d'un type");
         disp_dec = new JMenuItem("Décompte des types");
         disp_risque = new JMenuItem("Afficher chemin le plus risqué");
 
-        disp_proche = new JMenuItem("Afficher les sommets les plus proches");
-        disp_2dist = new JMenuItem("Afficher les sommets à 2 de distance");
+
         disp_comp = new JMenuItem("Comparer deux sommets");
 
         this.traitement.add(reinit);
@@ -132,9 +131,8 @@ public class FenetreOutils extends JFrame {
         this.affichage.add(disp_type);
         this.affichage.add(disp_dec);
         this.affichage.add(disp_risque);
+        this.affichage.add(afficherToutesLesAretes);
 
-        this.analyse.add(disp_proche);
-        this.analyse.add(disp_2dist);
         this.analyse.add(disp_comp);
 
         this.menu.add(traitement);
@@ -510,6 +508,9 @@ public class FenetreOutils extends JFrame {
                    }
                 }
         });
+        this.afficherToutesLesAretes.addActionListener(e -> {
+            this.textArea.setText(this.graphe.printAllArete());
+        });
         this.disp_dec.addActionListener(e -> {
             this.textArea.setText("Il y'a " + this.graphe.countMaternite() + " Matérnité" + "\n" + "Il y'a " + this.graphe.countNutrition() + " Centre de Nutrition" + "\n" + "Il y'a " + this.graphe.countOperatoire() + " Bloc Opératoire");
         });
@@ -529,46 +530,6 @@ public class FenetreOutils extends JFrame {
                        return;
                    }
                    this.textArea.setText("Les arrêtes à risque sont : " + this.graphe.seuil(Integer.parseInt(seuil.getText())));
-                }
-        });
-        this.disp_proche.addActionListener(e -> {
-            JComboBox<String> cible = new JComboBox<>();
-            for (LCGraphe.MaillonGraphe listeSommet : listeSommets) {
-                cible.addItem(listeSommet.getNom());
-            }
-            JPanel panelPopup = new JPanel();
-            panelPopup.add(new JLabel("Cible:"));
-            panelPopup.add(cible);
-            int result = JOptionPane.showConfirmDialog(null, panelPopup,"Entrer vos sommet de départ", JOptionPane.OK_CANCEL_OPTION);
-               if (result == JOptionPane.OK_OPTION) {
-                   String res = this.graphe.oneDistNeighbors(cible.getSelectedItem().toString());
-                     if (res.equals("")) {
-                          this.textArea.setText("Il n'y a pas de sommet proche de " + cible.getSelectedItem().toString());
-                     } else {
-                          this.textArea.setText("Les sommets proches de " + cible.getSelectedItem().toString() + " sont : " + res);
-                     }
-                }
-        });
-        this.disp_2dist.addActionListener(e -> {
-            JComboBox<String> cible = new JComboBox<>();
-            for (LCGraphe.MaillonGraphe listeSommet : listeSommets) {
-                cible.addItem(listeSommet.getNom());
-            }
-            JPanel panelPopup = new JPanel();
-            panelPopup.add(new JLabel("Cible:"));
-            panelPopup.add(cible);
-            int result = JOptionPane.showConfirmDialog(null, panelPopup,"Entrer vos sommet de départ", JOptionPane.OK_CANCEL_OPTION);
-               if (result == JOptionPane.OK_OPTION) {
-                   List res = this.graphe.ListingTwoDistNeighbors(cible.getSelectedItem().toString());
-                     if (res.size() == 0) {
-                          this.textArea.setText("Il n'y a pas de sommet à 2 distance de " + cible.getSelectedItem().toString());
-                     } else {
-                         String res2 = "";
-                            for (Object re : res) {
-                                res2 += re.toString() + " ";
-                            }
-                          this.textArea.setText("Les sommets à 2 distance de " + cible.getSelectedItem().toString() + " sont : " + res2);
-                     }
                 }
         });
         this.disp_comp.addActionListener(e -> {
