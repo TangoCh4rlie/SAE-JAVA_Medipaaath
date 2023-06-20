@@ -1299,4 +1299,18 @@ public class LCGraphe {
             e.printStackTrace();
         }
     }
+
+    /**
+     * @author Haithem
+     * @param nom
+     * @return boolean
+     */
+    public boolean alreadyExist(String nom){
+        MaillonGraphe tmp = this.premier;
+        while (tmp != null) {
+            if (tmp.nom.equals(nom)) return true;
+            tmp = tmp.suiv;
+        }
+        return false;
+    }
 }

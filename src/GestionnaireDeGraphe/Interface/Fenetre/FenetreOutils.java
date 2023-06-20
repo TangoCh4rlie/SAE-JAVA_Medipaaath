@@ -439,11 +439,13 @@ public class FenetreOutils extends JFrame {
             panelPopup.add(Box.createHorizontalStrut(15));
             panelPopup.add(new JLabel("Type:"));
             panelPopup.add(selected_type);
-            int result = JOptionPane.showConfirmDialog(null, panelPopup,"Entrer vos sommet de départ et d'arrivé", JOptionPane.OK_CANCEL_OPTION);
+            int result = JOptionPane.showConfirmDialog(null, panelPopup,"Modifie un sommet", JOptionPane.OK_CANCEL_OPTION);
                if (result == JOptionPane.OK_OPTION) {
                     LCGraphe.MaillonGraphe sommet_a_modifier = this.getSommet((String) selected_sommet.getSelectedItem());
                     if (nom.getText().equals("")) {
                         JOptionPane.showMessageDialog(null, "Vous devez rentrer un nom", "Erreur", JOptionPane.ERROR_MESSAGE);
+                    } else if (graphe.alreadyExist(nom.getText())) {
+                        JOptionPane.showMessageDialog(null, "Le nom est déjà utilisé", "Erreur", JOptionPane.ERROR_MESSAGE);
                     } else {
                         sommet_a_modifier.setNom(nom.getText());
                         if (selected_type.getSelectedItem().equals("Maternité")) {
