@@ -470,12 +470,20 @@ public class LCGraphe {
     }
 
     public MaillonGrapheSec rechercheNomArete(String nom) {
-        MaillonGrapheSec tmp = this.premier.lVois;
-        while (tmp != null && !tmp.nomArete.equals(nom)) {
-            //Parcours de la liste chainee de sommets
-            tmp = tmp.suiv;
+        MaillonGraphe tmp1 = this.premier;
+        while (tmp1 != null) {
+            MaillonGrapheSec tmp2 = tmp1.lVois;
+            while (tmp2 != null) {
+                //Parcours de la liste chainee de sommets
+                if (tmp2.nomArete.equals(nom)) {
+                    return tmp2;
+                }
+                tmp2 = tmp2.suiv;
+
+            }
+            tmp1 = tmp1.suiv;
         }
-        return tmp;
+        return null;
     }
 
     public String seuil(int seuil){

@@ -182,7 +182,6 @@ public class FenetreOutils extends JFrame {
     /**
      * @autor Elouan
      * @description Méthode qui permet de reinitaliser la couleur d'un sommet
-     * @param nomSommet
      */
     public void reinitCouleurSommet(){
         for (LCGraphe.MaillonGraphe listeSommet : listeSommets) {
@@ -216,56 +215,78 @@ public class FenetreOutils extends JFrame {
         this.distance1.addActionListener(e -> {
             reinitCouleurArete();
             reinitCouleurSommet();
-            String nomSommet = JOptionPane.showInputDialog(this, "Entrez le nom du sommet", "Distance 1", JOptionPane.QUESTION_MESSAGE);
 
-            java.util.List<LCGraphe.MaillonGrapheSec> lAretes = this.graphe.getListAretesAdj(graphe.rechercheNomSommet(nomSommet));
-            for (LCGraphe.MaillonGrapheSec aretesADessiner : lAretes) {
-                for (AreteGraphe areteGraphe : this.listearretegraphique) {
-                    if (areteGraphe.getAreteNom().equals(aretesADessiner.getNomArete())) {
-                        areteGraphe.setCouleurActuelle(Color.red);
-                    }
-                }
-                fenetreChargementGraphe.repaint();
+            JComboBox choixSommet = new JComboBox<>();
+            for (LCGraphe.MaillonGraphe sommet : listeSommets) {
+                choixSommet.addItem(sommet.getNom());
             }
+            JPanel myPanel = new JPanel();
+            myPanel.add(new JLabel("Sommet:"));
+            myPanel.add(choixSommet);
 
-            java.util.List<LCGraphe.MaillonGraphe> lSommets = this.graphe.getListSommetAdj(graphe.rechercheNomSommet(nomSommet));
-            for (LCGraphe.MaillonGraphe sommetADessiner : lSommets) {
-                for (SommetGraphe sommetGraphe : this.listesommetgraphique) {
-                    if (sommetGraphe.getNomSommet().equals(sommetADessiner.getNom())) {
-                        sommetGraphe.setCouleurDuPoint(Color.green);
+
+            int result = JOptionPane.showConfirmDialog(null, myPanel, "Supprimer un sommet", JOptionPane.OK_CANCEL_OPTION);
+            if (result == JOptionPane.OK_OPTION) {
+                List<LCGraphe.MaillonGrapheSec> lAretes = this.graphe.getListAretesAdj(graphe.rechercheNomSommet(choixSommet.getSelectedItem().toString()));
+                for (LCGraphe.MaillonGrapheSec aretesADessiner : lAretes) {
+                    for (AreteGraphe areteGraphe : this.listearretegraphique) {
+                        if (areteGraphe.getAreteNom().equals(aretesADessiner.getNomArete())) {
+                            areteGraphe.setCouleurActuelle(Color.red);
+                        }
+                    }
+                    fenetreChargementGraphe.repaint();
+                }
+
+                List<LCGraphe.MaillonGraphe> lSommets = this.graphe.getListSommetAdj(graphe.rechercheNomSommet(choixSommet.getSelectedItem().toString()));
+                for (LCGraphe.MaillonGraphe sommetADessiner : lSommets) {
+                    for (SommetGraphe sommetGraphe : this.listesommetgraphique) {
+                        if (sommetGraphe.getNomSommet().equals(sommetADessiner.getNom())) {
+                            sommetGraphe.setCouleurDuPoint(Color.green);
 //                        TODO fix le fait que lorsqu'on déplcale le point il rechange de couleur
+                        }
                     }
+                    fenetreChargementGraphe.repaint();
                 }
-                fenetreChargementGraphe.repaint();
+                this.textArea.setText("Sommet adjacent : " + lSommets.toString() + "\n" + "Arete adjacent : " + lAretes.toString());
             }
-            this.textArea.setText("Sommet adjacent : " + lSommets.toString() + "\n" + "Arete adjacent : " + lAretes.toString());
         });
         this.distance2.addActionListener(e -> {
             reinitCouleurArete();
             reinitCouleurSommet();
-            String nomSommet = JOptionPane.showInputDialog(this, "Entrez le nom du sommet", "Distance 2", JOptionPane.QUESTION_MESSAGE);
 
-            java.util.List<LCGraphe.MaillonGrapheSec> lAretes = this.graphe.getListArete2Distance(graphe.rechercheNomSommet(nomSommet));
-            for (LCGraphe.MaillonGrapheSec aretesADessiner : lAretes) {
-                for (AreteGraphe areteGraphe : this.listearretegraphique) {
-                    if (areteGraphe.getAreteNom().equals(aretesADessiner.getNomArete())) {
-                        areteGraphe.setCouleurActuelle(Color.red);
-                    }
-                }
-                fenetreChargementGraphe.repaint();
+            JComboBox choixSommet = new JComboBox<>();
+            for (LCGraphe.MaillonGraphe sommet : listeSommets) {
+                choixSommet.addItem(sommet.getNom());
             }
+            JPanel myPanel = new JPanel();
+            myPanel.add(new JLabel("Sommet:"));
+            myPanel.add(choixSommet);
 
-            java.util.List<LCGraphe.MaillonGraphe> lSommets = this.graphe.getListSommet2Dist(graphe.rechercheNomSommet(nomSommet));
-            for (LCGraphe.MaillonGraphe sommetADessiner : lSommets) {
-                for (SommetGraphe sommetGraphe : this.listesommetgraphique) {
-                    if (sommetGraphe.getNomSommet().equals(sommetADessiner.getNom())) {
-                        sommetGraphe.setCouleurDuPoint(Color.green);
+            int result = JOptionPane.showConfirmDialog(null, myPanel, "Supprimer une arete", JOptionPane.OK_CANCEL_OPTION);
+            if (result == JOptionPane.OK_OPTION) {
+                List<LCGraphe.MaillonGrapheSec> lAretes = this.graphe.getListArete2Distance(graphe.rechercheNomSommet(choixSommet.getSelectedItem().toString()));
+                for (LCGraphe.MaillonGrapheSec aretesADessiner : lAretes) {
+                    for (AreteGraphe areteGraphe : this.listearretegraphique) {
+                        if (areteGraphe.getAreteNom().equals(aretesADessiner.getNomArete())) {
+                            areteGraphe.setCouleurActuelle(Color.red);
+                        }
+                    }
+                    fenetreChargementGraphe.repaint();
+                }
+
+                List<LCGraphe.MaillonGraphe> lSommets = this.graphe.getListSommet2Dist(graphe.rechercheNomSommet(choixSommet.getSelectedItem().toString()));
+                for (LCGraphe.MaillonGraphe sommetADessiner : lSommets) {
+                    for (SommetGraphe sommetGraphe : this.listesommetgraphique) {
+                        if (sommetGraphe.getNomSommet().equals(sommetADessiner.getNom())) {
+                            sommetGraphe.setCouleurDuPoint(Color.green);
 //                        TODO fix le fait que lorsqu'on déplcale le point il rechange de couleur
+                        }
                     }
+                    fenetreChargementGraphe.repaint();
                 }
-                fenetreChargementGraphe.repaint();
+                this.textArea.setText("Sommet adjacent : " + lSommets.toString() + "\n" + "Arete adjacent : " + lAretes.toString());
+
             }
-            this.textArea.setText("Sommet adjacent : " + lSommets.toString() + "\n" + "Arete adjacent : " + lAretes.toString());
         });
         this.parcours.addActionListener(e -> {
             reinitCouleurArete();
@@ -301,8 +322,8 @@ public class FenetreOutils extends JFrame {
                 }
                 switch (combo.getSelectedItem().toString()) {
                     case "Rapide":
-                        java.util.List a1 = this.graphe.dijkstrarapide((String) ori.getSelectedItem(), (String) dest.getSelectedItem());
-                        java.util.List arc1 = (java.util.List) a1.get(1);
+                        List a1 = this.graphe.dijkstrarapide((String) ori.getSelectedItem(), (String) dest.getSelectedItem());
+                        List arc1 = (List) a1.get(1);
                         for (Object obj : arc1) {
                             //recuperer l'arc listearretegraphique
                             for (AreteGraphe arete : this.listearretegraphique) {
@@ -315,8 +336,8 @@ public class FenetreOutils extends JFrame {
                         this.textArea.setText("Les sommets empruntés sont : " + a1.get(0));
                         break;
                     case "Court":
-                        java.util.List a2 = this.graphe.dijkstracourt((String) ori.getSelectedItem(), (String) dest.getSelectedItem());
-                        java.util.List arc2 = (java.util.List) a2.get(1);
+                        List a2 = this.graphe.dijkstracourt((String) ori.getSelectedItem(), (String) dest.getSelectedItem());
+                        List arc2 = (List) a2.get(1);
                         for (Object obj : arc2) {
                             //recuperer l'arc listearretegraphique
                             for (AreteGraphe arete : this.listearretegraphique) {
@@ -329,8 +350,8 @@ public class FenetreOutils extends JFrame {
                         this.textArea.setText("Les sommets empruntés sont : " + a2.get(0));
                         break;
                     case "Fiable":
-                        java.util.List a3 = this.graphe.dijkstrafiable((String) ori.getSelectedItem(), (String) dest.getSelectedItem());
-                        java.util.List arc3 = (java.util.List) a3.get(1);
+                        List a3 = this.graphe.dijkstrafiable((String) ori.getSelectedItem(), (String) dest.getSelectedItem());
+                        List arc3 = (List) a3.get(1);
                         for (Object obj : arc3) {
                             //recuperer l'arc listearretegraphique
                             for (AreteGraphe arete : this.listearretegraphique) {
@@ -343,8 +364,8 @@ public class FenetreOutils extends JFrame {
                         this.textArea.setText("Les sommets empruntés sont : " + a3.get(0));
                         break;
                 }
-                java.util.List a = this.graphe.dijkstracourt((String) ori.getSelectedItem(), (String) dest.getSelectedItem());
-                java.util.List arc = (List) a.get(1);
+                List a = this.graphe.dijkstracourt((String) ori.getSelectedItem(), (String) dest.getSelectedItem());
+                List arc = (List) a.get(1);
                 for (Object obj : arc) {
                     //recuperer l'arc listearretegraphique
                     for (AreteGraphe arete : this.listearretegraphique) {
@@ -434,7 +455,6 @@ public class FenetreOutils extends JFrame {
                         }
                     }
                }
-               fenetreChargementGraphe.dessinerSommet();
                fenetreChargementGraphe.repaint();
         });
         this.afficheDataArete.addActionListener(e -> {

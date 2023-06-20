@@ -279,7 +279,7 @@ public class Fenetre extends JFrame {
                 choixSommet.addItem(sommet.getNom());
             }
             JPanel myPanel = new JPanel();
-            myPanel.add(new JLabel("Cible 1:"));
+            myPanel.add(new JLabel("Choix Sommet :"));
             myPanel.add(choixSommet);
             int result = JOptionPane.showConfirmDialog(null, myPanel, "Supprimer un sommet", JOptionPane.OK_CANCEL_OPTION);
             if (result == JOptionPane.OK_OPTION) {
