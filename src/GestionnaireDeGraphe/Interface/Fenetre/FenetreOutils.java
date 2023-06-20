@@ -56,6 +56,7 @@ public class FenetreOutils extends JFrame {
     private JMenuItem afficheDataSommet;
     private JMenuItem afficheVoisinsTypeDonne;
     private JMenuItem afficherToutesLesAretes;
+    private JMenuItem verifiDis2;
 
 
 //    Tout ce qui est relatif au contenu de la fenetre
@@ -112,6 +113,7 @@ public class FenetreOutils extends JFrame {
         afficheDataSommet = new JMenuItem("Afficher les données d'un sommet");
         afficherToutesLesAretes = new JMenuItem("Afficher toutes les aretes");
         afficheVoisinsTypeDonne = new JMenuItem("Afficher les voisins d'un type donné");
+        verifiDis2 = new JMenuItem("Vérifier si deux sommets sont à distance 2");
 
         disp_type = new JMenuItem("Afficher les sommets d'un type");
         disp_dec = new JMenuItem("Décompte des types");
@@ -135,6 +137,7 @@ public class FenetreOutils extends JFrame {
         this.affichage.add(disp_risque);
         this.affichage.add(afficherToutesLesAretes);
         this.affichage.add(afficheVoisinsTypeDonne);
+        this.affichage.add(verifiDis2);
 
         this.analyse.add(disp_comp);
 
@@ -541,6 +544,35 @@ public class FenetreOutils extends JFrame {
 
                    this.textArea.setText(this.graphe.neigborsType((String) Sommet.getSelectedItem(), ty));
                }
+        });
+        this.verifiDis2.addActionListener(e -> {
+            JComboBox<String> Sommet1 = new JComboBox<>();
+            for (SommetGraphe listeSommet : listesommetgraphique)
+                Sommet1.addItem(listeSommet.getNomSommet());
+
+            JComboBox<String> Sommet2 = new JComboBox<>();
+            for (SommetGraphe listeSommet : listesommetgraphique)
+                Sommet2.addItem(listeSommet.getNomSommet());
+
+            JPanel panelPopup = new JPanel();
+            panelPopup.add(new JLabel("Sommet de départ:"));
+            panelPopup.add(Sommet1);
+            panelPopup.add(new JLabel("Sommet d'arrivé:"));
+            panelPopup.add(Sommet2);
+            int result = JOptionPane.showConfirmDialog(null, panelPopup,"Verifier Distance 2", JOptionPane.OK_CANCEL_OPTION);
+            if (result == JOptionPane.OK_OPTION) {
+                if (Sommet1.getSelectedItem().equals(Sommet2.getSelectedItem())){
+                    JOptionPane.showMessageDialog(null, "Les sommets de départ et d'arrivé doivent être différents", "Erreur", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                String s = "";
+                if (this.graphe.VerifyTwoDistNeighbors((String) Sommet1.getSelectedItem(), (String) Sommet2.getSelectedItem()) == true)
+                    s = "Oui";
+                else
+                    s = "Non";
+                this.textArea.setText(s);
+            }
+
         });
         this.disp_dec.addActionListener(e -> {
             this.textArea.setText("Il y'a " + this.graphe.countMaternite() + " Matérnité" + "\n" + "Il y'a " + this.graphe.countNutrition() + " Centre de Nutrition" + "\n" + "Il y'a " + this.graphe.countOperatoire() + " Bloc Opératoire");
