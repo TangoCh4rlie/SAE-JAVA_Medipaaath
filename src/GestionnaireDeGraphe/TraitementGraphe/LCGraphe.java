@@ -25,9 +25,11 @@ public class LCGraphe {
     public String printAllArete() {
         String s = "";
         MaillonGraphe tmp = premier;
+        resetListed();
         while (tmp != null) {
             MaillonGrapheSec tmp2 = tmp.lVois;
-            while (tmp2 != null) {
+            while (tmp2 != null && !tmp2.getListed()) {
+                listedArete(tmp2);
                 s += tmp2.nomArete + " ";
                 tmp2 = tmp2.suiv;
             }
