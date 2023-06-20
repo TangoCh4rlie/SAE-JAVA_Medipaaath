@@ -1355,4 +1355,28 @@ public class LCGraphe {
         }
         return false;
     }
+
+    public String NeigborsType(String nom,TypeDispensaire type) {
+        //retourne les voisins d'un sommet de type type
+        String s = "";
+        MaillonGraphe tmp = this.premier;
+        while (tmp != null) {
+            if (tmp.nom.equals(nom)) {
+                MaillonGrapheSec tmp2 = tmp.lVois;
+                while (tmp2 != null) {
+                    MaillonGraphe tmp3 = this.premier;
+                    while (tmp3 != null && !tmp3.nom.equals(tmp2.dest)) {
+                        tmp3 = tmp3.suiv;
+                    }
+                    if (tmp3 != null && tmp3.type.equals(type)) {
+                        s += tmp3.nom + " ";
+                    }
+                    tmp2 = tmp2.suiv;
+                }
+            }
+            tmp = tmp.suiv;
+        }
+        return s;
+    }
+
 }
