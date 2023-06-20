@@ -91,7 +91,7 @@ public class FenetreOutils extends JFrame {
     private void initComponents() {
         this.setTitle("Outils");
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        this.setPreferredSize(new Dimension(400,500));
+        this.setPreferredSize(new Dimension(600,500));
         this.setVisible(true);
 
         this.menu = new JMenuBar();

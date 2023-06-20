@@ -61,7 +61,6 @@ public class Fenetre extends JFrame {
     /**
      * @author Elouan
      * @description Constructeur de la classe Fenetre.
-     * @param titre le titre de la fenêtre
      */
     public Fenetre() {
         initComponents();
