@@ -22,21 +22,7 @@ public class LCGraphe {
         }
     }
 
-    public String printAllArete() {
-        String s = "";
-        MaillonGraphe tmp = premier;
-        resetListed();
-        while (tmp != null) {
-            MaillonGrapheSec tmp2 = tmp.lVois;
-            while (tmp2 != null && !tmp2.getListed()) {
-                listedArete(tmp2);
-                s += tmp2.nomArete + " ";
-                tmp2 = tmp2.suiv;
-            }
-            tmp = tmp.suiv;
-        }
-        return s;
-    }
+
 
     public class MaillonGrapheSec {
         private String nomArete;
@@ -129,6 +115,8 @@ public class LCGraphe {
                 tmp = tmp.suiv;
             }
         }
+
+
     }
         
     /**
@@ -446,6 +434,18 @@ public class LCGraphe {
         return res;
     }
 
+    public void resetListedEdge(){
+        MaillonGraphe tmp = premier;
+        while (tmp != null) {
+            MaillonGrapheSec tmp2 = tmp.lVois;
+            while (tmp2 != null) {
+                tmp2.setListed(false);
+                tmp2 = tmp2.suiv;
+            }
+            tmp = tmp.suiv;
+        }
+    }
+
     /**
      * @autor : Haithem
      * @description : compare le nombre de voisins de type "type" a 2 distance de deux sommets
@@ -644,6 +644,7 @@ public class LCGraphe {
             tmp = tmp.suiv;
         }
     }
+
 
     /**
      * @description attribue un type de dispensaire a partir d'un string
@@ -1255,6 +1256,30 @@ public class LCGraphe {
             }
             tmp = tmp.suiv;
         }
+    }
+
+    public String printAllArete() {
+        //print les arretes du graphe
+        String s = "";
+        MaillonGraphe tmp = this.premier;
+        this.resetListedEdge();
+        int i = 1;
+        while (tmp != null) {
+            MaillonGrapheSec tmp2 = tmp.lVois;
+            while (tmp2 != null) {
+                if (tmp2.listed == false) {
+                    s += tmp2.nomArete+" ";
+                    if(i%10 == 0){
+                        s+="\n";
+                    }
+                    this.listedArete(tmp2);
+                    i++;
+                }
+                tmp2 = tmp2.suiv;
+            }
+            tmp = tmp.suiv;
+        }
+        return s;
     }
 
 

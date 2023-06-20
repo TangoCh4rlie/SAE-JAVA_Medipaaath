@@ -468,7 +468,7 @@ public class FenetreOutils extends JFrame {
             int result = JOptionPane.showConfirmDialog(null, panelPopup,"Entrer vos sommet de départ et d'arrivé", JOptionPane.OK_CANCEL_OPTION);
                if (result == JOptionPane.OK_OPTION) {
                     LCGraphe.MaillonGrapheSec arrete_a_afficher = this.getArete((String) selectedArrete.getSelectedItem());
-                    this.textArea.setText("La fiabilité est de : " + arrete_a_afficher.getFiab() + "\n" + "La durée est de : " + arrete_a_afficher.getDur() + "\n" + "La distance est de : " + arrete_a_afficher.getDist());
+                    this.textArea.setText("La fiabilité est de : " + arrete_a_afficher.getFiab() + "\n" + "La durée est de : " + arrete_a_afficher.getDur() + "\n" + "La distance est de : " + arrete_a_afficher.getDist() + "\n" + arrete_a_afficher.getOrig() + " <-> " + arrete_a_afficher.getDest());
                 }
         });
         this.afficheDataSommet.addActionListener(e -> {
