@@ -1,4 +1,6 @@
 # SAE de Java
+Parcours de Graphe.
+Projet de groupe du dexième semèstre de première année de BUT informatique. Le but était d'aider un hopital à choisir le chemin le plus optimisé vers un destinataire.
 ## Haithem et Elouan
 ### Gestion du graphe
     - Haithem
